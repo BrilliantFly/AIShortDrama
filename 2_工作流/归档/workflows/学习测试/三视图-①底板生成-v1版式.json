@@ -1,0 +1,586 @@
+{
+ "id": null,
+ "revision": 0,
+ "last_node_id": 71,
+ "last_link_id": 9,
+ "nodes": [
+  {
+   "id": 62,
+   "type": "CLIPLoader",
+   "pos": [
+    40,
+    60
+   ],
+   "size": [
+    340,
+    170
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "clip_name"
+     },
+     "link": null
+    },
+    {
+     "name": "type",
+     "type": "COMBO",
+     "widget": {
+      "name": "type"
+     },
+     "link": null
+    },
+    {
+     "name": "device",
+     "type": "COMBO",
+     "widget": {
+      "name": "device"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      1,
+      2
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPLoader"
+   },
+   "widgets_values": [
+    "qwen_3_4b.safetensors",
+    "lumina2",
+    "default"
+   ],
+   "title": "CLIP (lumina2)"
+  },
+  {
+   "id": 63,
+   "type": "VAELoader",
+   "pos": [
+    40,
+    280
+   ],
+   "size": [
+    340,
+    90
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      8
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAELoader"
+   },
+   "widgets_values": [
+    "ae.safetensors"
+   ],
+   "title": "VAE (ae)"
+  },
+  {
+   "id": 66,
+   "type": "UNETLoader",
+   "pos": [
+    40,
+    420
+   ],
+   "size": [
+    340,
+    110
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "unet_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "unet_name"
+     },
+     "link": null
+    },
+    {
+     "name": "weight_dtype",
+     "type": "COMBO",
+     "widget": {
+      "name": "weight_dtype"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      3
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "UNETLoader"
+   },
+   "widgets_values": [
+    "z_image_turbo_bf16.safetensors",
+    "default"
+   ],
+   "title": "Z-Image Turbo"
+  },
+  {
+   "id": 67,
+   "type": "CLIPTextEncode",
+   "pos": [
+    430,
+    40
+   ],
+   "size": [
+    460,
+    300
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 1
+    },
+    {
+     "name": "text",
+     "type": "STRING",
+     "widget": {
+      "name": "text"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      4
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPTextEncode"
+   },
+   "widgets_values": [
+    "Professional model reference board, studio comp card layout, horizontal composition, light gray seamless studio backdrop, thin clean dividing lines, 8K ultra-detailed, photorealistic, real person, live-action photography, soft studio lighting, consistent lighting across all panels.\n\nLeft side: close-up beauty portrait of a gentle young woman, cold fair translucent skin, natural skin texture with visible pores, delicate facial features, light cool-toned makeup, light brown shoulder-length hair with wispy bangs, small silver earrings, 85mm lens, shallow depth of field.\n\nTop right: three FULL BODY photographs in one row — front view, side view, back view of the same woman, natural standing pose, arms relaxed at the sides. Camera pulled far back: the whole figure from the top of the head down to the SHOES is inside each panel, both shoes and both feet fully visible and not cropped, a strip of light gray floor is visible under the feet with a small soft contact shadow, clear empty space between the feet and the bottom edge of the panel. Thin gap between the three panels.\n\nBottom right: expression sheet, six facial expression bust shots of the same woman in two rows of three — calm, smile, shy, sad, surprised, laugh — same lighting, same framing, consistent identity, same face in every cell.\n\nOutfit: light blue-gray ribbed off-shoulder knit top, light blue slim jeans, white sneakers.\n\nTall slim woman, 9-head body proportions, long legs, fashion model proportions.\n\nSame face across every panel, consistent character appearance in all panels, sharp focus, high resolution, DSLR, commercial studio shoot."
+   ],
+   "title": "正向：底板版式（可改发型服装描述）"
+  },
+  {
+   "id": 71,
+   "type": "CLIPTextEncode",
+   "pos": [
+    430,
+    390
+   ],
+   "size": [
+    460,
+    240
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 2
+    },
+    {
+     "name": "text",
+     "type": "STRING",
+     "widget": {
+      "name": "text"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      5
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPTextEncode"
+   },
+   "widgets_values": [
+    "anime, cartoon, illustration, 2d, 3d render, cgi, digital painting, drawing, sketch, concept art, character sheet, turnaround sheet, OC, cel shading, flat shading, stylized, doll-like, plastic skin, airbrushed skin, deformed, bad anatomy, bad proportions, extra limbs, extra fingers, blurry, low quality, worst quality, watermark, signature, text, logo, cropped feet, cut off feet, feet out of frame, no shoes, cropped legs, barefoot, duplicate, inconsistent character, different face across panels, mismatched outfit, overexposed, cluttered background, messy layout, extra views, short legs, stubby legs, distorted legs"
+   ],
+   "title": "负向"
+  },
+  {
+   "id": 68,
+   "type": "EmptySD3LatentImage",
+   "pos": [
+    940,
+    420
+   ],
+   "size": [
+    300,
+    130
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "width",
+     "type": "INT",
+     "widget": {
+      "name": "width"
+     },
+     "link": null
+    },
+    {
+     "name": "height",
+     "type": "INT",
+     "widget": {
+      "name": "height"
+     },
+     "link": null
+    },
+    {
+     "name": "batch_size",
+     "type": "INT",
+     "widget": {
+      "name": "batch_size"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      6
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "EmptySD3LatentImage"
+   },
+   "widgets_values": [
+    1024,
+    1024,
+    1
+   ]
+  },
+  {
+   "id": 70,
+   "type": "KSampler",
+   "pos": [
+    940,
+    40
+   ],
+   "size": [
+    340,
+    340
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 3
+    },
+    {
+     "name": "positive",
+     "type": "CONDITIONING",
+     "link": 4
+    },
+    {
+     "name": "negative",
+     "type": "CONDITIONING",
+     "link": 5
+    },
+    {
+     "name": "latent_image",
+     "type": "LATENT",
+     "link": 6
+    },
+    {
+     "name": "seed",
+     "type": "INT",
+     "widget": {
+      "name": "seed"
+     },
+     "link": null
+    },
+    {
+     "name": "steps",
+     "type": "INT",
+     "widget": {
+      "name": "steps"
+     },
+     "link": null
+    },
+    {
+     "name": "cfg",
+     "type": "FLOAT",
+     "widget": {
+      "name": "cfg"
+     },
+     "link": null
+    },
+    {
+     "name": "sampler_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "sampler_name"
+     },
+     "link": null
+    },
+    {
+     "name": "scheduler",
+     "type": "COMBO",
+     "widget": {
+      "name": "scheduler"
+     },
+     "link": null
+    },
+    {
+     "name": "denoise",
+     "type": "FLOAT",
+     "widget": {
+      "name": "denoise"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      7
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "KSampler"
+   },
+   "widgets_values": [
+    42,
+    "fixed",
+    8,
+    1.0,
+    "res_multistep",
+    "simple",
+    1.0
+   ],
+   "title": "底板采样(8步)"
+  },
+  {
+   "id": 69,
+   "type": "VAEDecode",
+   "pos": [
+    1330,
+    40
+   ],
+   "size": [
+    240,
+    60
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "samples",
+     "type": "LATENT",
+     "link": 7
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 8
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      9
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAEDecode"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 9,
+   "type": "SaveImage",
+   "pos": [
+    1620,
+    40
+   ],
+   "size": [
+    340,
+    420
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "link": 9
+    },
+    {
+     "name": "filename_prefix",
+     "type": "STRING",
+     "widget": {
+      "name": "filename_prefix"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SaveImage"
+   },
+   "widgets_values": [
+    "底板-脚全"
+   ],
+   "title": "产物：底板"
+  }
+ ],
+ "links": [
+  [
+   1,
+   62,
+   0,
+   67,
+   0,
+   "CLIP"
+  ],
+  [
+   2,
+   62,
+   0,
+   71,
+   0,
+   "CLIP"
+  ],
+  [
+   3,
+   66,
+   0,
+   70,
+   0,
+   "MODEL"
+  ],
+  [
+   4,
+   67,
+   0,
+   70,
+   1,
+   "CONDITIONING"
+  ],
+  [
+   5,
+   71,
+   0,
+   70,
+   2,
+   "CONDITIONING"
+  ],
+  [
+   6,
+   68,
+   0,
+   70,
+   3,
+   "LATENT"
+  ],
+  [
+   7,
+   70,
+   0,
+   69,
+   0,
+   "LATENT"
+  ],
+  [
+   8,
+   63,
+   0,
+   69,
+   1,
+   "VAE"
+  ],
+  [
+   9,
+   69,
+   0,
+   9,
+   0,
+   "IMAGE"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {
+  "ds": {
+   "scale": 0.6,
+   "offset": [
+    100,
+    60
+   ]
+  }
+ },
+ "version": 0.4
+}

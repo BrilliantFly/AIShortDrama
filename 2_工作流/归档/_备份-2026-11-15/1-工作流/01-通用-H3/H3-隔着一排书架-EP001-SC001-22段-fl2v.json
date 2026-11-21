@@ -1,0 +1,1100 @@
+{
+  "id": "e1008825-bd40-4626-b132-596f08761abc",
+  "revision": 0,
+  "last_node_id": 18,
+  "last_link_id": 24,
+  "nodes": [
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [
+        -720,
+        220
+      ],
+      "size": [
+        360,
+        106
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "CLIP名称",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "类型",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "设备",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "title": "CLIP (minimax / Qwen3-VL)",
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "models": [
+          {
+            "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+            "directory": "text_encoders"
+          }
+        ]
+      },
+      "widgets_values": [
+        "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+        "minimax",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [
+        -720,
+        380
+      ],
+      "size": [
+        360,
+        58
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae名称",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "title": "Video VAE",
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "minimax_h3_video_vae_fp16.safetensors",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_video_vae_fp16.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "VAELoader",
+      "pos": [
+        -720,
+        500
+      ],
+      "size": [
+        360,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae名称",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "title": "Audio VAE",
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "minimax_h3_audio_vae_fp32.safetensors",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_audio_vae_fp32.safetensors"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "PreviewAny",
+      "pos": [
+        1006.1195126617181,
+        90.46763850287226
+      ],
+      "size": [
+        640,
+        200
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "源",
+          "name": "source",
+          "type": "*",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "字符串",
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "Director 运行报告",
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "CreateVideo",
+      "pos": [
+        1006.6064265507966,
+        342.40096040896543
+      ],
+      "size": [
+        280,
+        120
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 17
+        },
+        {
+          "localized_name": "音频",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 18
+        },
+        {
+          "localized_name": "帧率",
+          "name": "fps",
+          "type": "FLOAT",
+          "widget": {
+            "name": "fps"
+          },
+          "link": 19
+        },
+        {
+          "localized_name": "bit_depth",
+          "name": "bit_depth",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "bit_depth"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "视频",
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CreateVideo"
+      },
+      "widgets_values": [
+        24,
+        8
+      ]
+    },
+    {
+      "id": 11,
+      "type": "MarkdownNote",
+      "pos": [
+        -724.3830097138574,
+        658.4727692014667
+      ],
+      "size": [
+        360,
+        320
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "导演台插件地址：",
+      "properties": {},
+      "widgets_values": [
+        "https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "pos": [
+        -677.5318640062727,
+        1021.9142453295678
+      ],
+      "size": [
+        300,
+        512
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Note: Size Settings Reference",
+      "properties": {},
+      "widgets_values": [
+        "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+      ],
+      "color": "#222",
+      "bgcolor": "#000"
+    },
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        -720,
+        80
+      ],
+      "size": [
+        360,
+        82
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "UNet名称",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "数据类型",
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "模型",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "title": "MiniMax H3 UNET",
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "models": [
+          {
+            "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+            "directory": "diffusion_models"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "SaveVideo",
+      "pos": [
+        1310.6007923489485,
+        347.11800275100524
+      ],
+      "size": [
+        619.371811810659,
+        106
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "视频",
+          "name": "video",
+          "type": "VIDEO",
+          "link": 9
+        },
+        {
+          "localized_name": "文件名前缀",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "格式",
+          "name": "format",
+          "type": "COMBO",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "编码器",
+          "name": "codec",
+          "type": "COMFY_DYNAMICCOMBO_V3",
+          "widget": {
+            "name": "codec"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "video",
+          "name": "video",
+          "type": "VIDEO",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/隔着一排书架-EP001-SC001",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+      "pos": [
+        117.72031944568445,
+        -136.638277683161
+      ],
+      "size": [
+        320.323828125,
+        26
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MiniMaxH3MemoryEfficientSageAttentionPatch"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 14,
+      "type": "PathchSageAttentionKJ",
+      "pos": [
+        -184.67949301200898,
+        -160.5821375474329
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 22
+        },
+        {
+          "localized_name": "sage_attention",
+          "name": "sage_attention",
+          "type": "COMBO",
+          "widget": {
+            "name": "sage_attention"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "allow_compile",
+          "name": "allow_compile",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "allow_compile"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "模型",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PathchSageAttentionKJ"
+      },
+      "widgets_values": [
+        "disabled",
+        false
+      ]
+    },
+    {
+      "id": 12,
+      "type": "MiniMaxH3Director",
+      "pos": [
+        -305.80147156628084,
+        103.10439081429395
+      ],
+      "size": [
+        1240.1726593472085,
+        1488
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 23
+        },
+        {
+          "localized_name": "video_vae",
+          "name": "video_vae",
+          "type": "VAE",
+          "link": 15
+        },
+        {
+          "localized_name": "audio_vae",
+          "name": "audio_vae",
+          "type": "VAE",
+          "link": 13
+        },
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 16
+        },
+        {
+          "localized_name": "task_type",
+          "name": "task_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "task_type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "global_prompt",
+          "name": "global_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "global_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bd_grp_sample",
+          "name": "bd_grp_sample",
+          "type": "BDGROUP",
+          "widget": {
+            "name": "bd_grp_sample"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "cfg",
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "frame_rate",
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "ref_max_size",
+          "name": "ref_max_size",
+          "type": "INT",
+          "widget": {
+            "name": "ref_max_size"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "total_frames",
+          "name": "total_frames",
+          "type": "INT",
+          "widget": {
+            "name": "total_frames"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "timeline_data",
+          "name": "timeline_data",
+          "type": "STRING",
+          "widget": {
+            "name": "timeline_data"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bd_grp_advanced",
+          "name": "bd_grp_advanced",
+          "shape": 7,
+          "type": "BDGROUP",
+          "widget": {
+            "name": "bd_grp_advanced"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "steps",
+          "name": "steps",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sampler",
+          "name": "sampler",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "scheduler",
+          "name": "scheduler",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "shift_video",
+          "name": "shift_video",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "shift_video"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "shift_audio",
+          "name": "shift_audio",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "shift_audio"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "bd_grp_perf",
+          "name": "bd_grp_perf",
+          "shape": 7,
+          "type": "BDGROUP",
+          "widget": {
+            "name": "bd_grp_perf"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "clear_vram_between_segments",
+          "name": "clear_vram_between_segments",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "clear_vram_between_segments"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "export_source_images",
+          "name": "export_source_images",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "export_source_images"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": [
+            17
+          ]
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 6,
+          "type": "AUDIO",
+          "links": [
+            18
+          ]
+        },
+        {
+          "localized_name": "fps",
+          "name": "fps",
+          "type": "FLOAT",
+          "links": [
+            19
+          ]
+        },
+        {
+          "localized_name": "frame_count",
+          "name": "frame_count",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "source_images",
+          "name": "source_images",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "localized_name": "report",
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MiniMaxH3Director"
+      },
+      "widgets_values": [
+        "fl2v — 首尾帧生视频(First-Last Frame)",
+        "真人实拍电影质感。当代广州，图书馆内部：木质书架之间的窄通道，架上满是暖黄色调的书，通道尽头窗户透进柔和暖调日光，暖棕色环境光，浅橡木地板，安静克制。人物（体型衣着全程严格一致）：林知夏，二十八九岁，清瘦，黑棕色长发高马尾配空气刘海，米白色绞花针织开衫内搭白衬衫系棕色短针织领带，棕色百褶裙，白袜深棕乐福鞋，棕色小挎包斜挎；周砚，三十岁上下，清瘦高个，黑色中长发狼尾微卷垂至颈侧，左耳一枚银色小吊坠耳环，深蓝西装外套内搭白衬衫系棕色针织领带，深蓝修身牛仔裤棕色皮靴，左腕棕色皮表带旧表。全程无字幕、无水印、无画内文字。",
+        "采样设置",
+        "1.0",
+        "42",
+        "fixed",
+        "24.0",
+        "1152",
+        "640",
+        "1152",
+        "1512",
+        "{\"version\": 5, \"editMode\": \"segment\", \"totalFrames\": 1512, \"frameRate\": 24.0, \"video\": {\"fileName\": \"\", \"videoFile\": \"\", \"subfolder\": \"\", \"type\": \"input\", \"frames\": [], \"frameMap\": [], \"deletedSourceRanges\": [], \"sourceFrameCount\": 0, \"width\": 1152, \"height\": 640, \"duration\": 0, \"nativeFps\": 24, \"nativeFrameCount\": 0, \"storageWidth\": 1152, \"storageHeight\": 640, \"id\": \"\"}, \"videoClips\": [], \"global\": {\"taskType\": \"r2v — 参考主体生视频(Reference to Video)\", \"prompt\": \"真人实拍电影质感。当代广州，图书馆内部：木质书架之间的窄通道，架上满是暖黄色调的书，通道尽头窗户透进柔和暖调日光，暖棕色环境光，浅橡木地板，安静克制。人物（体型衣着全程严格一致）：林知夏，二十八九岁，清瘦，黑棕色长发高马尾配空气刘海，米白色绞花针织开衫内搭白衬衫系棕色短针织领带，棕色百褶裙，白袜深棕乐福鞋，棕色小挎包斜挎；周砚，三十岁上下，清瘦高个，黑色中长发狼尾微卷垂至颈侧，左耳一枚银色小吊坠耳环，深蓝西装外套内搭白衬衫系棕色针织领带，深蓝修身牛仔裤棕色皮靴，左腕棕色皮表带旧表。全程无字幕、无水印、无画内文字。\", \"refs\": [], \"referenceVideo\": {\"videoFile\": \"\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, \"continuousReference\": false, \"genImage\": {\"imageFile\": \"\"}, \"sourceWidth\": 1152, \"sourceHeight\": 640, \"refAudios\": []}, \"output\": {\"mode\": \"fixed\", \"aspectRatio\": \"16:9 (宽屏)\", \"megapixels\": 0, \"multiple\": 32, \"longEdge\": 1152, \"width\": 1152, \"height\": 640, \"maxExportFrames\": 0, \"exportMode\": \"all\", \"audioMode\": \"source\", \"continuityEnabled\": false, \"continuityOverlapFrames\": 22}, \"runSelectEnabled\": false, \"runSelection\": [], \"segments\": [{\"id\": \"seg_001\", \"length\": 96, \"frameCount\": 96, \"durationSec\": 4.0, \"prompt\": \"画面中林知夏面向画右沿书架通道行走，边走边低头看摊开的书，马尾随步幅轻摆，视线始终不抬。\\n\\n无对白，无音乐。\\n真人实拍质感，中景侧跟，与人物同速平移，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S001.png\", \"fileName\": \"KEY-S001.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S001.png\", \"fileName\": \"KEY-S001.png\"}, \"start\": 0}, {\"id\": \"seg_002\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"书页大特写，她的指尖在那一行字下面轻轻划了一下又收住，指甲没有碰到纸面。\\n\\n无对白，无音乐。\\n真人实拍质感，大特写，浅景深，只有页与指尖是实的，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S002.png\", \"fileName\": \"KEY-S002.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S002.png\", \"fileName\": \"KEY-S002.png\"}, \"start\": 96}, {\"id\": \"seg_003\", \"length\": 48, \"frameCount\": 48, \"durationSec\": 2.0, \"prompt\": \"周砚侧身站定在书架缝隙间，薄薄的橘色封皮书捏在指间，他目光落在地面散开的书上，眨了一下眼。\\n\\n无对白，无音乐。\\n真人实拍质感，中景，正面机位，固定，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S003.png\", \"fileName\": \"KEY-S003.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S003.png\", \"fileName\": \"KEY-S003.png\"}, \"start\": 168}, {\"id\": \"seg_004\", \"length\": 48, \"frameCount\": 48, \"durationSec\": 2.0, \"prompt\": \"相撞的瞬间：林知夏低头看书撞上站定的周砚，她怀里最上面的那本书先离手弹开、在空中翻开着飘起，两人肩胄相触即分开、各自顿住；橘色书悬在两人之间。\\n\\n无对白，无音乐。\\n真人实拍质感，中近景，固定机位，两人同框，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S021.png\", \"fileName\": \"KEY-S021.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S021.png\", \"fileName\": \"KEY-S021.png\"}, \"start\": 216}, {\"id\": \"seg_005\", \"length\": 96, \"frameCount\": 96, \"durationSec\": 4.0, \"prompt\": \"承接上一镜的相撞：林知夏前倾失衡正在站稳，她怀里一本橘色的书脱手滑出、在空中翻开着落，落到两人之间的木地板上弹了一下；周砚侧身撑住没有移动；两人保持一臂距离错愕对视，谁都没有碰到对方。\\n\\n无对白，无音乐。\\n真人实拍质感，中近景，手持轻微晃动，固定机位，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S004.png\", \"fileName\": \"KEY-S004.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S004.png\", \"fileName\": \"KEY-S004.png\"}, \"start\": 264}, {\"id\": \"seg_006\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"地面上那本橘色的书摊开着，风把书页翻过去又翻回来，停在中间。\\n\\n无对白，无音乐。\\n真人实拍质感，俯拍大特写，只有书页在动，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S005.png\", \"fileName\": \"KEY-S005.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S005.png\", \"fileName\": \"KEY-S005.png\"}, \"start\": 360}, {\"id\": \"seg_007\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"林知夏保持蹲姿，伸手把散开的书往一起拢，语速很快，头也不抬，发尾扫到地面，台词逐字为：「对不起对不起。」口型与台词逐字精准对齐，表情【歉意、急切】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，中近景，低机位略仰，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S006.png\", \"fileName\": \"KEY-S006.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-006-lin.wav\"}, {\"audioFile\": \"ref_温柔贤淑小姐.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S006.png\", \"fileName\": \"KEY-S006.png\"}, \"start\": 432}, {\"id\": \"seg_008\", \"length\": 48, \"frameCount\": 48, \"durationSec\": 2.0, \"prompt\": \"越过林知夏虚化的肩拍周砚：他保持蹲姿，把书放在膝上，说了一句很轻的话，视线落在散开的书上，台词逐字为：「没事。」口型与台词逐字精准对齐，表情【平静、很轻】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，中近景，反打过肩，低机位，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S007.png\", \"fileName\": \"KEY-S007.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-007-zhou.wav\"}, {\"audioFile\": \"ref_男-帅气单纯 冷峻淡漠.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S007.png\", \"fileName\": \"KEY-S007.png\"}, \"start\": 504}, {\"id\": \"seg_009\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"一只戴着棕色皮表带旧表的手从画面右侧伸进来，替她把最上面那本书压住，手背皮肤干净无纹身。\\n\\n无对白，无音乐。\\n真人实拍质感，特写，焦点在表带与指尖，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S008.png\", \"fileName\": \"KEY-S008.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S008.png\", \"fileName\": \"KEY-S008.png\"}, \"start\": 552}, {\"id\": \"seg_010\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"周砚的手捏住橘色书脊把书从地面拎起来，书脊转向镜头，他翻过来看了看封面，又抬眼看了一下她。\\n\\n无对白，无音乐。\\n真人实拍质感，特写起，跟他的手与脸，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S009.png\", \"fileName\": \"KEY-S009.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S009.png\", \"fileName\": \"KEY-S009.png\"}, \"start\": 624}, {\"id\": \"seg_011\", \"length\": 48, \"frameCount\": 48, \"durationSec\": 2.0, \"prompt\": \"她站起身抬眼，视线落上他的脸，看见他右眼角下面那颗小痣，瞑孔轻轻一收，愣在原地。\\n\\n无对白，无音乐。\\n真人实拍质感，近景，正面略仰，她的视线变化是主体，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S022.png\", \"fileName\": \"KEY-S022.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S022.png\", \"fileName\": \"KEY-S022.png\"}, \"start\": 696}, {\"id\": \"seg_012\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"林知夏在画面左、周砚在画面右，两人保持面对面半步距离站立，她抬起眼看他，他看着她，呼吸起伏，谁都没先开口。\\n\\n无对白，无音乐。\\n真人实拍质感，中景，侧面机位，两人同框各占一半，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S010.png\", \"fileName\": \"KEY-S010.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S010.png\", \"fileName\": \"KEY-S010.png\"}, \"start\": 744}, {\"id\": \"seg_013\", \"length\": 96, \"frameCount\": 96, \"durationSec\": 4.0, \"prompt\": \"两人面对面看着对方，几乎同一拍开口说出同一句，说完都没有接下一句，谁也没笑出来，台词逐字为：「怎么，是你。」口型与台词逐字精准对齐，表情【错愕、认出】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2>、<Audio 3> 保持一致，两位角色同声齐说这一句。除台词外只有四楼很安静，无音乐。\\n真人实拍质感，双人近景，正打，两人各占画面一半，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S011.png\", \"fileName\": \"KEY-S011.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-011-lin.wav\"}, {\"audioFile\": \"ref_男-帅气单纯 冷峻淡漠.wav\"}, {\"audioFile\": \"ref_温柔贤淑小姐.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S011.png\", \"fileName\": \"KEY-S011.png\"}, \"start\": 816}, {\"id\": \"seg_014\", \"length\": 96, \"frameCount\": 96, \"durationSec\": 4.0, \"prompt\": \"四楼很安静，通道深处两个小小的人影保持半步距离站着，自助借还机的屏幕亮着，远处一个小孩拖着椅子走过。\\n\\n无对白，无音乐。\\n真人实拍质感，大远景，固定机位，浅景深，画面克制，无字幕。\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S012.png\", \"fileName\": \"KEY-S012.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S012.png\", \"fileName\": \"KEY-S012.png\"}, \"start\": 912}, {\"id\": \"seg_015\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"越过周砚虚化的后脑拍林知夏：她抬眼，先笑了一下又收住，开口问，视线落向他手里那本书，台词逐字为：「你也来借书。」口型与台词逐字精准对齐，表情【先笑、试图打破沉默】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，中近景，过肩，前景他的后脑在画左，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S013.png\", \"fileName\": \"KEY-S013.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-013-lin.wav\"}, {\"audioFile\": \"ref_温柔贤淑小姐.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S013.png\", \"fileName\": \"KEY-S013.png\"}, \"start\": 1008}, {\"id\": \"seg_016\", \"length\": 48, \"frameCount\": 48, \"durationSec\": 2.0, \"prompt\": \"越过林知夏虚化的肩拍周砚：他把手里那本橘色的书抬到腰高抬了抬，视线还在她脸上，台词逐字为：「来还书。」口型与台词逐字精准对齐，表情【平静】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，中近景，反打过肩，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S014.png\", \"fileName\": \"KEY-S014.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-014-zhou.wav\"}, {\"audioFile\": \"ref_男-帅气单纯 冷峻淡漠.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S014.png\", \"fileName\": \"KEY-S014.png\"}, \"start\": 1080}, {\"id\": \"seg_017\", \"length\": 48, \"frameCount\": 48, \"durationSec\": 2.0, \"prompt\": \"林知夏的视线从书脊抬到他脸上，嘴唇轻轻动了一下，台词逐字为：「哦。」口型与台词逐字精准对齐，表情【意外的轻应】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，近景，浅景深，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S015.png\", \"fileName\": \"KEY-S015.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-015-lin.wav\"}, {\"audioFile\": \"ref_温柔贤淑小姐.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S015.png\", \"fileName\": \"KEY-S015.png\"}, \"start\": 1128}, {\"id\": \"seg_018\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"越过林知夏的肩拍周砚：他开口问，说完视线往旁边让了半寸，不再正面看她，台词逐字为：「你还在广州。」口型与台词逐字精准对齐，表情【试探】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，近景，过肩，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S016.png\", \"fileName\": \"KEY-S016.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-016-zhou.wav\"}, {\"audioFile\": \"ref_男-帅气单纯 冷峻淡漠.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S016.png\", \"fileName\": \"KEY-S016.png\"}, \"start\": 1176}, {\"id\": \"seg_019\", \"length\": 96, \"frameCount\": 96, \"durationSec\": 4.0, \"prompt\": \"林知夏回答，声音不大，语气没有起伏，说完抿了一下嘴，视线不躲，台词逐字为：「我一直都在。」口型与台词逐字精准对齐，表情【平静、笃定】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，近景，正打，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S017.png\", \"fileName\": \"KEY-S017.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-017-lin.wav\"}, {\"audioFile\": \"ref_温柔贤淑小姐.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S017.png\", \"fileName\": \"KEY-S017.png\"}, \"start\": 1248}, {\"id\": \"seg_020\", \"length\": 72, \"frameCount\": 72, \"durationSec\": 3.0, \"prompt\": \"越过周砚虚化的后脑拍林知夏：她把怀里的书往上收了收，抬眼反问，视线从他脸上滑到旁边书架，台词逐字为：「你呢。你不是在云南。」口型与台词逐字精准对齐，表情【追问】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，中近景，过肩，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S018.png\", \"fileName\": \"KEY-S018.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-018-lin.wav\"}, {\"audioFile\": \"ref_温柔贤淑小姐.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S018.png\", \"fileName\": \"KEY-S018.png\"}, \"start\": 1344}, {\"id\": \"seg_021\", \"length\": 48, \"frameCount\": 48, \"durationSec\": 2.0, \"prompt\": \"周砚回答，下巴微收，喉结动了一下，仍看着她，台词逐字为：「回来两个月了。」口型与台词逐字精准对齐，表情【平淡】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，近景，反打，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S019.png\", \"fileName\": \"KEY-S019.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-019-zhou.wav\"}, {\"audioFile\": \"ref_男-帅气单纯 冷峻淡漠.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S019.png\", \"fileName\": \"KEY-S019.png\"}, \"start\": 1416}, {\"id\": \"seg_022\", \"length\": 48, \"frameCount\": 48, \"durationSec\": 2.0, \"prompt\": \"林知夏微微偏头接着问，眉毛抬了一下等回答，台词逐字为：「回来办事？」口型与台词逐字精准对齐，表情【继续追问】。\\n\\n台词逐字复制 <Audio 1>：语速、停顿、重音完全一致，不得改写、不得增删字。音色与 <Audio 2> 完全一致，就是这一位角色的嗓音。除台词外只有安静的图书馆环境声，无音乐。\\n真人实拍质感，中近景，四分之三侧脸，浅景深，画面克制，无字幕。\\nAudio: fully_copy\", \"negativePrompt\": \"文字, 字幕, 水印, 遮挡, 格子, 分屏, 多宫格, 海报排版, 多余人物, 现代物品, 卡通, 动画感, 模糊, 重影, 变形手指, 裁切脚部, 血, 血迹, 伤口, 纹身, tattoo\", \"taskType\": \"fl2v — 首尾帧生视频(First-Last Frame)\", \"refs\": [{\"index\": 0, \"imageFile\": \"KEY-S020.png\", \"fileName\": \"KEY-S020.png\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"TTS2-020-lin.wav\"}, {\"audioFile\": \"ref_温柔贤淑小姐.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"KEY-S020.png\", \"fileName\": \"KEY-S020.png\"}, \"start\": 1464}], \"timelineMode\": \"prompt_batch\", \"width\": 1152, \"height\": 640, \"refMaxSize\": 1152, \"gen\": {}, \"keyframes\": [], \"shots\": [], \"durationSec\": 63.0}",
+        "高级采样 Advanced",
+        "12",
+        "res_multistep",
+        "simple",
+        "12.0",
+        "3.0",
+        "性能 Performance"
+      ],
+      "title": "MiniMax H3 Director · EP001 第一章 martial-arts 武指分镜（12step/cfg1.5/1152x640/source）"
+    },
+    {
+      "id": 16,
+      "type": "MarkdownNote",
+      "pos": [
+        959,
+        830
+      ],
+      "size": [
+        760,
+        460
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "唱歌对口型 · 使用说明",
+      "properties": {},
+      "widgets_values": [
+        "# 通用-02 对白原声（r2v / 4 步 / TTS 直出）\n\n**定位**：有台词的镜头。音轨 100% 来自你上传的 TTS 音频，不经过模型生成，因此**不会出现 4 步对白崩坏**。\n\n## 原理\n`audioMode = source` + prompt 结尾 `Audio: fully_copy`\n→ 输出音轨 = 参考音频原样 mux；参考音频同时作为条件驱动口型。\n\n## 怎么用\n1. 用 IndexTTS2 等工具按台词生成一条 wav，放到 `ComfyUI/input/`\n2. 时间线上传 `<Picture 1>` 身份板，音频槽挂这条 wav（`<Audio 1>`）\n3. prompt 里台词必须与音频**逐字一致**，否则口型错位\n4. 段落时长要 ≥ 音频时长；不够就把段拉长（length 按 17 的倍数加）\n\n## 参数\n4 步 / cfg 1.0 / res_multistep+simple / 1152×640 / turbo 4step LoRA\n要更高画质：把步数改 25、分辨率改 1344×768，并卸掉 LoRA（声音模式不用变）。\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 17,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        -720,
+        -110
+      ],
+      "size": [
+        360,
+        82
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            24
+          ]
+        }
+      ],
+      "title": "Turbo 4step LoRA (ref2v)",
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors",
+        0.0
+      ]
+    },
+    {
+      "id": 18,
+      "type": "Note",
+      "pos": [
+        -620,
+        60
+      ],
+      "size": [
+        560,
+        420
+      ],
+      "flags": {},
+      "order": 99,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "【隔着一排书架 EP001-SC001 · 22 段 fl2v】\n\n本工作流口径 = 逐段补跑.py 实际跑的那套参数：\n  task_type      fl2v 首尾帧\n  steps          12（4 步 turbo LoRA 已关到 0）\n  sampler        euler / simple\n  shift          视频 3.0 / 音频 3.0\n  cfg            1.0\n  分辨率         1152x640 @24fps\n  段数/总帧      22 段 / 1512 帧 / 63.0s\n\n段首帧全部锚在 ComfyUI/input/KEY-S001~S022.png（已换脸、已验收）。\n每段挂载：refs[0]=该镜 KEY 图；refAudios=[TTS2 台词, 角色音色参考]。\n\n⚠ 两个必须知道的点：\n1. 一次排队会把 22 段全部跑完（约 90 分钟，段缓存逐段落盘，中断可续）。\n   只想跑某几段 → 用右下角「运行选择」勾选对应段。\n2. 段 mp4 音轨是静音的（fl2v 不支持音频驱动），口型是模型自由演的。\n   要声画对得上，必须再跑 H3-LatentSync-口型对齐-单段.json。\n\n合成：python 合成样片v6.py（按时间线裁剪 + 优先取 seg_sync 版）"
+      ]
+    }
+  ],
+  "links": [
+    [
+      9,
+      6,
+      0,
+      7,
+      0,
+      "VIDEO"
+    ],
+    [
+      13,
+      4,
+      0,
+      12,
+      2,
+      "VAE"
+    ],
+    [
+      15,
+      3,
+      0,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      16,
+      2,
+      0,
+      12,
+      3,
+      "CLIP"
+    ],
+    [
+      17,
+      12,
+      0,
+      6,
+      0,
+      "IMAGE"
+    ],
+    [
+      18,
+      12,
+      1,
+      6,
+      1,
+      "AUDIO"
+    ],
+    [
+      19,
+      12,
+      2,
+      6,
+      2,
+      "FLOAT"
+    ],
+    [
+      20,
+      12,
+      5,
+      8,
+      0,
+      "STRING"
+    ],
+    [
+      21,
+      14,
+      0,
+      15,
+      0,
+      "MODEL"
+    ],
+    [
+      22,
+      1,
+      0,
+      17,
+      0,
+      "MODEL"
+    ],
+    [
+      23,
+      15,
+      0,
+      12,
+      0,
+      "MODEL"
+    ],
+    [
+      24,
+      17,
+      0,
+      14,
+      0,
+      "MODEL"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "模型加载 (MiniMax H3)",
+      "bounding": [
+        -760,
+        40,
+        440,
+        560
+      ],
+      "color": "#3f789e",
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "MiniMax H3 Director（唱歌对口型）",
+      "bounding": [
+        -320,
+        40,
+        1120,
+        960
+      ],
+      "color": "#8A8",
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "输出",
+      "bounding": [
+        959.7884550354713,
+        38.736816353831586,
+        760,
+        760
+      ],
+      "color": "#b58",
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "加速模块（用就开启，不用可以关掉）",
+      "bounding": [
+        -232.17580618807037,
+        -257.8403935307404,
+        696.8626780790273,
+        222.74509026022088
+      ],
+      "color": "#3f789e",
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "frontendVersion": "1.23.0",
+    "note": "MiniMax H3 Director · r2v 唱歌对口型（派生自 加速版_清理版，原文件未改动）",
+    "ds": {
+      "scale": 0.6386175807663602,
+      "offset": [
+        2349.045293492695,
+        575.9188749760433
+      ]
+    }
+  },
+  "version": 0.4
+}

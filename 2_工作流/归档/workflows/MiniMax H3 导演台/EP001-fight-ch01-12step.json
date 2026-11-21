@@ -1,0 +1,1077 @@
+{
+ "id": "e1008825-bd40-4626-b132-596f08761abc",
+ "revision": 0,
+ "last_node_id": 17,
+ "last_link_id": 24,
+ "nodes": [
+  {
+   "id": 2,
+   "type": "CLIPLoader",
+   "pos": [
+    -720,
+    220
+   ],
+   "size": [
+    360,
+    106
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "CLIP名称",
+     "name": "clip_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "clip_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "类型",
+     "name": "type",
+     "type": "COMBO",
+     "widget": {
+      "name": "type"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "设备",
+     "name": "device",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "device"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "CLIP",
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      16
+     ]
+    }
+   ],
+   "title": "CLIP (minimax / Qwen3-VL)",
+   "properties": {
+    "Node name for S&R": "CLIPLoader",
+    "models": [
+     {
+      "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "directory": "text_encoders"
+     }
+    ]
+   },
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAELoader",
+   "pos": [
+    -720,
+    380
+   ],
+   "size": [
+    360,
+    58
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "vae名称",
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VAE",
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      15
+     ]
+    }
+   ],
+   "title": "Video VAE",
+   "properties": {
+    "Node name for S&R": "VAELoader",
+    "models": [
+     {
+      "name": "minimax_h3_video_vae_fp16.safetensors",
+      "directory": "vae"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "pos": [
+    -720,
+    500
+   ],
+   "size": [
+    360,
+    58
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "vae名称",
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VAE",
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      13
+     ]
+    }
+   ],
+   "title": "Audio VAE",
+   "properties": {
+    "Node name for S&R": "VAELoader",
+    "models": [
+     {
+      "name": "minimax_h3_audio_vae_fp32.safetensors",
+      "directory": "vae"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ]
+  },
+  {
+   "id": 8,
+   "type": "PreviewAny",
+   "pos": [
+    1006.1195126617181,
+    90.46763850287226
+   ],
+   "size": [
+    640,
+    200
+   ],
+   "flags": {},
+   "order": 10,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "源",
+     "name": "source",
+     "type": "*",
+     "link": 20
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "字符串",
+     "name": "STRING",
+     "type": "STRING",
+     "links": null
+    }
+   ],
+   "title": "Director 运行报告",
+   "properties": {
+    "Node name for S&R": "PreviewAny"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 6,
+   "type": "CreateVideo",
+   "pos": [
+    1006.6064265507966,
+    342.40096040896543
+   ],
+   "size": [
+    280,
+    120
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "图像",
+     "name": "images",
+     "type": "IMAGE",
+     "link": 17
+    },
+    {
+     "localized_name": "音频",
+     "name": "audio",
+     "shape": 7,
+     "type": "AUDIO",
+     "link": 18
+    },
+    {
+     "localized_name": "帧率",
+     "name": "fps",
+     "type": "FLOAT",
+     "widget": {
+      "name": "fps"
+     },
+     "link": 19
+    },
+    {
+     "localized_name": "bit_depth",
+     "name": "bit_depth",
+     "shape": 7,
+     "type": "INT",
+     "widget": {
+      "name": "bit_depth"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "视频",
+     "name": "VIDEO",
+     "type": "VIDEO",
+     "links": [
+      9
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CreateVideo"
+   },
+   "widgets_values": [
+    24,
+    8
+   ]
+  },
+  {
+   "id": 11,
+   "type": "MarkdownNote",
+   "pos": [
+    -724.3830097138574,
+    658.4727692014667
+   ],
+   "size": [
+    360,
+    320
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "导演台插件地址：",
+   "properties": {},
+   "widgets_values": [
+    "https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director"
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  },
+  {
+   "id": 13,
+   "type": "MarkdownNote",
+   "pos": [
+    -677.5318640062727,
+    1021.9142453295678
+   ],
+   "size": [
+    300,
+    512
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "Note: Size Settings Reference",
+   "properties": {},
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "color": "#222",
+   "bgcolor": "#000"
+  },
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "pos": [
+    -720,
+    80
+   ],
+   "size": [
+    360,
+    82
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "UNet名称",
+     "name": "unet_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "unet_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "数据类型",
+     "name": "weight_dtype",
+     "type": "COMBO",
+     "widget": {
+      "name": "weight_dtype"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "模型",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      22
+     ]
+    }
+   ],
+   "title": "MiniMax H3 UNET",
+   "properties": {
+    "Node name for S&R": "UNETLoader",
+    "models": [
+     {
+      "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "directory": "diffusion_models"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "default"
+   ]
+  },
+  {
+   "id": 7,
+   "type": "SaveVideo",
+   "pos": [
+    1310.6007923489485,
+    347.11800275100524
+   ],
+   "size": [
+    619.371811810659,
+    106
+   ],
+   "flags": {},
+   "order": 11,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "视频",
+     "name": "video",
+     "type": "VIDEO",
+     "link": 9
+    },
+    {
+     "localized_name": "文件名前缀",
+     "name": "filename_prefix",
+     "type": "STRING",
+     "widget": {
+      "name": "filename_prefix"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "格式",
+     "name": "format",
+     "type": "COMBO",
+     "widget": {
+      "name": "format"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "编码器",
+     "name": "codec",
+     "type": "COMFY_DYNAMICCOMBO_V3",
+     "widget": {
+      "name": "codec"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "video",
+     "name": "video",
+     "type": "VIDEO",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SaveVideo"
+   },
+   "widgets_values": [
+    "video/EP001_v3",
+    "auto",
+    "auto"
+   ]
+  },
+  {
+   "id": 15,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "pos": [
+    117.72031944568445,
+    -136.638277683161
+   ],
+   "size": [
+    320.323828125,
+    26
+   ],
+   "flags": {},
+   "order": 7,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 21
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "links": [
+      23
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MiniMaxH3MemoryEfficientSageAttentionPatch"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 14,
+   "type": "PathchSageAttentionKJ",
+   "pos": [
+    -184.67949301200898,
+    -160.5821375474329
+   ],
+   "size": [
+    270,
+    82
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 22
+    },
+    {
+     "localized_name": "sage_attention",
+     "name": "sage_attention",
+     "type": "COMBO",
+     "widget": {
+      "name": "sage_attention"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "allow_compile",
+     "name": "allow_compile",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "allow_compile"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "模型",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      21
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "PathchSageAttentionKJ"
+   },
+   "widgets_values": [
+    "disabled",
+    false
+   ]
+  },
+  {
+   "id": 12,
+   "type": "MiniMaxH3Director",
+   "pos": [
+    -305.80147156628084,
+    103.10439081429395
+   ],
+   "size": [
+    1240.1726593472085,
+    1488
+   ],
+   "flags": {},
+   "order": 8,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 23
+    },
+    {
+     "localized_name": "video_vae",
+     "name": "video_vae",
+     "type": "VAE",
+     "link": 15
+    },
+    {
+     "localized_name": "audio_vae",
+     "name": "audio_vae",
+     "type": "VAE",
+     "link": 13
+    },
+    {
+     "localized_name": "clip",
+     "name": "clip",
+     "type": "CLIP",
+     "link": 16
+    },
+    {
+     "localized_name": "task_type",
+     "name": "task_type",
+     "type": "COMBO",
+     "widget": {
+      "name": "task_type"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "global_prompt",
+     "name": "global_prompt",
+     "type": "STRING",
+     "widget": {
+      "name": "global_prompt"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_sample",
+     "name": "bd_grp_sample",
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_sample"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "cfg",
+     "name": "cfg",
+     "type": "FLOAT",
+     "widget": {
+      "name": "cfg"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "seed",
+     "name": "seed",
+     "type": "INT",
+     "widget": {
+      "name": "seed"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "frame_rate",
+     "name": "frame_rate",
+     "type": "FLOAT",
+     "widget": {
+      "name": "frame_rate"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "width",
+     "name": "width",
+     "type": "INT",
+     "widget": {
+      "name": "width"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "height",
+     "name": "height",
+     "type": "INT",
+     "widget": {
+      "name": "height"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "ref_max_size",
+     "name": "ref_max_size",
+     "type": "INT",
+     "widget": {
+      "name": "ref_max_size"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "total_frames",
+     "name": "total_frames",
+     "type": "INT",
+     "widget": {
+      "name": "total_frames"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "timeline_data",
+     "name": "timeline_data",
+     "type": "STRING",
+     "widget": {
+      "name": "timeline_data"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_advanced",
+     "name": "bd_grp_advanced",
+     "shape": 7,
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_advanced"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "steps",
+     "name": "steps",
+     "shape": 7,
+     "type": "INT",
+     "widget": {
+      "name": "steps"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "sampler",
+     "name": "sampler",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "sampler"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "scheduler",
+     "name": "scheduler",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "scheduler"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "shift_video",
+     "name": "shift_video",
+     "shape": 7,
+     "type": "FLOAT",
+     "widget": {
+      "name": "shift_video"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "shift_audio",
+     "name": "shift_audio",
+     "shape": 7,
+     "type": "FLOAT",
+     "widget": {
+      "name": "shift_audio"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_perf",
+     "name": "bd_grp_perf",
+     "shape": 7,
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_perf"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "clear_vram_between_segments",
+     "name": "clear_vram_between_segments",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "clear_vram_between_segments"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "export_source_images",
+     "name": "export_source_images",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "export_source_images"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "images",
+     "name": "images",
+     "shape": 6,
+     "type": "IMAGE",
+     "links": [
+      17
+     ]
+    },
+    {
+     "localized_name": "audio",
+     "name": "audio",
+     "shape": 6,
+     "type": "AUDIO",
+     "links": [
+      18
+     ]
+    },
+    {
+     "localized_name": "fps",
+     "name": "fps",
+     "type": "FLOAT",
+     "links": [
+      19
+     ]
+    },
+    {
+     "localized_name": "frame_count",
+     "name": "frame_count",
+     "type": "INT",
+     "links": null
+    },
+    {
+     "localized_name": "source_images",
+     "name": "source_images",
+     "shape": 6,
+     "type": "IMAGE",
+     "links": null
+    },
+    {
+     "localized_name": "report",
+     "name": "report",
+     "type": "STRING",
+     "links": [
+      20
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MiniMaxH3Director"
+   },
+   "widgets_values": [
+    "r2v — 参考主体生视频(Reference to Video)",
+    "",
+    "采样设置",
+    1.5,
+    42,
+    "fixed",
+    24.0,
+    1152,
+    640,
+    1152,
+    4590,
+    "{\"version\": 5, \"editMode\": \"segment\", \"totalFrames\": 1598, \"frameRate\": 24, \"video\": {\"fileName\": \"\", \"videoFile\": \"\", \"subfolder\": \"\", \"type\": \"input\", \"frames\": [], \"frameMap\": [], \"deletedSourceRanges\": [], \"sourceFrameCount\": 0, \"width\": 960, \"height\": 544, \"duration\": 0, \"nativeFps\": 24, \"nativeFrameCount\": 0, \"storageWidth\": 960, \"storageHeight\": 544, \"id\": \"\"}, \"videoClips\": [], \"global\": {\"taskType\": \"r2v — 参考主体生视频(Reference to Video)\", \"prompt\": \"\", \"refs\": [], \"referenceVideo\": {\"videoFile\": \"\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, \"continuousReference\": false, \"genImage\": {\"imageFile\": \"\"}, \"sourceWidth\": 960, \"sourceHeight\": 544, \"refAudios\": []}, \"output\": {\"mode\": \"fixed\", \"aspectRatio\": \"16:9 (宽屏)\", \"megapixels\": 0, \"multiple\": 32, \"longEdge\": 1152, \"width\": 1152, \"height\": 640, \"maxExportFrames\": 0, \"exportMode\": \"segments\", \"audioMode\": \"source\", \"continuityEnabled\": true, \"continuityOverlapFrames\": 22}, \"runSelectEnabled\": false, \"runSelection\": [], \"segments\": [{\"id\": \"seg_motion001\", \"start\": 0, \"length\": 204, \"frameCount\": 204, \"durationSec\": 8.5, \"prompt\": \"真人实拍质感，黄昏低色温，夹竹山道纵深大远景。六人一行沿山道向南缓行，令狐冲在画面中央，右手不时摸向背后的灰布剑卷，岳灵珊走在他右前侧回身说话。缓推镜头，终点停在令狐冲背后的灰布剑卷上。竹叶缝漏下的碎光在地面成断段，溪水声清亮，银镯轻响。Audio: fully_copy\", \"negativePrompt\": \"\", \"taskType\": \"\", \"refs\": [{\"index\": 1, \"imageFile\": \"EP001/SHOT-001·六人入山道.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 2, \"imageFile\": \"EP001/IMG-008·夹竹山道场景板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 3, \"imageFile\": \"EP001/IMG-001·令狐冲身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 4, \"imageFile\": \"EP001/IMG-005·岳灵珊身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 5, \"imageFile\": \"EP001/IMG-012·令狐冲的长剑道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"EP001/fight/seg_001.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_motion002\", \"start\": 204, \"length\": 170, \"frameCount\": 170, \"durationSec\": 7.083, \"prompt\": \"令狐冲与向问天面对面：令狐冲在画面左侧，向问天在画面右侧，相距二十步。向问天戴斗笠、黑纱遮面，只露双眼，立在路当中纹丝不动；六人无一人听见他何时到。急推镜头自他横在身前的刀身掠过，终点停在刀身靠柄三寸的小刻记号上。溪水声反常放大，风翻落叶半尺。Audio: fully_copy\", \"negativePrompt\": \"\", \"taskType\": \"\", \"refs\": [{\"index\": 1, \"imageFile\": \"EP001/SHOT-004·路当中的人.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 2, \"imageFile\": \"EP001/IMG-003·向问天身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 3, \"imageFile\": \"EP001/IMG-008·夹竹山道场景板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 4, \"imageFile\": \"EP001/IMG-013·向问天的长刀道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"EP001/fight/seg_002.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_motion003\", \"start\": 374, \"length\": 170, \"frameCount\": 170, \"durationSec\": 7.083, \"prompt\": \"向问天在画面中央，华山六人散开在画面左侧。向问天斗笠黑纱遮面，出鞘无声，报完刀名刀才动：刀横身前，刀尖朝下。低机位仰拍刀身出鞘的一道白光，终点停在刀横身前。暮色里刀身白得发青。Audio: fully_copy\", \"negativePrompt\": \"\", \"taskType\": \"\", \"refs\": [{\"index\": 1, \"imageFile\": \"EP001/SHOT-007·立规矩.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 2, \"imageFile\": \"EP001/IMG-003·向问天身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 3, \"imageFile\": \"EP001/IMG-008·夹竹山道场景板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 4, \"imageFile\": \"EP001/IMG-013·向问天的长刀道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"EP001/fight/seg_003.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_motion004\", \"start\": 544, \"length\": 204, \"frameCount\": 204, \"durationSec\": 8.5, \"prompt\": \"华山众人在画面左侧、向问天在画面右侧，双方面对面。六柄剑在众人胸前交成六角结阵；与此同时向问天一刀横切向剑阵交点，施戴子与高根明的两剑齐沉半尺。攻守在同一拍成立。跟刀横移，终点停在两剑下沉处。金铁闷响，竹叶震落。Audio: fully_copy\", \"negativePrompt\": \"\", \"taskType\": \"\", \"refs\": [{\"index\": 1, \"imageFile\": \"EP001/SHOT-008·断流.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 2, \"imageFile\": \"EP001/IMG-007·华山四弟子群像.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 3, \"imageFile\": \"EP001/IMG-001·令狐冲身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 4, \"imageFile\": \"EP001/IMG-003·向问天身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 5, \"imageFile\": \"EP001/IMG-012·令狐冲的长剑道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 6, \"imageFile\": \"EP001/IMG-013·向问天的长刀道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"EP001/fight/seg_004.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_motion005\", \"start\": 748, \"length\": 170, \"frameCount\": 170, \"durationSec\": 7.083, \"prompt\": \"陶钧在画面左侧横剑封住下三路，向问天在画面右侧反手一刀上撩；刀锋挑在剑身最薄处，长剑脱手斜飞出去，钉进坡上竹竿三寸。攻守同一时刻发生。仰拍跟剑的飞行轨迹，终点停在弯下的竹竿抖动。竹竿弯腰抖动不断。Audio: fully_copy\", \"negativePrompt\": \"\", \"taskType\": \"\", \"refs\": [{\"index\": 1, \"imageFile\": \"EP001/SHOT-009·裂帛.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 2, \"imageFile\": \"EP001/IMG-007·华山四弟子群像.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 3, \"imageFile\": \"EP001/IMG-012·令狐冲的长剑道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 4, \"imageFile\": \"EP001/IMG-013·向问天的长刀道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 5, \"imageFile\": \"EP001/IMG-015·断竹与竹坡.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"EP001/fight/seg_005.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_motion006\", \"start\": 918, \"length\": 153, \"frameCount\": 153, \"durationSec\": 6.375, \"prompt\": \"陆大有在画面左侧退半步，向问天在画面右侧刀背横扫他膝弯；退完那步人只能单膝跪地。特写刀背贴上膝弯，再拉出到单膝跪地。土石硌膝，尘起一线。Audio: fully_copy\", \"negativePrompt\": \"\", \"taskType\": \"\", \"refs\": [{\"index\": 1, \"imageFile\": \"EP001/SHOT-010·锁江.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 2, \"imageFile\": \"EP001/IMG-006·陆大有身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 3, \"imageFile\": \"EP001/IMG-003·向问天身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 4, \"imageFile\": \"EP001/IMG-013·向问天的长刀道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"EP001/fight/seg_006.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_motion007\", \"start\": 1071, \"length\": 289, \"frameCount\": 289, \"durationSec\": 12.042, \"prompt\": \"令狐冲与向问天面对面：令狐冲在画面左侧，向问天在画面右侧，相距六步。向问天斗笠黑纱遮面。令狐冲解下背上的灰布，布落地，露出华山制式长剑，靠柄处有一道旧痕。两人静止对切，只留缓推特写。风推落叶，溪声不停。Audio: fully_copy\", \"negativePrompt\": \"\", \"taskType\": \"\", \"refs\": [{\"index\": 1, \"imageFile\": \"EP001/SHOT-012·布落剑出.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 2, \"imageFile\": \"EP001/IMG-001·令狐冲身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 3, \"imageFile\": \"EP001/IMG-003·向问天身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 4, \"imageFile\": \"EP001/IMG-012·令狐冲的长剑道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"EP001/fight/seg_007.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_motion008\", \"start\": 1360, \"length\": 238, \"frameCount\": 238, \"durationSec\": 9.917, \"prompt\": \"令狐冲在画面左侧原地起势：右脚前掌点地，膝盖一弯矮三寸，上半身狠向后仰，脊背离地一掌，右腿高踢成圆弧，剑尖朝下戳进身后松土两寸吃实底，剑身弯成一瞬的弓，人剑一体横射出手。俯拍定格一瞬，再贴地跟弹射。土屑迸起。Audio: fully_copy\", \"negativePrompt\": \"\", \"taskType\": \"\", \"refs\": [{\"index\": 1, \"imageFile\": \"EP001/SHOT-014·荡剑式起.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 2, \"imageFile\": \"EP001/IMG-001·令狐冲身份板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 3, \"imageFile\": \"EP001/IMG-012·令狐冲的长剑道具板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, {\"index\": 4, \"imageFile\": \"EP001/IMG-008·夹竹山道场景板.png\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}], \"refAudios\": [{\"audioFile\": \"EP001/fight/seg_008.wav\"}], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}], \"timelineMode\": \"prompt_batch\", \"width\": 1152, \"height\": 640, \"refMaxSize\": 1152, \"gen\": {\"defaultFrameCount\": 124}, \"keyframes\": [], \"durationSec\": 66.583, \"shots\": []}",
+    "高级采样 Advanced",
+    12,
+    "res_multistep",
+    "simple",
+    12.0,
+    3.0,
+    "性能 Performance"
+   ],
+   "title": "MiniMax H3 Director · EP001 第一章 fight 分镜（12step/cfg1.5/1152x640/source）"
+  },
+  {
+   "id": 16,
+   "type": "MarkdownNote",
+   "pos": [
+    959,
+    830
+   ],
+   "size": [
+    760,
+    460
+   ],
+   "flags": {},
+   "order": 12,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "唱歌对口型 · 使用说明",
+   "properties": {},
+   "widgets_values": [
+    "## 唱歌对口型使用说明（r2v + 参考音频）\n\n1. 在 **MiniMax H3 Director** 节点的时间线上传 **正脸人物参考图**（建议短边 ≥ 768px，光线均匀）→ 提示词中用 `<Picture 1>` 引用。\n2. 上传 **歌曲音频** 作为参考音频（建议人声干声，混音请先分离人声）→ 提示词中用 `<Audio 1>` 引用。\n3. 参考音频经 Audio VAE(32kHz) 编码进 AV latent，**驱动画面口型与节律**（音画一次推理联合生成，无需额外对口型模型）。\n4. **声音输出模式**（导演台节点里切换）：\n   - `generate`（默认）＝ 模型跟随参考音频生成演唱声，可改词；\n   - `source`（用原声）＝ 直接输出参考音频原曲，口型仍对齐；此模式下歌词必须与音频一致，否则口型错位。\n5. **时长**：帧数须满足 5 + 17n（24fps），在时间线上拖动或改 total_frames 自动折算；单段上限约 150 秒。\n6. 分辨率：H3 原生短边 768px，最高 768×1344，宽高须为 32 的整数倍（参考下方 Size Settings 表）。\n7. 加速模块（SageAttention）默认保留，显存吃紧可在低显存场景关闭。\n\n参考文档：插件 docs/r2v-source-audio.md · 原工作流：minimax_h3_director_加速版_清理版.json（未改动）"
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  },
+  {
+   "id": 17,
+   "type": "LoraLoaderModelOnly",
+   "pos": [
+    -720,
+    -110
+   ],
+   "size": [
+    360,
+    82
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 22
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "MODEL",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      24
+     ]
+    }
+   ],
+   "title": "Turbo 4step LoRA (ref2v)",
+   "properties": {
+    "Node name for S&R": "LoraLoaderModelOnly"
+   },
+   "widgets_values": [
+    "minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors",
+    1.0
+   ]
+  }
+ ],
+ "links": [
+  [
+   9,
+   6,
+   0,
+   7,
+   0,
+   "VIDEO"
+  ],
+  [
+   13,
+   4,
+   0,
+   12,
+   2,
+   "VAE"
+  ],
+  [
+   15,
+   3,
+   0,
+   12,
+   1,
+   "VAE"
+  ],
+  [
+   16,
+   2,
+   0,
+   12,
+   3,
+   "CLIP"
+  ],
+  [
+   17,
+   12,
+   0,
+   6,
+   0,
+   "IMAGE"
+  ],
+  [
+   18,
+   12,
+   1,
+   6,
+   1,
+   "AUDIO"
+  ],
+  [
+   19,
+   12,
+   2,
+   6,
+   2,
+   "FLOAT"
+  ],
+  [
+   20,
+   12,
+   5,
+   8,
+   0,
+   "STRING"
+  ],
+  [
+   21,
+   14,
+   0,
+   15,
+   0,
+   "MODEL"
+  ],
+  [
+   22,
+   1,
+   0,
+   17,
+   0,
+   "MODEL"
+  ],
+  [
+   23,
+   15,
+   0,
+   12,
+   0,
+   "MODEL"
+  ],
+  [
+   24,
+   17,
+   0,
+   14,
+   0,
+   "MODEL"
+  ]
+ ],
+ "groups": [
+  {
+   "id": 1,
+   "title": "模型加载 (MiniMax H3)",
+   "bounding": [
+    -760,
+    40,
+    440,
+    560
+   ],
+   "color": "#3f789e",
+   "flags": {}
+  },
+  {
+   "id": 2,
+   "title": "MiniMax H3 Director（唱歌对口型）",
+   "bounding": [
+    -320,
+    40,
+    1120,
+    960
+   ],
+   "color": "#8A8",
+   "flags": {}
+  },
+  {
+   "id": 3,
+   "title": "输出",
+   "bounding": [
+    959.7884550354713,
+    38.736816353831586,
+    760,
+    760
+   ],
+   "color": "#b58",
+   "flags": {}
+  },
+  {
+   "id": 4,
+   "title": "加速模块（用就开启，不用可以关掉）",
+   "bounding": [
+    -232.17580618807037,
+    -257.8403935307404,
+    696.8626780790273,
+    222.74509026022088
+   ],
+   "color": "#3f789e",
+   "flags": {}
+  }
+ ],
+ "config": {},
+ "extra": {
+  "frontendVersion": "1.23.0",
+  "note": "MiniMax H3 Director · r2v 唱歌对口型（派生自 加速版_清理版，原文件未改动）",
+  "ds": {
+   "scale": 0.6386175807663602,
+   "offset": [
+    2349.045293492695,
+    575.9188749760433
+   ]
+  }
+ },
+ "version": 0.4
+}

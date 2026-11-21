@@ -1,0 +1,17 @@
+{
+  "_note": "逐镜出图材料。identity_block 逐字复制 drama 导出/asset-blocks.md 的 C 编号块；frozen_keyframe 取该镜 分镜.md 的 ### 冻结关键帧提示词（去掉 <Picture N>/REF-/顺序 等 H3 标签，只写这一瞬间看得见的）；style_sentence 全片同一句；constraints 全片同一份。不要把 视频提示词.md 的六段式或台词填进来。",
+  "style_sentence": "Clean cel-shaded anime comic frame; crisp outlines; flat color blocks; restrained hard-edge shadows; consistent school-corridor palette",
+  "constraints": "16:9 landscape; no speech bubbles, no subtitles, no text, no logo, no panel lines, no watermark; no extra persons; if two characters share the frame they face each other left and right, never side by side",
+  "edit1_instruction": "Preserve exactly the opening composition, subject placement and light direction of image_1. Lock the character identity, face shape, hairstyle and costume from image_2 (character sheet). Lock the space, depth and window order from image_3 (scene plate). Do not change camera angle or pose; add no motion, no text.",
+  "edit2_instruction": "Keep identity and composition from image_1. Match the outfit details and the two-person standing positions from image_2 (costume/position pair). No text, no speech bubbles, no extra persons.",
+  "shots": {
+    "S004": {
+      "identity_block": "C01 Jiang Chi: flat brow bones; short tousled black hair; white tee under an open light-grey school jacket",
+      "frozen_keyframe": "Over her blurred shoulder; Jiang Chi stands with his weight on his back foot; he glances toward the corridor window; third-floor corridor with terrazzo floor and steel-framed windows in sequence; medium shot, slightly low angle; only this instant, no motion result"
+    },
+    "S006": {
+      "identity_block": "C01 Jiang Chi: flat brow bones; short tousled black hair; white tee under an open light-grey school jacket",
+      "frozen_keyframe": "She steps past him in the foreground; his shoulder turns a few degrees to follow; the plastic bag swings once; no dialogue, lips closed; same third-floor corridor; only this instant"
+    }
+  }
+}

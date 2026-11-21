@@ -1,0 +1,73 @@
+MiniMax H3 导演台（ComfyUI_MiniMaxH3_Director）工作流包
+=====================================================
+
+来源：https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director
+插件位置：D:\ComfyUI-aki-v3.2\ComfyUI\custom_nodes\ComfyUI_MiniMaxH3_Director
+安装时间：2026-10-18
+
+本目录 9 个 JSON 均为仓库 example_workflows 原版，未做任何改动（已 MD5 校验一致）。
+模型文件请自行下载后放置，工作流内的引用名不要改。
+
+一、按需求选哪个
+-----------------------------------------------------
+多图 + 提示词 → 视频（主推）
+  minimax_h3_director_r2v.json
+  导演台里挂 1~9 张参考图（+ 可选 3 段视频、3 段音频），提示词用
+  <Picture 1> / <Video 1> / <Audio 1> 引用，输出带原生立体声。
+  需要 UNET：ref2va
+
+参考图组无限扩展（跑批、多组不同素材）
+  minimax_h3_director_external_groups_r2v.json
+  外接 Director Group (Reference to Video) × N → Groups Combine → r2v_groups
+
+文生视频 / 首尾帧 / 源视频编辑
+  t2v / fl2v / v2v / rv2v / external_groups_i2v
+
+带加速 / 二次采样
+  minimax_h3_director_加速版.json（8 步 Turbo LoRA）
+  minimax_h3_director_二采_加速.json（一采 + Refine 二采，模型要求最高）
+
+二、模型清单（按工作流原始引用名）
+-----------------------------------------------------
+已有（本地 models/ 内）：
+  text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors       15.7 GB   CLIP type 必须选 minimax
+  vae/minimax_h3_audio_vae_fp32.safetensors                         0.6 GB
+  loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors   2.0 GB
+
+需要下载：
+  vae/minimax_h3_video_vae_fp16.safetensors                          5.2 GB   9 套全部用到
+  diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors  21.0 GB  r2v / v2v / rv2v / 加速版
+  diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors   21.0 GB  t2v / fl2v / external_groups_i2v
+  loras/minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors    2.0 GB   加速版
+
+仅 minimax_h3_director_二采_加速.json 另需（HF 官方 Comfy-Org/MiniMax-H3 库中未见同名文件）：
+  diffusion_models/minimax_h3_ref2va_pruned_w4a8_mixed.safetensors
+  loras/minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors
+
+下载地址
+  Hugging Face：https://huggingface.co/Comfy-Org/MiniMax-H3/tree/main
+  ModelScope  ：https://modelscope.cn/models/Comfy-Org/MiniMax-H3
+  许可：MiniMax H3 社区许可对部分地区（美/欧/英/韩）有限制，需登录并同意条款。
+
+放盘建议
+  D 盘当前剩余约 13 GB，单是 ref2va 21 GB 就放不下。
+  可以放到其他盘，再用 ComfyUI 根目录 extra_model_paths.yaml 指过去，例如：
+    h3:
+      base_path: P:/ComfyUI-models
+      diffusion_models: diffusion_models
+      vae: vae
+      loras: loras
+
+三、首次使用
+-----------------------------------------------------
+1. 重启 ComfyUI（Manager → Restart，或重开绘世启动器），新节点才会注册；
+2. 左侧工作流列表打开本文件夹，先跑 r2v；
+3. 导演台里点「+图片」加参考图，填提示词，选时长 / 比例 / 像素规模，点运行。
+
+四、常见坑
+-----------------------------------------------------
+- 参考视频 / 音频单段 2~15 秒，视频总长、音频总长各不超过 15 秒（视频自带音轨也算音频）；
+- 音频不能作为唯一参考，必须同时有图片或视频；
+- H3 固定 24fps，帧数 = 时长 × 24，会按 17k+5 对齐；
+- 15 秒 + 0.5MP 实测要 1 小时以上，试参数先用 5 秒 + 0.2~0.3MP；
+- 显存吃紧把 CLIP 换成 nvfp4 版（已有）。

@@ -1,0 +1,12 @@
+# Python 运行产物
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# 本地安装的二进制依赖（318MB，重装方法见 6_剪辑/剪辑目录README.md）
+6_剪辑/tools/ffmpeg/
+6_剪辑/tools/drama-edit/scripts/__pycache__/
+
+# 系统杂项
+Thumbs.db
+desktop.ini

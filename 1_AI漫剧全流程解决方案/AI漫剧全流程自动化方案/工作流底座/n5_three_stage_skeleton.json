@@ -1,0 +1,31 @@
+{
+  "_note": "三阶段（Stage0 Qwen-Image 2512 T2I → Pass1/2 Qwen-Image 2511 编辑）骨架模板。本机无 2511/2512，此模板仅供有该模型的环境对照搭建：按真实 /object_info 补节点 ID 与连线后，用 --workflow-template 指向本文件。占位 {{PROMPT}}/{{SEED}}/{{FILENAME}}/{{IMAGE_1}}/{{IMAGE_2}}/{{IMAGE_3}}。image_1 永远是被编辑目标图，pass2 的 image_3 留空不重排。搭建完成前请勿用它实跑（validate_template 会检查输出节点）。",
+  "_single_stage": false,
+  "_output_node": "20",
+  "stage0": {
+    "_comment": "Stage0 纯 T2I：把 {{PROMPT}} 灌正向 CLIPTextEncode，KSampler seed={{SEED}}，SaveImage prefix={{FILENAME}}。节点结构照本机 2512 /object_info 补。",
+    "1": {"class_type": "UNETLoader", "inputs": {"unet_name": "<Qwen-Image-2512模型名>", "weight_dtype": "default"}},
+    "6": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+    "9": {"class_type": "KSampler", "inputs": {"seed": "{{SEED}}", "steps": 20, "cfg": 4, "sampler_name": "euler", "scheduler": "simple", "denoise": 1}},
+    "20": {"class_type": "SaveImage", "inputs": {"filename_prefix": "{{FILENAME}}", "images": ["19", 0]}}
+  },
+  "pass1": {
+    "_comment": "Pass1 编辑：image_1=底图 {{IMAGE_1}}，image_2=SHEET {{IMAGE_2}}，image_3=PLATE {{IMAGE_3}}。用 LoadImage 读占位路径，或 Qwen-Edit 的 image 输入。KSampler 参数 20/4.0/euler+simple/shift 3.0。",
+    "1": {"class_type": "UNETLoader", "inputs": {"unet_name": "<Qwen-Image-2511模型名>", "weight_dtype": "default"}},
+    "6": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+    "30": {"class_type": "LoadImage", "inputs": {"image": "{{IMAGE_1}}"}},
+    "31": {"class_type": "LoadImage", "inputs": {"image": "{{IMAGE_2}}"}},
+    "32": {"class_type": "LoadImage", "inputs": {"image": "{{IMAGE_3}}"}},
+    "9": {"class_type": "KSampler", "inputs": {"seed": "{{SEED}}", "steps": 20, "cfg": 4, "sampler_name": "euler", "scheduler": "simple", "denoise": 0.5}},
+    "20": {"class_type": "SaveImage", "inputs": {"filename_prefix": "{{FILENAME}}", "images": ["19", 0]}}
+  },
+  "pass2": {
+    "_comment": "Pass2 编辑：image_1=Pass1 输出 {{IMAGE_1}}，image_2=PAIR {{IMAGE_2}}，image_3 留空 {{IMAGE_3}}（绝不按镜重排）。输出即最终帧。",
+    "1": {"class_type": "UNETLoader", "inputs": {"unet_name": "<Qwen-Image-2511模型名>", "weight_dtype": "default"}},
+    "6": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+    "30": {"class_type": "LoadImage", "inputs": {"image": "{{IMAGE_1}}"}},
+    "31": {"class_type": "LoadImage", "inputs": {"image": "{{IMAGE_2}}"}},
+    "9": {"class_type": "KSampler", "inputs": {"seed": "{{SEED}}", "steps": 20, "cfg": 4, "sampler_name": "euler", "scheduler": "simple", "denoise": 0.5}},
+    "20": {"class_type": "SaveImage", "inputs": {"filename_prefix": "{{FILENAME}}", "images": ["19", 0]}}
+  }
+}

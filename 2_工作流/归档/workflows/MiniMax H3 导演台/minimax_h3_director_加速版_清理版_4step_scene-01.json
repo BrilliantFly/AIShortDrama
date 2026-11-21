@@ -1,0 +1,1082 @@
+{
+ "id": "0cc13c1f-8cfe-47b5-852c-c2e5524c4228",
+ "revision": 0,
+ "last_node_id": 17,
+ "last_link_id": 24,
+ "nodes": [
+  {
+   "id": 2,
+   "type": "CLIPLoader",
+   "pos": [
+    -720,
+    220
+   ],
+   "size": [
+    360,
+    106
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "CLIP名称",
+     "name": "clip_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "clip_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "类型",
+     "name": "type",
+     "type": "COMBO",
+     "widget": {
+      "name": "type"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "设备",
+     "name": "device",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "device"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "CLIP",
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      16
+     ]
+    }
+   ],
+   "title": "CLIP (minimax / Qwen3-VL)",
+   "properties": {
+    "Node name for S&R": "CLIPLoader",
+    "models": [
+     {
+      "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "directory": "text_encoders"
+     }
+    ]
+   },
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAELoader",
+   "pos": [
+    -720,
+    380
+   ],
+   "size": [
+    360,
+    58
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "vae名称",
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VAE",
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      15
+     ]
+    }
+   ],
+   "title": "Video VAE",
+   "properties": {
+    "Node name for S&R": "VAELoader",
+    "models": [
+     {
+      "name": "minimax_h3_video_vae_fp16.safetensors",
+      "directory": "vae"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "pos": [
+    -720,
+    500
+   ],
+   "size": [
+    360,
+    58
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "vae名称",
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VAE",
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      13
+     ]
+    }
+   ],
+   "title": "Audio VAE",
+   "properties": {
+    "Node name for S&R": "VAELoader",
+    "models": [
+     {
+      "name": "minimax_h3_audio_vae_fp32.safetensors",
+      "directory": "vae"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ]
+  },
+  {
+   "id": 8,
+   "type": "PreviewAny",
+   "pos": [
+    1006.1195126617181,
+    90.46763850287226
+   ],
+   "size": [
+    640,
+    200
+   ],
+   "flags": {},
+   "order": 10,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "源",
+     "name": "source",
+     "type": "*",
+     "link": 20
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "字符串",
+     "name": "STRING",
+     "type": "STRING",
+     "links": null
+    }
+   ],
+   "title": "Director 运行报告",
+   "properties": {
+    "Node name for S&R": "PreviewAny"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 6,
+   "type": "CreateVideo",
+   "pos": [
+    1006.6064265507966,
+    342.40096040896543
+   ],
+   "size": [
+    280,
+    120
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "图像",
+     "name": "images",
+     "type": "IMAGE",
+     "link": 17
+    },
+    {
+     "localized_name": "音频",
+     "name": "audio",
+     "shape": 7,
+     "type": "AUDIO",
+     "link": 18
+    },
+    {
+     "localized_name": "帧率",
+     "name": "fps",
+     "type": "FLOAT",
+     "widget": {
+      "name": "fps"
+     },
+     "link": 19
+    },
+    {
+     "localized_name": "bit_depth",
+     "name": "bit_depth",
+     "shape": 7,
+     "type": "INT",
+     "widget": {
+      "name": "bit_depth"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "视频",
+     "name": "VIDEO",
+     "type": "VIDEO",
+     "links": [
+      9
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CreateVideo"
+   },
+   "widgets_values": [
+    24,
+    8
+   ]
+  },
+  {
+   "id": 11,
+   "type": "MarkdownNote",
+   "pos": [
+    -724.3830097138574,
+    658.4727692014667
+   ],
+   "size": [
+    360,
+    320
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "导演台插件地址：",
+   "properties": {},
+   "widgets_values": [
+    "https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director"
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  },
+  {
+   "id": 13,
+   "type": "MarkdownNote",
+   "pos": [
+    -677.5318640062727,
+    1021.9142453295678
+   ],
+   "size": [
+    300,
+    512
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "Note: Size Settings Reference",
+   "properties": {},
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "color": "#222",
+   "bgcolor": "#000"
+  },
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "pos": [
+    -720,
+    80
+   ],
+   "size": [
+    360,
+    82
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "UNet名称",
+     "name": "unet_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "unet_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "数据类型",
+     "name": "weight_dtype",
+     "type": "COMBO",
+     "widget": {
+      "name": "weight_dtype"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "模型",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      24
+     ]
+    }
+   ],
+   "title": "MiniMax H3 UNET",
+   "properties": {
+    "Node name for S&R": "UNETLoader",
+    "models": [
+     {
+      "name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+      "directory": "diffusion_models"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "default"
+   ]
+  },
+  {
+   "id": 7,
+   "type": "SaveVideo",
+   "pos": [
+    1310.6007923489485,
+    347.11800275100524
+   ],
+   "size": [
+    619.371811810659,
+    106
+   ],
+   "flags": {},
+   "order": 11,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "视频",
+     "name": "video",
+     "type": "VIDEO",
+     "link": 9
+    },
+    {
+     "localized_name": "文件名前缀",
+     "name": "filename_prefix",
+     "type": "STRING",
+     "widget": {
+      "name": "filename_prefix"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "格式",
+     "name": "format",
+     "type": "COMBO",
+     "widget": {
+      "name": "format"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "编码器",
+     "name": "codec",
+     "type": "COMFY_DYNAMICCOMBO_V3",
+     "widget": {
+      "name": "codec"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "video",
+     "name": "video",
+     "type": "VIDEO",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SaveVideo"
+   },
+   "widgets_values": [
+    "video/scene01_dianqi_v3",
+    "auto",
+    "auto"
+   ]
+  },
+  {
+   "id": 15,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "pos": [
+    117.72031944568445,
+    -136.638277683161
+   ],
+   "size": [
+    320.323828125,
+    26
+   ],
+   "flags": {},
+   "order": 8,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 21
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "links": [
+      23
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MiniMaxH3MemoryEfficientSageAttentionPatch"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 14,
+   "type": "PathchSageAttentionKJ",
+   "pos": [
+    -184.67949301200898,
+    -160.5821375474329
+   ],
+   "size": [
+    270,
+    82
+   ],
+   "flags": {},
+   "order": 7,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 22
+    },
+    {
+     "localized_name": "sage_attention",
+     "name": "sage_attention",
+     "type": "COMBO",
+     "widget": {
+      "name": "sage_attention"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "allow_compile",
+     "name": "allow_compile",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "allow_compile"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "模型",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      21
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "PathchSageAttentionKJ"
+   },
+   "widgets_values": [
+    "disabled",
+    false
+   ]
+  },
+  {
+   "id": 12,
+   "type": "MiniMaxH3Director",
+   "pos": [
+    -305.80147156628084,
+    103.10439081429395
+   ],
+   "size": [
+    1240.1726593472085,
+    1488
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 23
+    },
+    {
+     "localized_name": "video_vae",
+     "name": "video_vae",
+     "type": "VAE",
+     "link": 15
+    },
+    {
+     "localized_name": "audio_vae",
+     "name": "audio_vae",
+     "type": "VAE",
+     "link": 13
+    },
+    {
+     "localized_name": "clip",
+     "name": "clip",
+     "type": "CLIP",
+     "link": 16
+    },
+    {
+     "localized_name": "task_type",
+     "name": "task_type",
+     "type": "COMBO",
+     "widget": {
+      "name": "task_type"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "global_prompt",
+     "name": "global_prompt",
+     "type": "STRING",
+     "widget": {
+      "name": "global_prompt"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_sample",
+     "name": "bd_grp_sample",
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_sample"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "cfg",
+     "name": "cfg",
+     "type": "FLOAT",
+     "widget": {
+      "name": "cfg"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "seed",
+     "name": "seed",
+     "type": "INT",
+     "widget": {
+      "name": "seed"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "frame_rate",
+     "name": "frame_rate",
+     "type": "FLOAT",
+     "widget": {
+      "name": "frame_rate"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "width",
+     "name": "width",
+     "type": "INT",
+     "widget": {
+      "name": "width"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "height",
+     "name": "height",
+     "type": "INT",
+     "widget": {
+      "name": "height"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "ref_max_size",
+     "name": "ref_max_size",
+     "type": "INT",
+     "widget": {
+      "name": "ref_max_size"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "total_frames",
+     "name": "total_frames",
+     "type": "INT",
+     "widget": {
+      "name": "total_frames"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "timeline_data",
+     "name": "timeline_data",
+     "type": "STRING",
+     "widget": {
+      "name": "timeline_data"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_advanced",
+     "name": "bd_grp_advanced",
+     "shape": 7,
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_advanced"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "steps",
+     "name": "steps",
+     "shape": 7,
+     "type": "INT",
+     "widget": {
+      "name": "steps"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "sampler",
+     "name": "sampler",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "sampler"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "scheduler",
+     "name": "scheduler",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "scheduler"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "shift_video",
+     "name": "shift_video",
+     "shape": 7,
+     "type": "FLOAT",
+     "widget": {
+      "name": "shift_video"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "shift_audio",
+     "name": "shift_audio",
+     "shape": 7,
+     "type": "FLOAT",
+     "widget": {
+      "name": "shift_audio"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_perf",
+     "name": "bd_grp_perf",
+     "shape": 7,
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_perf"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "clear_vram_between_segments",
+     "name": "clear_vram_between_segments",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "clear_vram_between_segments"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "export_source_images",
+     "name": "export_source_images",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "export_source_images"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "images",
+     "name": "images",
+     "shape": 6,
+     "type": "IMAGE",
+     "links": [
+      17
+     ]
+    },
+    {
+     "localized_name": "audio",
+     "name": "audio",
+     "shape": 6,
+     "type": "AUDIO",
+     "links": [
+      18
+     ]
+    },
+    {
+     "localized_name": "fps",
+     "name": "fps",
+     "type": "FLOAT",
+     "links": [
+      19
+     ]
+    },
+    {
+     "localized_name": "frame_count",
+     "name": "frame_count",
+     "type": "INT",
+     "links": null
+    },
+    {
+     "localized_name": "source_images",
+     "name": "source_images",
+     "shape": 6,
+     "type": "IMAGE",
+     "links": null
+    },
+    {
+     "localized_name": "report",
+     "name": "report",
+     "type": "STRING",
+     "links": [
+      20
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MiniMaxH3Director"
+   },
+   "widgets_values": [
+    "r2v — 参考主体生视频(Reference to Video)",
+    "2010 年中国县城五中初三教室的晚自习，窗外下毛毛雨，同一对拼在一起的木课桌，桌面接缝有一道铅笔三八线。<Picture 1> 是女生苏念（扎很高的马尾，蓝白校服袖子各挽两道），<Picture 2> 是男生陈屿（黑色碎短发，清瘦，蓝白校服外套），<Picture 3> 是两人并坐的位置关系（陈屿始终在左，苏念始终在右），<Picture 4> 是教室环境。关键道具是一台掉漆的蓝色 MP3。写实电影质感，胶片颗粒，青橙色调，浅景深，手持微晃，情绪克制。人物面孔、发型、校服、马尾、蓝色 MP3 在九个镜头之间保持完全一致。",
+    "采样设置",
+    1.0,
+    20261022,
+    "randomize",
+    24.0,
+    960,
+    544,
+    960,
+    198,
+    "{\"version\": 5, \"editMode\": \"segment\", \"totalFrames\": 198, \"frameRate\": 24, \"timelineMode\": \"prompt_batch\", \"width\": 960, \"height\": 544, \"refMaxSize\": 960, \"video\": {\"fileName\": \"\", \"videoFile\": \"\", \"subfolder\": \"\", \"type\": \"input\", \"frames\": [], \"frameMap\": [], \"deletedSourceRanges\": [], \"sourceFrameCount\": 0, \"width\": 960, \"height\": 544, \"duration\": 0, \"nativeFps\": 24, \"nativeFrameCount\": 0, \"storageWidth\": 960, \"storageHeight\": 544, \"id\": \"\"}, \"videoClips\": [], \"global\": {\"taskType\": \"r2v — 参考主体生视频(Reference to Video)\", \"prompt\": \"2010 年中国县城五中初三教室的晚自习，窗外下毛毛雨，同一对拼在一起的木课桌，桌面接缝有一道铅笔三八线。<Picture 1> 是女生苏念（扎很高的马尾，蓝白校服袖子各挽两道），<Picture 2> 是男生陈屿（黑色碎短发，清瘦，蓝白校服外套），<Picture 3> 是两人并坐的位置关系（陈屿始终在左，苏念始终在右），<Picture 4> 是教室环境。关键道具是一台掉漆的蓝色 MP3。写实电影质感，胶片颗粒，青橙色调，浅景深，手持微晃，情绪克制。人物面孔、发型、校服、马尾、蓝色 MP3 在九个镜头之间保持完全一致。\", \"refs\": [{\"index\": 0, \"imageFile\": \"scene01_ref_03_girl.png\", \"imageB64\": \"\", \"fileName\": \"scene01_ref_03_girl.png\"}, {\"index\": 1, \"imageFile\": \"scene01_ref_02_boy.png\", \"imageB64\": \"\", \"fileName\": \"scene01_ref_02_boy.png\"}, {\"index\": 2, \"imageFile\": \"scene01_ref_04_twoshot.png\", \"imageB64\": \"\", \"fileName\": \"scene01_ref_04_twoshot.png\"}, {\"index\": 3, \"imageFile\": \"scene01_ref_01_classroom.png\", \"imageB64\": \"\", \"fileName\": \"scene01_ref_01_classroom.png\"}], \"commonEnabled\": true, \"referenceVideo\": {\"videoFile\": \"\", \"fileName\": \"\", \"type\": \"input\", \"subfolder\": \"\"}, \"continuousReference\": false, \"genImage\": {\"imageFile\": \"\"}, \"refAudios\": []}, \"output\": {\"mode\": \"fixed\", \"aspectRatio\": \"16:9 (宽屏)\", \"megapixels\": 0.5, \"multiple\": 32, \"longEdge\": 960, \"width\": 960, \"height\": 544, \"maxExportFrames\": 0, \"exportMode\": \"all\", \"audioMode\": \"generate\", \"continuityEnabled\": false, \"continuityOverlapFrames\": 0}, \"runSelectEnabled\": false, \"runSelection\": [], \"segments\": [{\"id\": \"seg_01\", \"start\": 0, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"极宽全景定场：机位在教室最后方，画面里是整间昏暗教室和四十多个伏案晚自习的学生，人物很小，头顶日光灯管罩着灰，窗外漆黑有雨痕。固定机位，极慢推近。声音：日光灯电流嗡鸣、笔尖沙沙、窗外细雨。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_02\", \"start\": 22, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"中近景单人：画面只出现男生陈屿 <Picture 2>，他趴在桌角，用胳膊肘挡着一小块发光的蓝色 MP3 屏幕，蓝光映在袖口，一只耳机藏在袖子里，眼神朝下。微仰近景，浅焦。声音：耳机漏出的极轻流行歌、布料摩擦。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_03\", \"start\": 44, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"俯角特写单人：画面只出现女生苏念 <Picture 1> 的双手和作业纸，她用一把尺子压住一元二次方程的作业纸，笔尖慢慢写字，前景虚出桌面接缝上的铅笔三八线，她的马尾垂在画面边缘。声音：笔尖沙沙、纸页轻响。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_04\", \"start\": 66, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"停电瞬间：整个画面骤然变黑，几乎什么都看不清，只有窗外雨痕的一点冷蓝微光和课桌轮廓，蓝色 MP3 屏幕最后一点余晖熄灭，看不清人脸。硬切。声音：灯管嗡的一声后咔地断电，一拍短暂死寂。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_05\", \"start\": 88, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"黑暗中的手，极特写：低照度只有轮廓光，画面里只有两只手——男生的手把蓝色 MP3 塞进校服内兜，然后食指沿着三八线摸过去，碰到女生冰凉的手背，她的手指轻轻一抖。声音：雨点打玻璃、极轻的布料窸窣、细微心跳低频。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_06\", \"start\": 110, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"光回来了，群像中景：一块块手机屏幕在四十几张脸上亮起蓝白光，一支点燃的白蜡烛从隔壁班接力传过来，冷暖光交错闪动，画面里是许多学生，不要单人特写。摇移中景。声音：零星手机解锁音、远处惊呼。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_07\", \"start\": 132, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"全班合唱，手持中景：几十个学生站起来跑调吼唱，一个高壮男生举着半截蜡烛绕场，人影晃动、烛光摇晃，喧闹雀跃，画面里是人群不是单人。镜头轻微晃动。声音：跑调合唱副歌推满声浪。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_08\", \"start\": 154, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"耳边告白，近景双人同框：左边是陈屿 <Picture 2>，右边是苏念 <Picture 1>，陈屿把脸极近地凑到她耳边低声说话，她垂着眼不动，背景是被虚化的合唱人影与暖色烛光。贴近双人特写，浅焦，柔和的暖光不要过曝。声音：合唱压成背景轰鸣，只剩少年气声。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}, {\"id\": \"seg_09\", \"start\": 176, \"length\": 22, \"frameCount\": 22, \"durationSec\": 0.9167, \"prompt\": \"错过，双人特写：左边陈屿，右边苏念，她侧头朝嘈杂里喊了一句，他顿住、摇头说没什么，两人之间凝住一秒的落空，烛光与手机光轻轻摇曳，结尾渐暗。声音：声浪吞掉未说完的话，收在渐弱余响里。\", \"negativePrompt\": \"字幕，水印，logo，文字，对话气泡，多指，畸形手，换装，现代手机，AI 蜡感皮肤\", \"taskType\": \"\", \"refs\": [], \"refAudios\": [], \"refVideos\": [], \"genImage\": {\"imageFile\": \"\", \"fileName\": \"\"}}], \"gen\": {\"defaultFrameCount\": 22}, \"keyframes\": [], \"durationSec\": 8.25, \"shots\": []}",
+    "高级采样 Advanced",
+    4,
+    "res_multistep",
+    "simple",
+    12.0,
+    3.0,
+    "性能 Performance",
+    true,
+    false,
+    "raw",
+    false,
+    "scene01_dianqi_v3"
+   ],
+   "title": "MiniMax H3 Director · scene-01 停电那晚（9 段 r2v）"
+  },
+  {
+   "id": 16,
+   "type": "LoraLoaderModelOnly",
+   "pos": [
+    -720,
+    -110
+   ],
+   "size": [
+    360,
+    82
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 24
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "MODEL",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      22
+     ]
+    }
+   ],
+   "title": "Turbo 4step LoRA (ref2v)",
+   "properties": {
+    "Node name for S&R": "LoraLoaderModelOnly"
+   },
+   "widgets_values": [
+    "minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors",
+    1.0
+   ]
+  },
+  {
+   "id": 17,
+   "type": "MarkdownNote",
+   "pos": [
+    -720,
+    -430
+   ],
+   "size": [
+    360,
+    300
+   ],
+   "flags": {},
+   "order": 12,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "4 步加速说明",
+   "properties": {},
+   "widgets_values": [
+    "## 4 步 Turbo 加速（本工作流相对清理版的唯一改动）\n\n**需要手动下载 LoRA（1.82 GB）放到**\n\n`ComfyUI/models/loras/minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors`\n\nHF 直链：\nhttps://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/loras/minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors\n\n未下载前这个 LoRA 节点会标红、点运行会报找不到模型——属正常。\n\n已改参数：\n- 链路 UNET → **LoRA** → PathchSageAttentionKJ → MemoryEfficientPatch → Director\n- 高级采样组 `steps = 4`（原清理版为 25）\n- LoRA 强度 1.0；其余参数与清理版完全一致（960×544 / 124 帧 / cfg 1.0 / res_multistep + simple / shift 12 & 3）"
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  }
+ ],
+ "links": [
+  [
+   9,
+   6,
+   0,
+   7,
+   0,
+   "VIDEO"
+  ],
+  [
+   13,
+   4,
+   0,
+   12,
+   2,
+   "VAE"
+  ],
+  [
+   15,
+   3,
+   0,
+   12,
+   1,
+   "VAE"
+  ],
+  [
+   16,
+   2,
+   0,
+   12,
+   3,
+   "CLIP"
+  ],
+  [
+   17,
+   12,
+   0,
+   6,
+   0,
+   "IMAGE"
+  ],
+  [
+   18,
+   12,
+   1,
+   6,
+   1,
+   "AUDIO"
+  ],
+  [
+   19,
+   12,
+   2,
+   6,
+   2,
+   "FLOAT"
+  ],
+  [
+   20,
+   12,
+   5,
+   8,
+   0,
+   "STRING"
+  ],
+  [
+   21,
+   14,
+   0,
+   15,
+   0,
+   "MODEL"
+  ],
+  [
+   22,
+   16,
+   0,
+   14,
+   0,
+   "MODEL"
+  ],
+  [
+   23,
+   15,
+   0,
+   12,
+   0,
+   "MODEL"
+  ],
+  [
+   24,
+   1,
+   0,
+   16,
+   0,
+   "MODEL"
+  ]
+ ],
+ "groups": [
+  {
+   "id": 1,
+   "title": "模型加载 (MiniMax H3)",
+   "bounding": [
+    -760,
+    40,
+    440,
+    560
+   ],
+   "color": "#3f789e",
+   "flags": {}
+  },
+  {
+   "id": 2,
+   "title": "MiniMax H3 Director",
+   "bounding": [
+    -320,
+    40,
+    1120,
+    960
+   ],
+   "color": "#8A8",
+   "flags": {}
+  },
+  {
+   "id": 3,
+   "title": "输出",
+   "bounding": [
+    959.7884550354713,
+    38.736816353831586,
+    760,
+    760
+   ],
+   "color": "#b58",
+   "flags": {}
+  },
+  {
+   "id": 4,
+   "title": "加速模块（用就开启，不用可以关掉）",
+   "bounding": [
+    -232.17580618807037,
+    -257.8403935307404,
+    696.8626780790273,
+    222.74509026022088
+   ],
+   "color": "#3f789e",
+   "flags": {}
+  }
+ ],
+ "config": {},
+ "extra": {
+  "frontendVersion": "1.23.0",
+  "note": "MiniMax H3 Director · 加速版_清理版 4step (ref2v turbo) · scene-01 停电那晚 9 段 r2v",
+  "ds": {
+   "scale": 0.6386175807663602,
+   "offset": [
+    2349.045293492695,
+    575.9188749760433
+   ]
+  }
+ },
+ "version": 0.4
+}

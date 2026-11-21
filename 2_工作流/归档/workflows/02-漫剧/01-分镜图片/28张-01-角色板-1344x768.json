@@ -1,0 +1,488 @@
+{
+  "id": "28张-01-角色板-1344x768",
+  "revision": 0,
+  "last_node_id": 11,
+  "last_link_id": 10,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "pos": [
+        -460.0,
+        40.0
+      ],
+      "size": [
+        420.0,
+        760.0
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# 角色板\n\n## 参数（官方 Z-Image Turbo 配法，别改）\n| 项 | 值 |\n|---|---|\n| 步数 | 8 |\n| CFG | 1 |\n| 采样器 | res_multistep |\n| 调度 | simple |\n| Shift | 3 |\n| 去噪 | 1 |\n\n## 两个容易改错的地方\n**不要加负向提示词。** Turbo 在 CFG=1 下负向不起作用，所以负向走 `ConditioningZeroOut`（把正向清零），这是官方做法。你那套「第二个 CLIPTextEncode 写一整串 anime/plastic skin」在 CFG=1 时完全无效，纯占空间。\n\n**不要跳过 `ModelSamplingAuraFlow`。** shift=3 是 Z-Image 的分辨率-噪声映射，删了之后高分辨率会糊、构图会散。\n\n## 模型\n- diffusion_models / `z_image_turbo_int8_convrot.safetensors`\n- text_encoders / `qwen_3_4b.safetensors`（类型 `lumina2`）\n- vae / `ae.safetensors`\n\n## 尺寸\n1344×768\n"
+      ],
+      "title": "使用说明",
+      "color": "#222",
+      "bgcolor": "#000"
+    },
+    {
+      "id": 2,
+      "type": "UNETLoader",
+      "pos": [
+        -20.0,
+        40.0
+      ],
+      "size": [
+        340.0,
+        90.0
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "z_image_turbo_int8_convrot.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "ModelSamplingAuraFlow",
+      "pos": [
+        -20.0,
+        180.0
+      ],
+      "size": [
+        340.0,
+        90.0
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ModelSamplingAuraFlow"
+      },
+      "widgets_values": [
+        3
+      ]
+    },
+    {
+      "id": 4,
+      "type": "CLIPLoader",
+      "pos": [
+        -20.0,
+        320.0
+      ],
+      "size": [
+        340.0,
+        110.0
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen_3_4b.safetensors",
+        "lumina2",
+        "default"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "VAELoader",
+      "pos": [
+        -20.0,
+        480.0
+      ],
+      "size": [
+        340.0,
+        90.0
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ae.safetensors"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": [
+        380.0,
+        40.0
+      ],
+      "size": [
+        520.0,
+        620.0
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            4,
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "Character reference sheet, three full-body views of the same East Asian woman in her late twenties on a neutral light grey seamless background: front view, three-quarter side view, back view, all standing on the same visible floor line with complete feet and shoes in frame, not cropped at the ankle. Narrow long face, monolid eyes, a very faint horizontal crease across the bridge of her nose, a small mole behind her right ear, hair in a high ponytail tied with a dark grey hair tie. Cream linen shirt with sleeves rolled to mid-forearm, deep blue wide-leg trousers, flat leather loafers, no earrings. Soft even overcast daylight, neutral white balance, sharp fabric texture, photographic realism, no text, no graphics."
+      ],
+      "title": "正向提示词"
+    },
+    {
+      "id": 7,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        380.0,
+        700.0
+      ],
+      "size": [
+        340.0,
+        60.0
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut"
+      },
+      "widgets_values": [],
+      "title": "负向 = 清零（Turbo 不用负向词）"
+    },
+    {
+      "id": 8,
+      "type": "EmptySD3LatentImage",
+      "pos": [
+        940.0,
+        40.0
+      ],
+      "size": [
+        340.0,
+        110.0
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptySD3LatentImage"
+      },
+      "widgets_values": [
+        1344,
+        768,
+        1
+      ]
+    },
+    {
+      "id": 9,
+      "type": "KSampler",
+      "pos": [
+        940.0,
+        200.0
+      ],
+      "size": [
+        340.0,
+        300.0
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 4
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 6
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        0,
+        "randomize",
+        8,
+        1,
+        "res_multistep",
+        "simple",
+        1
+      ]
+    },
+    {
+      "id": 10,
+      "type": "VAEDecode",
+      "pos": [
+        940.0,
+        540.0
+      ],
+      "size": [
+        220.0,
+        60.0
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 8
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 11,
+      "type": "SaveImage",
+      "pos": [
+        1200.0,
+        540.0
+      ],
+      "size": [
+        420.0,
+        420.0
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 10
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "28张/01-角色板"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      3,
+      0,
+      9,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      4,
+      0,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
+      4,
+      6,
+      0,
+      9,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      5,
+      6,
+      0,
+      7,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      7,
+      0,
+      9,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      7,
+      8,
+      0,
+      9,
+      3,
+      "LATENT"
+    ],
+    [
+      8,
+      9,
+      0,
+      10,
+      0,
+      "LATENT"
+    ],
+    [
+      9,
+      5,
+      0,
+      10,
+      1,
+      "VAE"
+    ],
+    [
+      10,
+      10,
+      0,
+      11,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

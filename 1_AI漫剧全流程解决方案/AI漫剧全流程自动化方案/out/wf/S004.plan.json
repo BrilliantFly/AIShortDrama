@@ -1,0 +1,55 @@
+{
+  "shot_id": "S004",
+  "continuity_group": "G01",
+  "frame_key": "EP001/frames/SHOT-EP001-004.png",
+  "engine": "local-comfyui",
+  "stages": [
+    {
+      "key": "stage0",
+      "title": "Stage 0 · T2I 出底图（不挂板）",
+      "prompt": "[1 身份锚]\nC01 Jiang Chi: flat brow bones; short tousled black hair; white tee under an open light-grey school jacket\n\n[2 本镜正文]\nOver her blurred shoulder; Jiang Chi stands with his weight on his back foot; he glances toward the corridor window; third-floor corridor with terrazzo floor and steel-framed windows in sequence; medium shot, slightly low angle; only this instant, no motion result\n\n[3 画风句]\nClean cel-shaded anime comic frame; crisp outlines; flat color blocks; restrained hard-edge shadows; consistent school-corridor palette\n\n[4 约束]\n16:9 landscape; no speech bubbles, no subtitles, no text, no logo, no panel lines, no watermark; no extra persons; if two characters share the frame they face each other left and right, never side by side",
+      "seed": 45,
+      "filename_prefix": "SHOT-EP001-004_base",
+      "output_rel": "EP001/work/SHOT-EP001-004_base.png",
+      "slots": {}
+    },
+    {
+      "key": "pass1",
+      "title": "Pass 1 · 2511 锁身份 + 空间",
+      "prompt": "Preserve exactly the opening composition, subject placement and light direction of image_1. Lock the character identity, face shape, hairstyle and costume from image_2 (character sheet). Lock the space, depth and window order from image_3 (scene plate). Do not change camera angle or pose; add no motion, no text.",
+      "seed": 46,
+      "filename_prefix": "SHOT-EP001-004_p1",
+      "output_rel": "EP001/work/SHOT-EP001-004_p1.png",
+      "slots": {
+        "image_1": "EP001/work/SHOT-EP001-004_base.png",
+        "image_2": "EP001/chars/IMG-JIANGCHI-SHEET.png",
+        "image_3": "EP001/scenes/IMG-CORRIDOR-PLATE.png"
+      }
+    },
+    {
+      "key": "pass2",
+      "title": "Pass 2 · 2511 锁服装 / 站位",
+      "prompt": "Keep identity and composition from image_1. Match the outfit details and the two-person standing positions from image_2 (costume/position pair). No text, no speech bubbles, no extra persons.",
+      "seed": 47,
+      "filename_prefix": "SHOT-EP001-004",
+      "output_rel": "EP001/frames/SHOT-EP001-004.png",
+      "slots": {
+        "image_1": "EP001/work/SHOT-EP001-004_p1.png",
+        "image_2": "EP001/props/IMG-DEFPORTRAIT-PAIR.png",
+        "image_3": ""
+      }
+    }
+  ],
+  "h3_boundary": {
+    "refs_index_1": "EP001/frames/SHOT-EP001-004.png",
+    "refs_index_2_3_4": [
+      "EP001/chars/IMG-JIANGCHI-SHEET.png",
+      "EP001/scenes/IMG-CORRIDOR-PLATE.png",
+      "EP001/props/IMG-DEFPORTRAIT-PAIR.png"
+    ],
+    "internal_only": [
+      "EP001/work/SHOT-EP001-004_base.png",
+      "EP001/work/SHOT-EP001-004_p1.png"
+    ]
+  }
+}

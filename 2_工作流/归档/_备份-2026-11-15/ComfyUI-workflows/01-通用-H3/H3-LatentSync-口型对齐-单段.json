@@ -1,0 +1,179 @@
+{
+  "last_node_id": 5,
+  "last_link_id": 2,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [40, 240],
+      "size": [320, 110],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [1],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "TTS2-016-zhou.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 2,
+      "type": "D_LatentSyncNode",
+      "pos": [400, 200],
+      "size": [400, 220],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video_path",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        },
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [2],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "D_LatentSyncNode"
+      },
+      "widgets_values": [
+        "seg_0017.mp4",
+        1247,
+        "",
+        true
+      ]
+    },
+    {
+      "id": 3,
+      "type": "SaveVideo",
+      "pos": [840, 200],
+      "size": [360, 260],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 2
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/EP001-lipsync",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Note",
+      "pos": [40, 40],
+      "size": [560, 170],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "【LatentSync 口型对齐 · 单段】\n\n为什么需要这一步：\nH3 的 fl2v 任务里 refAudios 只是音色参考槽位，段 mp4 音轨是静音的，\n口型靠模型照着台词文本自己「演」，张嘴时机不受音频约束 →\n直接合成会出现「声音先出来、嘴后动」。\n\n本工作流用音频驱动逐帧重画嘴部，产出真·对齐的段。\n\n用法：\n1. 左侧 Load Audio 选该段的 TTS2 台词（见下表）\n2. 中间节点 video_file 下拉选对应段 mp4（已放 ComfyUI/input）\n3. 排队 → 产出 output/video/EP001-lipsync_*.mp4\n4. 批量就把中间节点复制多份，改 video_file / Load Audio 即可\n\n段号 → TTS2：\n006→006-lin  007→007-zhou  012→011-lin  014→013-lin  015→014-zhou\n016→015-lin  017→016-zhou  018→017-lin  019→018-lin  020→019-zhou  021→020-lin\n\n注意：音频会被自动补静音到与视频等长，所以嘴会一直动到段尾。"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "Note",
+      "pos": [840, 500],
+      "size": [360, 150],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "输出为 25fps（LatentSync 固定），原段是 24fps。\n合成时按时间线裁剪即可，不要直接拼接。\n\n单段耗时约 3 分钟（4080S / 32G）。"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "AUDIO"
+    ],
+    [
+      2,
+      2,
+      1,
+      3,
+      0,
+      "VIDEO"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "步① 选音频",
+      "bounding": [20, 180, 360, 200],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "步② 选段 + 跑口型",
+      "bounding": [380, 140, 440, 300],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "步③ 落盘",
+      "bounding": [820, 140, 400, 340],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.85,
+      "offset": [60, 80]
+    }
+  },
+  "version": 0.4
+}

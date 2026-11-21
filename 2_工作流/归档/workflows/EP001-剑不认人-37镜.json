@@ -1,0 +1,1077 @@
+{
+ "id": "e1008825-bd40-4626-b132-596f08761abc",
+ "revision": 0,
+ "last_node_id": 17,
+ "last_link_id": 24,
+ "nodes": [
+  {
+   "id": 2,
+   "type": "CLIPLoader",
+   "pos": [
+    -720,
+    220
+   ],
+   "size": [
+    360,
+    106
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "CLIP名称",
+     "name": "clip_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "clip_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "类型",
+     "name": "type",
+     "type": "COMBO",
+     "widget": {
+      "name": "type"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "设备",
+     "name": "device",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "device"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "CLIP",
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      16
+     ]
+    }
+   ],
+   "title": "CLIP (minimax / Qwen3-VL)",
+   "properties": {
+    "Node name for S&R": "CLIPLoader",
+    "models": [
+     {
+      "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "directory": "text_encoders"
+     }
+    ]
+   },
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAELoader",
+   "pos": [
+    -720,
+    380
+   ],
+   "size": [
+    360,
+    58
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "vae名称",
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VAE",
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      15
+     ]
+    }
+   ],
+   "title": "Video VAE",
+   "properties": {
+    "Node name for S&R": "VAELoader",
+    "models": [
+     {
+      "name": "minimax_h3_video_vae_fp16.safetensors",
+      "directory": "vae"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "pos": [
+    -720,
+    500
+   ],
+   "size": [
+    360,
+    58
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "vae名称",
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VAE",
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      13
+     ]
+    }
+   ],
+   "title": "Audio VAE",
+   "properties": {
+    "Node name for S&R": "VAELoader",
+    "models": [
+     {
+      "name": "minimax_h3_audio_vae_fp32.safetensors",
+      "directory": "vae"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ]
+  },
+  {
+   "id": 8,
+   "type": "PreviewAny",
+   "pos": [
+    1006.1195126617181,
+    90.46763850287226
+   ],
+   "size": [
+    640,
+    200
+   ],
+   "flags": {},
+   "order": 10,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "源",
+     "name": "source",
+     "type": "*",
+     "link": 20
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "字符串",
+     "name": "STRING",
+     "type": "STRING",
+     "links": null
+    }
+   ],
+   "title": "Director 运行报告",
+   "properties": {
+    "Node name for S&R": "PreviewAny"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 6,
+   "type": "CreateVideo",
+   "pos": [
+    1006.6064265507966,
+    342.40096040896543
+   ],
+   "size": [
+    280,
+    120
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "图像",
+     "name": "images",
+     "type": "IMAGE",
+     "link": 17
+    },
+    {
+     "localized_name": "音频",
+     "name": "audio",
+     "shape": 7,
+     "type": "AUDIO",
+     "link": 18
+    },
+    {
+     "localized_name": "帧率",
+     "name": "fps",
+     "type": "FLOAT",
+     "widget": {
+      "name": "fps"
+     },
+     "link": 19
+    },
+    {
+     "localized_name": "bit_depth",
+     "name": "bit_depth",
+     "shape": 7,
+     "type": "INT",
+     "widget": {
+      "name": "bit_depth"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "视频",
+     "name": "VIDEO",
+     "type": "VIDEO",
+     "links": [
+      9
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CreateVideo"
+   },
+   "widgets_values": [
+    24,
+    8
+   ]
+  },
+  {
+   "id": 11,
+   "type": "MarkdownNote",
+   "pos": [
+    -724.3830097138574,
+    658.4727692014667
+   ],
+   "size": [
+    360,
+    320
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "导演台插件地址：",
+   "properties": {},
+   "widgets_values": [
+    "https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director"
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  },
+  {
+   "id": 13,
+   "type": "MarkdownNote",
+   "pos": [
+    -677.5318640062727,
+    1021.9142453295678
+   ],
+   "size": [
+    300,
+    512
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "Note: Size Settings Reference",
+   "properties": {},
+   "widgets_values": [
+    "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |\n| 0.98 | 16:9 | 1344 x 768 |\n| 1.0 | 16:9 | 1376 x 768 |\n| 1.2 | 16:9 | 1504 x 832 |\n| 1.5 | 16:9 | 1664 x 928 |\n| 1.8 | 16:9 | 1824 x 1024 |\n| 2.0 | 16:9 | 1920 x 1088 |\n"
+   ],
+   "color": "#222",
+   "bgcolor": "#000"
+  },
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "pos": [
+    -720,
+    80
+   ],
+   "size": [
+    360,
+    82
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "UNet名称",
+     "name": "unet_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "unet_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "数据类型",
+     "name": "weight_dtype",
+     "type": "COMBO",
+     "widget": {
+      "name": "weight_dtype"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "模型",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      22
+     ]
+    }
+   ],
+   "title": "MiniMax H3 UNET",
+   "properties": {
+    "Node name for S&R": "UNETLoader",
+    "models": [
+     {
+      "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "directory": "diffusion_models"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "default"
+   ]
+  },
+  {
+   "id": 7,
+   "type": "SaveVideo",
+   "pos": [
+    1310.6007923489485,
+    347.11800275100524
+   ],
+   "size": [
+    619.371811810659,
+    106
+   ],
+   "flags": {},
+   "order": 11,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "视频",
+     "name": "video",
+     "type": "VIDEO",
+     "link": 9
+    },
+    {
+     "localized_name": "文件名前缀",
+     "name": "filename_prefix",
+     "type": "STRING",
+     "widget": {
+      "name": "filename_prefix"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "格式",
+     "name": "format",
+     "type": "COMBO",
+     "widget": {
+      "name": "format"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "编码器",
+     "name": "codec",
+     "type": "COMFY_DYNAMICCOMBO_V3",
+     "widget": {
+      "name": "codec"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "video",
+     "name": "video",
+     "type": "VIDEO",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SaveVideo"
+   },
+   "widgets_values": [
+    "video/MiniMaxH3_Director_sing_4step",
+    "auto",
+    "auto"
+   ]
+  },
+  {
+   "id": 15,
+   "type": "MiniMaxH3MemoryEfficientSageAttentionPatch",
+   "pos": [
+    117.72031944568445,
+    -136.638277683161
+   ],
+   "size": [
+    320.323828125,
+    26
+   ],
+   "flags": {},
+   "order": 7,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 21
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "links": [
+      23
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MiniMaxH3MemoryEfficientSageAttentionPatch"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 14,
+   "type": "PathchSageAttentionKJ",
+   "pos": [
+    -184.67949301200898,
+    -160.5821375474329
+   ],
+   "size": [
+    270,
+    82
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 22
+    },
+    {
+     "localized_name": "sage_attention",
+     "name": "sage_attention",
+     "type": "COMBO",
+     "widget": {
+      "name": "sage_attention"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "allow_compile",
+     "name": "allow_compile",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "allow_compile"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "模型",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      21
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "PathchSageAttentionKJ"
+   },
+   "widgets_values": [
+    "disabled",
+    false
+   ]
+  },
+  {
+   "id": 12,
+   "type": "MiniMaxH3Director",
+   "pos": [
+    -305.80147156628084,
+    103.10439081429395
+   ],
+   "size": [
+    1240.1726593472085,
+    1488
+   ],
+   "flags": {},
+   "order": 8,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 23
+    },
+    {
+     "localized_name": "video_vae",
+     "name": "video_vae",
+     "type": "VAE",
+     "link": 15
+    },
+    {
+     "localized_name": "audio_vae",
+     "name": "audio_vae",
+     "type": "VAE",
+     "link": 13
+    },
+    {
+     "localized_name": "clip",
+     "name": "clip",
+     "type": "CLIP",
+     "link": 16
+    },
+    {
+     "localized_name": "task_type",
+     "name": "task_type",
+     "type": "COMBO",
+     "widget": {
+      "name": "task_type"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "global_prompt",
+     "name": "global_prompt",
+     "type": "STRING",
+     "widget": {
+      "name": "global_prompt"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_sample",
+     "name": "bd_grp_sample",
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_sample"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "cfg",
+     "name": "cfg",
+     "type": "FLOAT",
+     "widget": {
+      "name": "cfg"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "seed",
+     "name": "seed",
+     "type": "INT",
+     "widget": {
+      "name": "seed"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "frame_rate",
+     "name": "frame_rate",
+     "type": "FLOAT",
+     "widget": {
+      "name": "frame_rate"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "width",
+     "name": "width",
+     "type": "INT",
+     "widget": {
+      "name": "width"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "height",
+     "name": "height",
+     "type": "INT",
+     "widget": {
+      "name": "height"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "ref_max_size",
+     "name": "ref_max_size",
+     "type": "INT",
+     "widget": {
+      "name": "ref_max_size"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "total_frames",
+     "name": "total_frames",
+     "type": "INT",
+     "widget": {
+      "name": "total_frames"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "timeline_data",
+     "name": "timeline_data",
+     "type": "STRING",
+     "widget": {
+      "name": "timeline_data"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_advanced",
+     "name": "bd_grp_advanced",
+     "shape": 7,
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_advanced"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "steps",
+     "name": "steps",
+     "shape": 7,
+     "type": "INT",
+     "widget": {
+      "name": "steps"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "sampler",
+     "name": "sampler",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "sampler"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "scheduler",
+     "name": "scheduler",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "scheduler"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "shift_video",
+     "name": "shift_video",
+     "shape": 7,
+     "type": "FLOAT",
+     "widget": {
+      "name": "shift_video"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "shift_audio",
+     "name": "shift_audio",
+     "shape": 7,
+     "type": "FLOAT",
+     "widget": {
+      "name": "shift_audio"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bd_grp_perf",
+     "name": "bd_grp_perf",
+     "shape": 7,
+     "type": "BDGROUP",
+     "widget": {
+      "name": "bd_grp_perf"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "clear_vram_between_segments",
+     "name": "clear_vram_between_segments",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "clear_vram_between_segments"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "export_source_images",
+     "name": "export_source_images",
+     "shape": 7,
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "export_source_images"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "images",
+     "name": "images",
+     "shape": 6,
+     "type": "IMAGE",
+     "links": [
+      17
+     ]
+    },
+    {
+     "localized_name": "audio",
+     "name": "audio",
+     "shape": 6,
+     "type": "AUDIO",
+     "links": [
+      18
+     ]
+    },
+    {
+     "localized_name": "fps",
+     "name": "fps",
+     "type": "FLOAT",
+     "links": [
+      19
+     ]
+    },
+    {
+     "localized_name": "frame_count",
+     "name": "frame_count",
+     "type": "INT",
+     "links": null
+    },
+    {
+     "localized_name": "source_images",
+     "name": "source_images",
+     "shape": 6,
+     "type": "IMAGE",
+     "links": null
+    },
+    {
+     "localized_name": "report",
+     "name": "report",
+     "type": "STRING",
+     "links": [
+      20
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MiniMaxH3Director"
+   },
+   "widgets_values": [
+    "r2v — 参考主体生视频(Reference to Video)",
+    "<Picture 1> 对着镜头深情演唱 <Audio 1> 中的歌曲。保持 <Picture 1> 的五官、发型、妆容与服装完全一致。口型与歌声逐字精准对齐，表情随旋律自然起伏，伴随轻微的头部律动与手部动作。固定中近景机位，柔和舞台灯光，背景轻微虚化。Audio: reference",
+    "采样设置",
+    1.0,
+    42,
+    "fixed",
+    24.0,
+    1344,
+    576,
+    1344,
+    124,
+    "{\"version\":5,\"editMode\":\"segment\",\"totalFrames\":5183,\"frameRate\":24,\"video\":{\"fileName\":\"\",\"videoFile\":\"\",\"subfolder\":\"\",\"type\":\"input\",\"frames\":[],\"frameMap\":[],\"deletedSourceRanges\":[],\"sourceFrameCount\":0,\"width\":1344,\"height\":576,\"duration\":0,\"nativeFps\":24,\"nativeFrameCount\":0,\"storageWidth\":1344,\"storageHeight\":576,\"id\":\"\"},\"videoClips\":[],\"global\":{\"taskType\":\"r2v — 参考主体生视频(Reference to Video)\",\"prompt\":\"\",\"refs\":[],\"referenceVideo\":{\"videoFile\":\"\",\"fileName\":\"\",\"type\":\"input\",\"subfolder\":\"\"},\"continuousReference\":false,\"genImage\":{\"imageFile\":\"\"},\"sourceWidth\":1344,\"sourceHeight\":576,\"refAudios\":[]},\"output\":{\"mode\":\"fixed\",\"aspectRatio\":\"2.39:1 (电影宽银幕)\",\"megapixels\":0.77,\"multiple\":32,\"longEdge\":1344,\"width\":1344,\"height\":576,\"maxExportFrames\":0,\"exportMode\":\"all\",\"audioMode\":\"generate\",\"continuityEnabled\":false,\"continuityOverlapFrames\":0},\"runSelectEnabled\":false,\"runSelection\":[],\"segments\":[{\"id\":\"ep001_001\",\"start\":0,\"length\":124,\"frameCount\":124,\"durationSec\":4,\"prompt\":\"integrated_multimodal_description: [Shot 1] (4 seconds) From <Picture 1>, the supplied first frame, static camera, no movement: the woman's pale hand presses the blue cloth curtain down half a finger's width; the gap narrows until the orange firelight through it flattens into a thin line; the hand then withdraws behind the curtain and the faint jaw inside recedes into darkness. The curtain hangs still. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: dense rain drumming low and close on wet canvas throughout; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-001.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_002\",\"start\":124,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"integrated_multimodal_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied first frame — wide interior of the ruined shrine — the camera drifts right half a foot, very slowly. Linghu Chong, seated south of the fire in his worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, gives his hem a final twist; water falls in a line onto the fire, the flame flattens eastward and every shadow on the wall sways; then the flame stands back up and the shadows settle. The others do not move: the stocky man drying his shirt over the flames, the square-faced man counting rations by the altar, the thin youth at the threshold, and the young woman by the cart with her back to the room. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: a hiss as the water hits the fire; steady rain drumming on tiles; a horse pawing the ground twice outside; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-002.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_003\",\"start\":248,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Linghu Chong in <Picture 1>, the lean young swordsman half-reclining in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash. <Subject 2> is Lu Dayou in <Picture 1>, the stocky young man in the short indigo cotton jacket with mud-stained trousers. <Picture 1> is the opening composition of this shot. <Audio 1> is Linghu Chong's voice reference. <Audio 2> is Yue Lingshan's voice reference; she stays behind the curtain and is never on screen.\\nsummary: Lu Dayou asks who is in the cart, Linghu Chong answers lazily, a woman's voice from the cart cuts in, and Linghu Chong yields at once.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the medium two-shot across the low fire and both men's placement stay as supplied; expressions and the timing of speech follow this shot, not the picture. <Audio 1> (appears in [Shot 1]): reference - a young man's voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words. <Audio 2> (appears in [Shot 1]): reference - a young woman's voice timbre and speech pace only; same re-performance rule.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame, static camera, a medium two-shot across the low fire. Lu Dayou (S3), the stocky young man in the short indigo cotton jacket with mud-stained trousers, turns his round grinning face and asks: <d>[Chinese] 大师兄，车里到底什么人？</d> Linghu Chong (S2), the lean swordsman half-reclining in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, answers without lifting his head, a lazy young man's drawl: <d>[Chinese] 人。你又不娶她。</d> A woman's voice from the cart off-screen right cuts him off — Yue Lingshan (S4), not turning: <d>[Chinese] 大师兄。</d> Linghu Chong at once lowers his head: <d>[Chinese] 我错了。</d> Lu Dayou lifts his wet shirt and shuts his mouth; Linghu Chong's gaze drops back into the fire. Speech finishes by the 5.2-second mark; Lu Dayou's lips move only on his own line. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: low fire crackle; steady rain on tiles; no other voices.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-003.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"},{\"index\":1,\"audioFile\":\"剑不认人/岳灵珊-音色参考-女生1.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_004\",\"start\":406,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"integrated_multimodal_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied first frame — close-up of Linghu Chong in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, head lowered with a leftover smile, firelight carving a hard edge on his left cheek — static camera, then a barely perceptible upward tilt in the final second. At the 2.0-second mark the rain sound from the doorway thins; his smile dies, his chin lifts, his eyes move past camera right toward the door, the whites catching a point of firelight; his throat moves once. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: steady rain on tiles; at the 2.0-second mark the rain band from the doorway direction suddenly thins, as if something is blocking it; low fire crackle; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-004.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_005\",\"start\":530,\"length\":175,\"frameCount\":175,\"durationSec\":7,\"prompt\":\"integrated_multimodal_description: [Shot 1] (7 seconds) From <Picture 1>, the supplied first frame — the empty threshold framed by the single door panel, rain falling beyond — the camera pushes in slowly, one meter. A tall figure resolves out of the rain and stops one step outside the threshold: a man about fifty in a faded grey-blue hemp robe with mud-caked hem, soaked through; rain splits above his head and falls around his shoulders. He rests his left hand on the door frame, the little finger missing a joint; a nine-link black iron chain with faint cloud pattern coiled at his waist catches two or three points of orange firelight; his face is half lit, water beaded on his lashes. Both feet never cross the threshold. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain drumming denser and sharper on his body than on the tiles; one soft clink of the chain as his body settles; low fire crackle from inside; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-005.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_006\",\"start\":705,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, the tall man in the faded grey-blue hemp robe with mud-caked hem standing outside the door. <Subject 2> is Linghu Chong in <Picture 1>, seated with the sheathed three-foot-three straight sword across his knees, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference. <Audio 2> is Linghu Chong's voice reference.\\nsummary: The stranger asks who is in the cart, Linghu Chong deflects with courtesy, the same question comes back half a tone lower, and the answer is \\\"my junior sister\\\".\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the over-the-shoulder framing from inside the shrine, the standing man in the right third and the seated man in the foreground stay as supplied; lip movement and micro-expressions follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep, level male voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words. <Audio 2> (appears in [Shot 1]): reference - a young man's voice timbre and speech pace only; same re-performance rule.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame, static camera, over-the-shoulder from inside the shrine, rain the only bright surface behind the standing man. Xiang Wentian (S1), the tall man in the faded grey-blue hemp robe with mud-caked hem standing outside the door, asks in a low level voice: <d>[Chinese] 车里是谁。</d> Linghu Chong (S2), seated with the sheathed three-foot-three straight sword across his knees in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, answers with an easy smile, unhurried: <d>[Chinese] 外头雨大。前辈不进来坐坐？</d> Xiang Wentian (S1) repeats the same words half a tone lower: <d>[Chinese] 我问，车里是谁。</d> The smile halves on Linghu Chong's face; he answers quietly: <d>[Chinese] 我师妹。</d> Xiang Wentian's gaze slides off Linghu Chong toward the cart; Linghu Chong's fingers tighten on the scabbard. Speech finishes by the 5.8-second mark; neither man's lips move on the other's line. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain behind the standing man; low fire crackle; no other voices.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-006.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"},{\"index\":1,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_007\",\"start\":863,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, the tall man in the faded grey-blue hemp robe with mud-caked hem standing in the doorway, brows level, mouth closed. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference. <Audio 2> is Linghu Chong's voice reference; he announces from off-screen and never appears on screen.\\nsummary: An off-screen voice announces the Huashan lineage, the man in the doorway waits, then answers \\\"never heard of it\\\" and looks at the cart.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the close slight low angle, brows level, mouth closed and water beads on the lashes stay as supplied; the single line delivery follows this shot. <Audio 1> (appears in [Shot 1]): reference - a deep, flat male voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words. <Audio 2> (appears in [Shot 1]): reference - a young man's clear voice timbre only; same re-performance rule.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame — close shot, slight low angle, of Xiang Wentian in the faded grey-blue hemp robe with mud-caked hem standing in the doorway, brows level, mouth closed — static camera. Off-screen, Linghu Chong (S2), a young man's clear voice announcing himself, states: <d>[Chinese] 华山派。家师岳不群。大弟子，令狐冲。</d> The on-screen man waits until the voice finishes, lowers his eyelids a touch and answers flatly, without any rise: <d>[Chinese] 不认得。</d> His gaze slides past to the cart; the water drop on his lashes falls. His face changes not at all. The speaker is off-screen; no on-screen lips move during the announcement. Speech finishes by the 5.4-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain streaking behind him; after the answer, rain alone fills the silence.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-007.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"},{\"index\":1,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_008\",\"start\":1021,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, the tall man still one step outside the door in the faded grey-blue hemp robe with mud-caked hem. <Subject 2> is Linghu Chong in <Picture 1>, standing inside with the sheathed three-foot-three straight sword planted point-down, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference. <Audio 2> is Linghu Chong's voice reference.\\nsummary: The stranger demands the girl come down so he can verify her surname; Linghu Chong sets his one condition and raps the scabbard on the brick instead of answering the counter-question.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the interior medium shot, the firelit clearing and the cart head between the two men stay as supplied; speech and the scabbard rap follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep, flat command-voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words. <Audio 2> (appears in [Shot 1]): reference - a young man's voice timbre and speech pace only; same re-performance rule.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame, the camera dollies slowly toward the cart. Xiang Wentian (S1), still one step outside the door in the faded grey-blue hemp robe with mud-caked hem, states in a flat command voice: <d>[Chinese] 她姓岳，叫她下来。我看看。</d> Linghu Chong (S2), standing inside with the sheathed three-foot-three straight sword planted point-down, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, answers without moving: <d>[Chinese] 她点头，我让路。</d> Xiang Wentian (S1) presses: <d>[Chinese] 她要是摇头呢。</d> Linghu Chong gives no answer; he raps the scabbard butt once on the brick floor. Speech finishes by the 5.3-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: steady rain; the rap of scabbard on brick, dead and low, at the end; fire crackle.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-008.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"},{\"index\":1,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_009\",\"start\":1179,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"integrated_multimodal_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied first frame — close-up at waist height, the nine-link black iron chain with faint cloud pattern coiled twice around a man's waist, his left hand missing the last joint of its little finger — the camera tilts down slightly with the falling chain. His thumb pushes the first coil upward; the iron links slide down over each other; the second coil shakes loose, the whole chain drops into his hand, the tail drags ground-ward, and the hooked head knocks once on the worn stone threshold. Water beads on every link. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: two sliding rustles of iron links; then one hard metallic knock of chain head on stone, harder than the rain; steady rain; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-009.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_010\",\"start\":1337,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, a fifty-year-old man in the faded grey-blue hemp robe with mud-caked hem, the nine-link black iron chain with faint cloud pattern in his hand. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference.\\nsummary: He winds the second turn of chain around his wrist, looks up at a hand just outside frame, and says \\\"your hand is shaking\\\".\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the close slightly-below-eye-level framing, the chain hanging loose and the first turn already on the wrist stay as supplied; the winding and the line delivery follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep, level male voice timbre and speech pace only; the model re-performs this shot's line and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied opening frame — close shot slightly below eye level, a fifty-year-old man in the faded grey-blue hemp robe with mud-caked hem, the nine-link black iron chain with faint cloud pattern hanging loose in his hand, the first turn already around his left wrist — static camera. He winds the second turn around his wrist and pulls it snug; as he finishes, his eyelids lift and his eyes fix on a hand just outside frame; at the 3.2-second mark Xiang Wentian (S1) says, quiet and level: <d>[Chinese] 你手在抖。</d> His face settles into the look of a man examining one specific thing. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: two scrapes of the chain winding around the wrist; steady rain; low fire crackle.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-010.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_011\",\"start\":1461,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, standing outside the threshold in the faded grey-blue hemp robe with mud-caked hem, the nine-link black iron chain with faint cloud pattern wound twice around his wrist. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference.\\nsummary: He announces he is taking the person tonight, slides half a step with his toe never crossing the threshold, and names his first opponent: \\\"starting with you\\\".\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the high-corner wide framing, the threshold across the lower third and the positions of everyone inside stay as supplied; the two lines and the half step follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep male voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame — wide shot from a high corner, the stone threshold across the lower third — the camera pushes in very slowly, half a meter. Xiang Wentian (S1), standing outside the threshold in the faded grey-blue hemp robe with mud-caked hem, the nine-link black iron chain with faint cloud pattern wound twice around his wrist, says: <d>[Chinese] 人我今夜带走。</d> He slides half a step forward; his toe stops level with the threshold and never lands beyond it; he lifts his eyes: <d>[Chinese] 从你开始。</d> The chain tail sways once. Inside, everyone stays frozen: Linghu Chong three paces in, holding the sheathed sword across his body in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash; three young disciples pushing up from the floor; the young woman gripping a short sword beside the cart. Speech finishes by the 4.2-second mark; the rest of the shot holds on the hovering toe. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: steady rain; the two lines of dialogue; at the very end one last knock of the iron chain against the threshold stone, then rain and the chain's dying ring only.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-011.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_012\",\"start\":1619,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"integrated_multimodal_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied first frame — a stocky young man in the short indigo cotton jacket with mud-stained trousers leaning through the doorway, right foot leaving the threshold, two one-foot-two short knives held one high one low — the camera tracks laterally half a step at his speed. He drives off his right foot, launches through the doorway, and lands in the mud of the firelit slab, muddy water spraying from his left foot; the knives settle into their high-low guard, his weight pressed forward. His shadow is thrown large on the wall behind him. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: at the very start one whoosh of the iron chain carried over from the previous scene; his foot slapping the mud; two short hisses of the knives cutting rain air; steady rain; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-012.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_013\",\"start\":1743,\"length\":124,\"frameCount\":124,\"durationSec\":4,\"prompt\":\"integrated_multimodal_description: [Shot 1] (4 seconds) From <Picture 1>, the supplied first frame — extreme close-up, the young man's right wrist turned out, knife tip a foot from the standing man's chest, the chain hook still in the air at frame right — static camera, the contact point always sharp. The hooked end of the nine-link black iron chain with faint cloud pattern whips down and strikes the outside of the wrist; the wrist snaps upward and outward, tendons standing; the short knife leaves his open fingers and flies out of the top-left of frame; water sprays off the impact. The wrist stays where it snapped, fingers springing open and closing. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: one whoosh of the chain, a dull smack of iron on flesh and bone — no metallic ring — then off-screen the knife thudding into mud; steady rain; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-013.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_014\",\"start\":1867,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"subject_definitions: <Subject 1> is Lu Dayou in <Picture 1>, the stocky young man in the short indigo cotton jacket with mud-stained trousers. <Picture 1> is the opening composition of this shot; the blurred black shoulder in the left foreground belongs to Linghu Chong and never comes into focus. <Audio 1> is Linghu Chong's voice reference; he speaks from behind the foreground shoulder and is never seen sharp.\\nsummary: Lu Dayou sits into the mud, wipes his face and asks whether the arm is broken; Linghu Chong's answer comes from inside the doorway.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the medium framing across the threshold, the blurred foreground shoulder and Lu Dayou's mid-fall position stay as supplied; the fall's completion and speech follow this shot. <Audio 1> (appears in [Shot 1]): reference - a young man's voice timbre and speech pace only; the model re-performs this shot's line and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied opening frame — medium shot across the threshold, the blurred black shoulder of a man holding the left foreground motionless — static camera. Lu Dayou (S3), the stocky young man in the short indigo cotton jacket with mud-stained trousers, loses his footing; his legs give and he sits into the mud, muddy water splashing his round face; he wipes it with his working left hand and looks up: <d>[Chinese] 手断了？</d> The answer, from Linghu Chong (S2) inside the doorway, off his blurred shoulder, is a young man's even voice: <d>[Chinese] 麻。整条胳膊像有人往里灌沙子。</d> Lu Dayou answers through the mud, half a grin. Xiang Wentian, the tall man in the faded grey-blue hemp robe with mud-caked hem, half-steps forward, the nine-link black iron chain with faint cloud pattern swaying at his side. Speech finishes by the 3.8-second mark; the foreground shoulder never moves. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: the splat of a body sitting into mud; rain; the two dialogue lines; the wet sway of the chain.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-014.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_015\",\"start\":1991,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"subject_definitions: <Subject 1> is Liang Fa in <Picture 1>, the square-faced man in the indigo cotton robe cinched at the waist. <Subject 2> is Xiang Wentian in <Picture 1>, side-on in the faded grey-blue hemp robe with mud-caked hem, the nine-link black iron chain with faint cloud pattern at his right side. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference.\\nsummary: Liang Fa states his terms with the sword at chest height; Xiang Wentian answers four flat words and does not move his weight.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the medium two-shot in the muddy courtyard with the slab of orange firelight between the men stays as supplied; the raised sword and speech follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep, uninflected male voice timbre and speech pace only; the model re-performs this shot's line and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied opening frame — medium two-shot in the muddy courtyard, a slab of orange firelight between the two men — static camera. Liang Fa (S5), the square-faced man in the indigo cotton robe cinched at the waist, raises his thick-backed single sword to chest height, point down, weight sinking, and states his terms: <d>[Chinese] 要么让，要么挡。</d> Xiang Wentian (S1), side-on in the faded grey-blue hemp robe with mud-caked hem, the nine-link black iron chain with faint cloud pattern hanging at his right side, answers without inflection: <d>[Chinese] 我不挡。我绞。</d> Liang Fa's jaw tightens; the blade presses down half an inch and stops; Xiang Wentian's weight stays on his back foot. Speech finishes by the 4.0-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain threading visibly through the firelight; the two dialogue lines; no other sound.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-015.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_016\",\"start\":2115,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"integrated_multimodal_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied first frame — close-up of the blade driving straight in while the chain still hangs, its tail dragging a line through the mud — the camera tracks slightly sideways, keeping the loop inside frame. The nine-link black iron chain with faint cloud pattern whips one full loop from right to left; the loop closes over the spine of the sword and cinches tight, three links biting the steel; the blade is wrenched left and the swordsman's wrist twists to an unnatural angle, knuckles white. Water sprays off the links. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: two airy whooshes of the circling chain; one short hard clack of iron closing on iron; steady rain; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-016.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_017\",\"start\":2239,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"integrated_multimodal_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied first frame — Liang Fa in the indigo cotton robe cinched at the waist, feet slipping, body going horizontal — the camera whip-pans left, following his flight, and settles as he hits. His left shoulder strikes the wooden pillar; dust and flakes of old plaster sift down. The thick-backed single sword stays in his hand, its spine bent into a slight arc. He sags against the pillar, shoulder collapsed a little, feet finding the mud. The taut nine-link black iron chain with faint cloud pattern runs out of frame left in the other man's grip. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: one heavy dull thud of body on pillar; grit and plaster pattering down; a grunt pressed down in his throat; steady rain; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-017.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_018\",\"start\":2397,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"integrated_multimodal_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied first frame — Shi Daizi in the dark teal short jacket with narrow sleeves pressed along the east wall, hooks held one forward one reversed, the blurred back of the tall man ahead — the camera tracks sideways at his exact speed. He moves low and fast, shoulders dropped, toes touching before heels, utterly silent; he glides to three paces behind Xiang Wentian's right rear — the man in the faded grey-blue hemp robe with mud-caked hem — and stops, crouched to his lowest, the right hook's point lifting only in the final step toward the back of the knee. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: almost no footsteps; rain half blocked by the wall, sounding emptier; the faintest hiss of the hook point through air; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-018.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_019\",\"start\":2521,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, the tall man in the faded grey-blue hemp robe with mud-caked hem. <Subject 2> is Shi Daizi, the slight young man in the dark teal short jacket with narrow sleeves. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference.\\nsummary: Xiang Wentian slips the hook, cracks the young man's knee pit with the backhand chain, then pins the hook into the mud with one finger and delivers his verdict on the weapon and its owner.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the low-angle medium-close framing, the hook short of the knee and the chain whipping back to the sill stay as supplied; the sidestep, the strike and the line follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep male voice timbre and speech pace only; the model re-performs this shot's line and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame — the slight young man's hook less than a foot from the back of the standing man's knee, the chain's hooked end just whipping backward into the door sill — static camera, low angle. Xiang Wentian (S1), in the faded grey-blue hemp robe with mud-caked hem, sidesteps rearward off his anchored nine-link black iron chain with faint cloud pattern a half-beat faster than the hook, which cuts empty air; the backhand chain cracks Shi Daizi's left knee pit; both legs fold and the slight young man in the dark teal short jacket kneels into the mud, knees sinking an inch, both hooks still raised. The hook tip pushes forward two inches; Xiang Wentian sets one finger flat on the spine of the nearest hook and presses it back down into the mud, little by little, then says, without looking down for long: <d>[Chinese] 钩子不错。人不行。</d> Speech finishes by the 5.6-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: the chain's knock on the door sill first; the hook's empty hiss; a dull crack of chain on the knee pit; steady rain; the dialogue line.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-019.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_020\",\"start\":2679,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"integrated_multimodal_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied first frame — wide shot framed by the shrine doorway, the firelit slab holding three downed young men, each still gripping his weapon — the camera pushes slowly toward the threshold. Xiang Wentian, the tall man in the faded grey-blue hemp robe with mud-caked hem, steps back one pace from the kneeling man; the loose end of the nine-link black iron chain with faint cloud pattern drops into standing water and drags, cutting a third groove through the mire. None of the three downed men moves beyond breathing. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: only rain; three men breathing — one rough, two held; the wet viscous drag of the chain through mud; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-020.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_021\",\"start\":2803,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Linghu Chong in <Picture 1>, just inside the doorway in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, the sheathed three-foot-three straight sword planted point-down beside him. <Picture 1> is the opening composition of this shot. <Audio 1> is Linghu Chong's voice reference. <Audio 2> is Xiang Wentian's voice reference; he answers from off-frame and is never on screen.\\nsummary: Linghu Chong reads the three bodies in the yard and states two observations — the man did not kill, and he did not pant — and the off-frame answer confirms the first.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the close framing inside the doorway with firelight from below and black rain behind stay as supplied; the eye movement and speech follow this shot. <Audio 1> (appears in [Shot 1]): reference - a young man's measured voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words. <Audio 2> (appears in [Shot 1]): reference - a deep, flat male voice timbre only; same re-performance rule.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame — close shot of Linghu Chong just inside the doorway, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, the sheathed three-foot-three straight sword planted point-down beside him — static camera. His eyes come back from the three bodies in the yard and settle at chest height on the man off-frame. He says, quiet and measured: <d>[Chinese] 你没杀他们。</d> Xiang Wentian (S1), off-frame, flat: <d>[Chinese] 不值得杀。</d> A 0.6-second pause of rain only, then Linghu Chong (S2): <d>[Chinese] 你也没喘。三场打完，喘气跟进门一样。</d> His jaw sets, like a man waiting to be contradicted; his breathing deepens. Speech finishes by the 5.9-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: steady rain; the three dialogue lines with the rain-only pause between; low fire crackle.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-021.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"},{\"index\":1,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_022\",\"start\":2961,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, the tall man at the far edge of the firelit slab, the nine-link black iron chain with faint cloud pattern hanging to the ground. <Subject 2> is Linghu Chong in <Picture 1>, just inside the threshold, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference.\\nsummary: Xiang Wentian names his opponent and asks for the sword; Linghu Chong answers with his thumb, opening the scabbard mouth half an inch.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the medium two-shot across the firelit slab, chain to the ground and thumb at the scabbard mouth stay as supplied; the push-in and the scrape follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep male voice timbre and speech pace only; the model re-performs this shot's line and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame — medium two-shot across the firelit slab, the tall man at its far edge, Linghu Chong just inside the threshold — the camera pushes in very slowly. Xiang Wentian (S1), in the faded grey-blue hemp robe with mud-caked hem, the nine-link black iron chain with faint cloud pattern hanging to the ground, says the name like a verdict: <d>[Chinese] 华山令狐冲。剑呢。</d> Linghu Chong (S2), in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, answers with his thumb: it pushes the mouth of the sheathed three-foot-three straight sword open half an inch; a thin line of steel shows and throws firelight up onto the standing man's face, which does not move. Speech finishes by the 2.6-second mark; the scrape of steel carries into the next scene. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain thinning into mist; the dialogue line; at the end the long metallic scrape of the scabbard mouth opening.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-022.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_023\",\"start\":3119,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"integrated_multimodal_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied first frame — close-up of the scabbard mouth already open an inch, the shallow scratch on the blade spine just showing — the camera tilts up at exactly the speed of the draw. The three-foot-three straight sword slides the rest of the way free of its plain ebony scabbard; warm firelight runs up the steel, crosses the old scratch, and dies short of the tip, where the mist swallows it; the blade levels in front of him, beaded with water, point toward the yard; the scabbard settles into his left hand. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: the scrape of steel leaving wood, rising then ending in one faint ring; rain reduced to a fine mist hiss; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-023.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_024\",\"start\":3243,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"integrated_multimodal_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied first frame — wide shot, two men eight paces apart, mist drifting through the shrunken slab of light — static camera; the audience must be able to count the eight paces. Neither man moves. The hook of the nine-link black iron chain with faint cloud pattern hangs one inch off the ground by the standing man's right foot and bobs a finger's width with his breathing; mist drifts from frame right and lays a pale layer over the empty ground between them. Linghu Chong, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, raises his sword point one inch to wrist height at the end. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain shrunk to a fine hiss in the mist; two audible breathing rhythms, one deep one shallow; each tiny chain movement a faint tick; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-024.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_025\",\"start\":3401,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"subject_definitions: <Subject 1> is Linghu Chong in <Picture 1>, seen from behind his own shoulder in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash. <Picture 1> is the opening composition of this shot; the rising chain and its owner occupy the far side of the frame. <Audio 1> is Linghu Chong's voice reference. <Audio 2> is Xiang Wentian's voice reference; he stays beyond the opposite edge of frame.\\nsummary: Linghu Chong calls the opening — right shoulder — the chain rips up and misses wide because the blade was already on its line, and the correction comes back: it was the left foot.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the over-the-shoulder medium-close framing, the planted front foot and the rising chain stay as supplied; the parry-by-point and the step follow this shot. <Audio 1> (appears in [Shot 1]): reference - a young man's low, watchful voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words. <Audio 2> (appears in [Shot 1]): reference - a deep male voice timbre and speech pace only; same re-performance rule.\\ndetailed_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied opening frame — medium close shot from behind Linghu Chong's shoulder, the chain hook already rising — the camera pulls back slightly, half a foot, keeping the chain's arc inside frame. Linghu Chong (S2), in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, says first, low, watching the shoulder: <d>[Chinese] 前辈起手，先动右肩。</d> The chain's hook rips upward toward his face; his blade has already tilted half an inch, its tip touching the line the chain must travel; the hook of the nine-link black iron chain with faint cloud pattern grazes the flat of the blade and whirls away wide to the right of frame; his left foot steps inside the other man's guard. Xiang Wentian (S1) answers at the end: <d>[Chinese] 你看错一点。先动的是左脚。</d> Speech finishes by the 4.9-second mark; the strike lands by the 3.0-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: the chain's rising whoosh; the emptier hiss as it misses wide; rain; the two dialogue lines placed at the two ends of the action.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-025.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"},{\"index\":1,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_026\",\"start\":3525,\"length\":124,\"frameCount\":124,\"durationSec\":4,\"prompt\":\"integrated_multimodal_description: [Shot 1] (4 seconds) From <Picture 1>, the supplied first frame — extreme close-up of the blade edge resting against the outside of a soaked grey-blue hemp cuff — static camera; the cloth does the moving. The edge of the three-foot-three straight sword finishes a diagonal slice along the sleeve; the wet hemp splits from wrist to elbow, two flaps folding down to reveal a forearm covered in old scars; no blood; the arm itself does not otherwise move. Rain beads on the torn cloth. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: one light tearing rasp of cloth; the dying ring of the blade; steady rain; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-026.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_027\",\"start\":3649,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"integrated_multimodal_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied first frame — close-up of the chain sweeping flat for the waist, links spread and the narrow gaps visible, the sword level before him — the camera dips slightly, following the point. The sword goes neither horizontal nor downward: it stabs diagonally into one narrow gap between links and levers up; two links jump out of line; the nine-link black iron chain with faint cloud pattern buckles into a crooked arc and loses half a foot of reach, two segments hanging on the blade. Water sprays off the iron. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: one scattered clatter of disordered links, looser than every iron sound before it; steady rain; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-027.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_028\",\"start\":3773,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"integrated_multimodal_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied first frame — Xiang Wentian's wrist turning, the chain dividing in his grip — the camera tracks slightly sideways with the retreat. The nine-link black iron chain with faint cloud pattern splits into three travelling lines at once: the hooked head high at the sword hand, the middle flat across knee height, the loose tail low behind the neck. Linghu Chong, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash, retreats half a pace and finds the rear line already falling along his retreat path, three inches from his nape; his rear foot is planted and there is nowhere left to go. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: three whooshes stacked into one sheet of sound; his rear foot punching the mud; rain through mist; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-028.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_029\",\"start\":3931,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"integrated_multimodal_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied first frame — medium side-on shot, both beats must land inside this one take — static camera. The chain cracks against the raised blade of the three-foot-three straight sword; the shock drives through the pommel into Linghu Chong's palm; the old crack across his tiger's mouth splits open and the blade sways half a foot. He opens all five fingers, lets the sword turn half a revolution in his open palm until the pommel leads, and rams it back-handed into the soft gap beneath the other man's left ribs. Xiang Wentian, in the faded grey-blue hemp robe with mud-caked hem, folds an inch backward, his nine-link black iron chain with faint cloud pattern dropping toward the mud; Linghu Chong's right hand trembles, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: one bright clang of chain on blade; a quick friction whisper of the turning grip; a dull thud of pommel into ribs; then one suppressed grunt; rain; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-029.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_030\",\"start\":4089,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"integrated_multimodal_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied first frame — tight side-on two-shot, four hands meeting at the blade — the camera pushes in very slowly, one inch, so the turns read tighter and tighter. Xiang Wentian lifts the nine-link black iron chain with faint cloud pattern and winds it around the blade of the three-foot-three straight sword — one turn, two, three, each tighter than the last; both men pull at once and four hands twist together at arm's length, wrists braced against wrists; neither weapon can come free. Rain runs down both pairs of hands, carrying a thin thread of blood off Linghu Chong's opened tiger's mouth. Linghu Chong wears the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash; Xiang Wentian the faded grey-blue hemp robe with mud-caked hem. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: continuous friction of iron winding on steel; both men's breathing turning rough for the first time together; rain ticking on the iron; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-030.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_031\",\"start\":4247,\"length\":124,\"frameCount\":124,\"durationSec\":4,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, his face above the wound blade, the two fresh chips bright at centre frame between the three turns of the nine-link black iron chain with faint cloud pattern. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference. <Audio 2> is Linghu Chong's voice reference; he answers from outside this close frame.\\nsummary: Xiang Wentian's eyes travel down to the two fresh chips on the blade, his shoulder lets go an inch, and he asks how long the sword has been trained; the answer is half a year.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the close slightly-low framing, the man's face above and the chipped blade between the chain turns stay as supplied; the gaze drop and speech follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep male voice timbre and speech pace only; the model re-performs this shot's line and carries none of the reference clip's own words. <Audio 2> (appears in [Shot 1]): reference - a young man's voice timbre and speech pace only; same re-performance rule.\\ndetailed_description: [Shot 1] (4 seconds) From <Picture 1>, the supplied opening frame — close shot, the fifty-year-old man's face above, the wound blade between the three turns of chain at centre frame, two fresh chips bright against the old metal — static camera; the whole weight is on the drop of his gaze. Xiang Wentian's (S1) eyes leave Linghu Chong's face and travel down to the chips on the three-foot-three straight sword; his breathing slows and his shoulder lets down an inch, though the nine-link black iron chain with faint cloud pattern stays wound and his hands stop pulling. He asks: <d>[Chinese] 练了多久。</d> After 1.2 seconds of rain only, Linghu Chong (S2) answers: <d>[Chinese] 半年。</d> Speech finishes by the 3.8-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain on the iron; the two dialogue lines separated by the rain-only gap; both men's breathing.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-031.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"},{\"index\":1,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_032\",\"start\":4371,\"length\":124,\"frameCount\":124,\"durationSec\":5,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, the tall man in the faded grey-blue hemp robe with mud-caked hem, the chain still wound on the blade, both men's hands straining. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference.\\nsummary: Xiang Wentian lets the chain slide off into the mud, winds it back around his waist, and gives his name as the second turn seats.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the medium framing with the wound chain and both men's straining hands stay as supplied; the release, the winding and the line follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep male voice timbre and speech pace only; the model re-performs this shot's line and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (5 seconds) From <Picture 1>, the supplied opening frame — medium shot, the chain still wound on the blade, both men's hands straining — the camera dips with the falling chain, then rises with the winding. Xiang Wentian's (S1) wrist goes slack; the three turns of the nine-link black iron chain with faint cloud pattern slide off the three-foot-three straight sword and drop into the mud. He scoops it up and winds it back around his waist of the faded grey-blue hemp robe with mud-caked hem, first turn, second turn; as the second turn seats he says: <d>[Chinese] 光明右使，向问天。</d> Three paces away Linghu Chong still holds his sword up at the end of his reach, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash; he does not lower it. Speech finishes by the 4.2-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: the long slide of iron off steel; one muffled drop into mud; two winding rustles; rain; the fire down to embers.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-032.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_033\",\"start\":4495,\"length\":124,\"frameCount\":124,\"durationSec\":4,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian's left hand in <Picture 1>, the open hand at chest height with the little finger's flat stump not yet facing the light. <Picture 1> is the opening composition of this shot. <Audio 1> is Xiang Wentian's voice reference.\\nsummary: He raises the hand, turns the smooth old amputation into the light, and states where it happened: he bit it off himself in the Meizhou dungeon.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the extreme close-up of the open left hand, the calloused palm and the stump's angle stay as supplied; the raise, the turn and the line follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep male voice timbre and speech pace only; the model re-performs this shot's line and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (4 seconds) From <Picture 1>, the supplied opening frame — extreme close-up of the open left hand at chest height, the little finger's flat stump not yet facing the light — static camera. He raises the hand a little higher, turning the smooth old amputation square into the light; the flat stump catches a soft highlight; the palm is calloused; the other four fingers curl slightly and still. Xiang Wentian (S1) speaks quietly, a man stating an old fact: <d>[Chinese] 这个，是我自己在梅庄地牢里咬断的。</d> The line finishes by the 3.5-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain far off and low; the dialogue line; no other sound.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-033.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_034\",\"start\":4619,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Xiang Wentian in <Picture 1>, standing at the threshold edge, chain rewound at the waist of the faded grey-blue hemp robe with mud-caked hem. <Picture 1> is the opening composition of this shot; the stone stair descends into black pines behind him. <Audio 1> is Xiang Wentian's voice reference.\\nsummary: He leaves two sentences about the sword and the person he is not taking, then turns and walks down the stair into the mist.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the wide framing from inside the doorway, the threshold edge and the stair into the pines stay as supplied; the two lines and the leaving follow this shot. <Audio 1> (appears in [Shot 1]): reference - a deep male voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame — wide shot from inside the shrine doorway, the stone stair descending into black pines — fixed camera; he does the leaving, and the audience sees how slow it is. Xiang Wentian (S1), chain rewound at the waist of the faded grey-blue hemp robe with mud-caked hem, stands at the threshold edge and says: <d>[Chinese] 这套剑不该在你手里。也不该在你身上烂掉。</d> Then, quieter: <d>[Chinese] 人我今夜不带了。</d> He turns, crosses the threshold and walks down the broken stone stair; the nine-link black iron chain with faint cloud pattern sways once at his waist — one sound — then the rain takes it; his grey figure thins into the mist and is gone below. Speech finishes by the 5.6-second mark; the last of the shot is rain only. In the foreground Linghu Chong's back never moves, in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: the two dialogue lines; rain swelling as he leaves; one single chain sway at the waist; water streaming down the stair steps.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-034.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/向问天-音色参考-男生-1-低沉版.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_035\",\"start\":4777,\"length\":124,\"frameCount\":124,\"durationSec\":4,\"prompt\":\"integrated_multimodal_description: [Shot 1] (4 seconds) From <Picture 1>, the supplied first frame — medium shot of the cart, the blue curtain down with only its two-finger gap, black inside — static camera; the curtain does the moving. One finger lifts the hem from inside; the whole curtain swings up and seats on the small brass hook; it sways once and stills. Sitting inside is a pale young woman in a plain undyed cross-collar robe with loose unbound hair, hands folded in her lap; grey dawn light leaking through the broken roof falls across her forehead. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: one bright tick of the brass hook against the cloth ring; the soft slap of the settling canvas; rain thinned to mist; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-035.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_036\",\"start\":4901,\"length\":158,\"frameCount\":158,\"durationSec\":6,\"prompt\":\"subject_definitions: <Subject 1> is Ren Yingying in <Picture 1>, the pale young woman in the plain undyed cross-collar robe with loose unbound hair, hands folded in her lap, seated inside the cart. <Picture 1> is the opening composition of this shot. <Audio 1> is Ren Yingying's voice reference. <Audio 2> is Linghu Chong's voice reference; he answers from off-frame below and is never on screen.\\nsummary: She names the stranger and says he did not come for her; the off-frame answer is \\\"I know\\\"; her last line sets the road north for tomorrow.\\nretention_analysis: <Picture 1> (appears in [Shot 1]): fully_preserved - the close framing inside the cart, hands folded and the gaze toward the door stay as supplied; the push-in and speech follow this shot. <Audio 1> (appears in [Shot 1]): reference - a calm young woman's voice timbre and speech pace only; the model re-performs this shot's lines and carries none of the reference clip's own words. <Audio 2> (appears in [Shot 1]): reference - a young man's low, flat voice timbre only; same re-performance rule.\\ndetailed_description: [Shot 1] (6 seconds) From <Picture 1>, the supplied opening frame — close shot inside the cart, the pale young woman in the plain undyed cross-collar robe with loose unbound hair, hands folded in her lap — the camera pushes in very slowly, ending on her eyes. Ren Yingying (S7), a calm unhurried woman's voice, her face barely moving as she speaks: <d>[Chinese] 他叫向问天。他不是来接我的。</d> Linghu Chong (S2) answers from off-frame below, low and flat; he is never on screen and his lips are never visible: <d>[Chinese] 我知道。</d> Ren Yingying (S7) delivers the last line at the 4.5-second mark, her gaze fixed on the hand below the bottom of frame: <d>[Chinese] 明天，我们往北走。</d> After it her head tilts slightly, her chin lifting half an inch; her mouth does not smile. Speech finishes by the 5.4-second mark. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: rain as a distant wash; the cart canvas settling faintly; the three dialogue lines.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-036.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[{\"index\":0,\"audioFile\":\"剑不认人/任盈盈-音色参考-女生1.wav\",\"subfolder\":\"\",\"type\":\"input\"},{\"index\":1,\"audioFile\":\"剑不认人/令狐冲-音色参考-男生-1.wav\",\"subfolder\":\"\",\"type\":\"input\"}],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}},{\"id\":\"ep001_037\",\"start\":5059,\"length\":124,\"frameCount\":124,\"durationSec\":4,\"prompt\":\"integrated_multimodal_description: [Shot 1] (4 seconds) From <Picture 1>, the supplied first frame — wide shot from a high corner, everything already in place — fixed camera to the final frame, the only fully still closing shot of the episode. Linghu Chong stands exactly on the threshold, motionless, right arm hanging, blood threading down between the fingers of his right hand in the worn grey-blue cotton robe, right sleeve rolled to the elbow, black cloth sash; one drop falls from his fingertips into the mud below and leaves a small dimple. Inside, the ember bed collapses at one corner and dulls half a shade; behind him the cart with its blue curtain hooked open, the pale woman seated. Dawn grey lays the threshold out as one pale horizontal line. No subtitles, captions or overlaid dialogue text appear at any moment.\\noverall_soundscape: eave water dripping into the wheel rut at about 1.2-second intervals, each drop distinct; one very faint tick of the collapsing ember; no dialogue.\\nnon_diegetic_music: N/A\",\"negativePrompt\":\"\",\"taskType\":\"r2v\",\"refs\":[{\"index\":0,\"imageFile\":\"剑不认人/SHOT-EP001-037.png\",\"subfolder\":\"\",\"type\":\"input\"}],\"refAudios\":[],\"refVideos\":[],\"genImage\":{\"imageFile\":\"\",\"fileName\":\"\"}}],\"timelineMode\":\"prompt_batch\",\"width\":1344,\"height\":576,\"refMaxSize\":1344,\"gen\":{\"defaultFrameCount\":124}}",
+    "高级采样 Advanced",
+    4,
+    "res_multistep",
+    "simple",
+    12.0,
+    3.0,
+    "性能 Performance"
+   ],
+   "title": "MiniMax H3 Director（唱歌对口型）"
+  },
+  {
+   "id": 16,
+   "type": "MarkdownNote",
+   "pos": [
+    959,
+    830
+   ],
+   "size": [
+    760,
+    460
+   ],
+   "flags": {},
+   "order": 12,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "唱歌对口型 · 使用说明",
+   "properties": {},
+   "widgets_values": [
+    "## 唱歌对口型使用说明（r2v + 参考音频）\n\n1. 在 **MiniMax H3 Director** 节点的时间线上传 **正脸人物参考图**（建议短边 ≥ 768px，光线均匀）→ 提示词中用 `<Picture 1>` 引用。\n2. 上传 **歌曲音频** 作为参考音频（建议人声干声，混音请先分离人声）→ 提示词中用 `<Audio 1>` 引用。\n3. 参考音频经 Audio VAE(32kHz) 编码进 AV latent，**驱动画面口型与节律**（音画一次推理联合生成，无需额外对口型模型）。\n4. **声音输出模式**（导演台节点里切换）：\n   - `generate`（默认）＝ 模型跟随参考音频生成演唱声，可改词；\n   - `source`（用原声）＝ 直接输出参考音频原曲，口型仍对齐；此模式下歌词必须与音频一致，否则口型错位。\n5. **时长**：帧数须满足 5 + 17n（24fps），在时间线上拖动或改 total_frames 自动折算；单段上限约 150 秒。\n6. 分辨率：H3 原生短边 768px，最高 768×1344，宽高须为 32 的整数倍（参考下方 Size Settings 表）。\n7. 加速模块（SageAttention）默认保留，显存吃紧可在低显存场景关闭。\n\n参考文档：插件 docs/r2v-source-audio.md · 原工作流：minimax_h3_director_加速版_清理版.json（未改动）"
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  },
+  {
+   "id": 17,
+   "type": "LoraLoaderModelOnly",
+   "pos": [
+    -720,
+    -110
+   ],
+   "size": [
+    360,
+    82
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 22
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "MODEL",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      24
+     ]
+    }
+   ],
+   "title": "Turbo 4step LoRA (ref2v)",
+   "properties": {
+    "Node name for S&R": "LoraLoaderModelOnly"
+   },
+   "widgets_values": [
+    "minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors",
+    1.0
+   ]
+  }
+ ],
+ "links": [
+  [
+   9,
+   6,
+   0,
+   7,
+   0,
+   "VIDEO"
+  ],
+  [
+   13,
+   4,
+   0,
+   12,
+   2,
+   "VAE"
+  ],
+  [
+   15,
+   3,
+   0,
+   12,
+   1,
+   "VAE"
+  ],
+  [
+   16,
+   2,
+   0,
+   12,
+   3,
+   "CLIP"
+  ],
+  [
+   17,
+   12,
+   0,
+   6,
+   0,
+   "IMAGE"
+  ],
+  [
+   18,
+   12,
+   1,
+   6,
+   1,
+   "AUDIO"
+  ],
+  [
+   19,
+   12,
+   2,
+   6,
+   2,
+   "FLOAT"
+  ],
+  [
+   20,
+   12,
+   5,
+   8,
+   0,
+   "STRING"
+  ],
+  [
+   21,
+   14,
+   0,
+   15,
+   0,
+   "MODEL"
+  ],
+  [
+   22,
+   1,
+   0,
+   17,
+   0,
+   "MODEL"
+  ],
+  [
+   23,
+   15,
+   0,
+   12,
+   0,
+   "MODEL"
+  ],
+  [
+   24,
+   17,
+   0,
+   14,
+   0,
+   "MODEL"
+  ]
+ ],
+ "groups": [
+  {
+   "id": 1,
+   "title": "模型加载 (MiniMax H3)",
+   "bounding": [
+    -760,
+    40,
+    440,
+    560
+   ],
+   "color": "#3f789e",
+   "flags": {}
+  },
+  {
+   "id": 2,
+   "title": "MiniMax H3 Director（唱歌对口型）",
+   "bounding": [
+    -320,
+    40,
+    1120,
+    960
+   ],
+   "color": "#8A8",
+   "flags": {}
+  },
+  {
+   "id": 3,
+   "title": "输出",
+   "bounding": [
+    959.7884550354713,
+    38.736816353831586,
+    760,
+    760
+   ],
+   "color": "#b58",
+   "flags": {}
+  },
+  {
+   "id": 4,
+   "title": "加速模块（用就开启，不用可以关掉）",
+   "bounding": [
+    -232.17580618807037,
+    -257.8403935307404,
+    696.8626780790273,
+    222.74509026022088
+   ],
+   "color": "#3f789e",
+   "flags": {}
+  }
+ ],
+ "config": {},
+ "extra": {
+  "frontendVersion": "1.23.0",
+  "note": "MiniMax H3 Director · r2v 唱歌对口型（派生自 加速版_清理版，原文件未改动）",
+  "ds": {
+   "scale": 0.6386175807663602,
+   "offset": [
+    2349.045293492695,
+    575.9188749760433
+   ]
+  }
+ },
+ "version": 0.4
+}

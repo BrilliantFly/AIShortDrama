@@ -1,0 +1,852 @@
+{
+ "id": null,
+ "revision": 0,
+ "last_node_id": 35,
+ "last_link_id": 15,
+ "nodes": [
+  {
+   "id": 10,
+   "type": "LoadImage",
+   "pos": [
+    40,
+    40
+   ],
+   "size": [
+    340,
+    420
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "image",
+     "type": "COMBO",
+     "widget": {
+      "name": "image"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      3
+     ]
+    },
+    {
+     "name": "MASK",
+     "type": "MASK",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "LoadImage"
+   },
+   "widgets_values": [
+    "底板-脚全.png",
+    "image"
+   ],
+   "title": "★图片1：底板（第一段产物，放 input 目录）"
+  },
+  {
+   "id": 11,
+   "type": "LoadImage",
+   "pos": [
+    40,
+    520
+   ],
+   "size": [
+    340,
+    420
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "image",
+     "type": "COMBO",
+     "widget": {
+      "name": "image"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      4
+     ]
+    },
+    {
+     "name": "MASK",
+     "type": "MASK",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "LoadImage"
+   },
+   "widgets_values": [
+    "ref_band_flat.png",
+    "image"
+   ],
+   "title": "★图片2：全身参考（已压平光影，prep_ref2.py 生成）"
+  },
+  {
+   "id": 12,
+   "type": "LoadImage",
+   "pos": [
+    40,
+    1000
+   ],
+   "size": [
+    340,
+    420
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "image",
+     "type": "COMBO",
+     "widget": {
+      "name": "image"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      5
+     ]
+    },
+    {
+     "name": "MASK",
+     "type": "MASK",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "LoadImage"
+   },
+   "widgets_values": [
+    "ref_face_hd.png",
+    "image"
+   ],
+   "title": "★图片3：高清人脸参考（prep_ref3.py 生成，决定像不像）"
+  },
+  {
+   "id": 20,
+   "type": "CLIPLoader",
+   "pos": [
+    430,
+    700
+   ],
+   "size": [
+    340,
+    170
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "clip_name"
+     },
+     "link": null
+    },
+    {
+     "name": "type",
+     "type": "COMBO",
+     "widget": {
+      "name": "type"
+     },
+     "link": null
+    },
+    {
+     "name": "device",
+     "type": "COMBO",
+     "widget": {
+      "name": "device"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      1,
+      6
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPLoader"
+   },
+   "widgets_values": [
+    "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+    "qwen_image",
+    "default"
+   ],
+   "title": "CLIP (type必须是 qwen_image)"
+  },
+  {
+   "id": 21,
+   "type": "VAELoader",
+   "pos": [
+    430,
+    920
+   ],
+   "size": [
+    340,
+    90
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      2,
+      7,
+      14
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAELoader"
+   },
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "title": "VAE (qwen_image)"
+  },
+  {
+   "id": 22,
+   "type": "UNETLoader",
+   "pos": [
+    430,
+    1060
+   ],
+   "size": [
+    340,
+    110
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "unet_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "unet_name"
+     },
+     "link": null
+    },
+    {
+     "name": "weight_dtype",
+     "type": "COMBO",
+     "widget": {
+      "name": "weight_dtype"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      8
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "UNETLoader"
+   },
+   "widgets_values": [
+    "qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+    "default"
+   ],
+   "title": "Qwen-Image-Edit 2509"
+  },
+  {
+   "id": 23,
+   "type": "ModelSamplingAuraFlow",
+   "pos": [
+    820,
+    1060
+   ],
+   "size": [
+    320,
+    80
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 8
+    },
+    {
+     "name": "shift",
+     "type": "FLOAT",
+     "widget": {
+      "name": "shift"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      9
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "ModelSamplingAuraFlow"
+   },
+   "widgets_values": [
+    3.0
+   ]
+  },
+  {
+   "id": 30,
+   "type": "TextEncodeQwenImageEditPlus",
+   "pos": [
+    820,
+    40
+   ],
+   "size": [
+    480,
+    380
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 1
+    },
+    {
+     "name": "prompt",
+     "type": "STRING",
+     "widget": {
+      "name": "prompt"
+     },
+     "link": null
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 2
+    },
+    {
+     "name": "image1",
+     "type": "IMAGE",
+     "link": 3
+    },
+    {
+     "name": "image2",
+     "type": "IMAGE",
+     "link": 4
+    },
+    {
+     "name": "image3",
+     "type": "IMAGE",
+     "link": 5
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      10
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "TextEncodeQwenImageEditPlus"
+   },
+   "widgets_values": [
+    "参考图1是一张模特参考板：左侧面部特写，右上方三张全身照（正面、侧面、背面），右下方六格表情。参考图2是目标人物的全身照，参考图3是她清晰的脸部特写。\n请只输出一张修改后的参考板：把参考图1中所有人物的脸换成参考图3这张脸——这是最高优先级要求。她是一位亚洲年轻女性：杏眼内双眼型、眼神温柔、眉毛平直偏浓、鼻梁不高鼻头小巧圆润、唇形小巧饱满、脸型是偏短的鹅蛋脸、下巴略尖、肤色白皙干净。左侧大特写必须与参考图3是同一张脸，五官位置、大小、比例逐项对应，不要美化、不要改动脸型。发型与发色以参考图2为准（浅棕色及肩发）。\n服装（浅蓝灰一字肩针织上衣、浅蓝牛仔裤、白色运动鞋）、参考板的分栏版式、每个人物的姿态与构图、浅灰背景、灯光全部保持不变；三张全身照和六格表情必须是同一个人。\n光线要求：所有人物用室内影棚柔光平光，均匀无方向性，中性白平衡，自然肤色，无油光无泛红。\n不要输出参考图2、3的画面，不要保留它们的背景、构图和文字，不要改变分栏数量。\n写实照片，真人实拍，皮肤有真实质感，高清细节。"
+   ],
+   "title": "换人正向（改长相描述在这里；B模式改微调句）"
+  },
+  {
+   "id": 31,
+   "type": "TextEncodeQwenImageEdit",
+   "pos": [
+    820,
+    470
+   ],
+   "size": [
+    480,
+    160
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 6
+    },
+    {
+     "name": "prompt",
+     "type": "STRING",
+     "widget": {
+      "name": "prompt"
+     },
+     "link": null
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 7
+    },
+    {
+     "name": "image",
+     "type": "IMAGE",
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      11
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "TextEncodeQwenImageEdit"
+   },
+   "widgets_values": [
+    "sunlight, hard light, specular highlight, oily skin, blotchy skin, skin patches, different face, changed face, beautified face, deformed, blurry, text, watermark"
+   ],
+   "title": "负向（保持10词左右）"
+  },
+  {
+   "id": 32,
+   "type": "EmptySD3LatentImage",
+   "pos": [
+    1350,
+    620
+   ],
+   "size": [
+    300,
+    130
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "width",
+     "type": "INT",
+     "widget": {
+      "name": "width"
+     },
+     "link": null
+    },
+    {
+     "name": "height",
+     "type": "INT",
+     "widget": {
+      "name": "height"
+     },
+     "link": null
+    },
+    {
+     "name": "batch_size",
+     "type": "INT",
+     "widget": {
+      "name": "batch_size"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      12
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "EmptySD3LatentImage"
+   },
+   "widgets_values": [
+    1024,
+    1024,
+    1
+   ]
+  },
+  {
+   "id": 33,
+   "type": "KSampler",
+   "pos": [
+    1350,
+    40
+   ],
+   "size": [
+    340,
+    340
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 9
+    },
+    {
+     "name": "positive",
+     "type": "CONDITIONING",
+     "link": 10
+    },
+    {
+     "name": "negative",
+     "type": "CONDITIONING",
+     "link": 11
+    },
+    {
+     "name": "latent_image",
+     "type": "LATENT",
+     "link": 12
+    },
+    {
+     "name": "seed",
+     "type": "INT",
+     "widget": {
+      "name": "seed"
+     },
+     "link": null
+    },
+    {
+     "name": "steps",
+     "type": "INT",
+     "widget": {
+      "name": "steps"
+     },
+     "link": null
+    },
+    {
+     "name": "cfg",
+     "type": "FLOAT",
+     "widget": {
+      "name": "cfg"
+     },
+     "link": null
+    },
+    {
+     "name": "sampler_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "sampler_name"
+     },
+     "link": null
+    },
+    {
+     "name": "scheduler",
+     "type": "COMBO",
+     "widget": {
+      "name": "scheduler"
+     },
+     "link": null
+    },
+    {
+     "name": "denoise",
+     "type": "FLOAT",
+     "widget": {
+      "name": "denoise"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      13
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "KSampler"
+   },
+   "widgets_values": [
+    44,
+    "fixed",
+    20,
+    3.0,
+    "euler",
+    "simple",
+    1.0
+   ],
+   "title": "换人采样(cfg必须3.0)"
+  },
+  {
+   "id": 34,
+   "type": "VAEDecode",
+   "pos": [
+    1740,
+    40
+   ],
+   "size": [
+    240,
+    60
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "samples",
+     "type": "LATENT",
+     "link": 13
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 14
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      15
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAEDecode"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 35,
+   "type": "SaveImage",
+   "pos": [
+    2030,
+    40
+   ],
+   "size": [
+    340,
+    420
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "link": 15
+    },
+    {
+     "name": "filename_prefix",
+     "type": "STRING",
+     "widget": {
+      "name": "filename_prefix"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SaveImage"
+   },
+   "widgets_values": [
+    "参考板-换人成品"
+   ],
+   "title": "产物：换人参考板"
+  }
+ ],
+ "links": [
+  [
+   1,
+   20,
+   0,
+   30,
+   0,
+   "CLIP"
+  ],
+  [
+   2,
+   21,
+   0,
+   30,
+   2,
+   "VAE"
+  ],
+  [
+   3,
+   10,
+   0,
+   30,
+   3,
+   "IMAGE"
+  ],
+  [
+   4,
+   11,
+   0,
+   30,
+   4,
+   "IMAGE"
+  ],
+  [
+   5,
+   12,
+   0,
+   30,
+   5,
+   "IMAGE"
+  ],
+  [
+   6,
+   20,
+   0,
+   31,
+   0,
+   "CLIP"
+  ],
+  [
+   7,
+   21,
+   0,
+   31,
+   2,
+   "VAE"
+  ],
+  [
+   8,
+   22,
+   0,
+   23,
+   0,
+   "MODEL"
+  ],
+  [
+   9,
+   23,
+   0,
+   33,
+   0,
+   "MODEL"
+  ],
+  [
+   10,
+   30,
+   0,
+   33,
+   1,
+   "CONDITIONING"
+  ],
+  [
+   11,
+   31,
+   0,
+   33,
+   2,
+   "CONDITIONING"
+  ],
+  [
+   12,
+   32,
+   0,
+   33,
+   3,
+   "LATENT"
+  ],
+  [
+   13,
+   33,
+   0,
+   34,
+   0,
+   "LATENT"
+  ],
+  [
+   14,
+   21,
+   0,
+   34,
+   1,
+   "VAE"
+  ],
+  [
+   15,
+   34,
+   0,
+   35,
+   0,
+   "IMAGE"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {
+  "ds": {
+   "scale": 0.6,
+   "offset": [
+    100,
+    60
+   ]
+  }
+ },
+ "version": 0.4
+}

@@ -1,0 +1,235 @@
+{
+  "id": "6b7f1c2a-indextts2-clone-v1",
+  "revision": 0,
+  "last_node_id": 8,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [-420, 160],
+      "size": [320, 140],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [1],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": ["ep001_ref_audio_male_8s.mp3"],
+      "title": "说话人参考音频（音色来源）"
+    },
+    {
+      "id": 2,
+      "type": "LoadAudio",
+      "pos": [-420, 400],
+      "size": [320, 140],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [2],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": ["ep001_ref_audio_male_8s.mp3"],
+      "title": "情感参考音频（可选，默认同音色源）"
+    },
+    {
+      "id": 3,
+      "type": "IndexTTS2EmotionVector",
+      "pos": [-420, 660],
+      "size": [320, 270],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "EMOTION_VECTOR",
+          "type": "EMOTION_VECTOR",
+          "links": [5],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IndexTTS2EmotionVector"
+      },
+      "widgets_values": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5],
+      "title": "情感向量（已接入，优先于情感音频）"
+    },
+    {
+      "id": 4,
+      "type": "IndexTTS2Advanced",
+      "pos": [260, 160],
+      "size": [520, 640],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 1
+        },
+        {
+          "name": "emotion_audio",
+          "type": "AUDIO",
+          "link": 2
+        },
+        {
+          "name": "emotion_vector",
+          "type": "EMOTION_VECTOR",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [3],
+          "slot_index": 0
+        },
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": null,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "IndexTTS2Advanced"
+      },
+      "widgets_values": [
+        "风清扬：独孤九剑，重在一个悟字。无招胜有招，剑意先于剑式。",
+        1.0,
+        false,
+        200,
+        120,
+        -1,
+        "fixed",
+        true,
+        0.8,
+        0.8,
+        30,
+        10.0,
+        0.0,
+        3,
+        1500,
+        false,
+        0.9,
+        1.0,
+        false,
+        1.0
+      ],
+      "title": "IndexTTS2 克隆合成（Advanced）"
+    },
+    {
+      "id": 5,
+      "type": "IndexTTS2SaveAudio",
+      "pos": [940, 160],
+      "size": [360, 190],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "IndexTTS2SaveAudio"
+      },
+      "widgets_values": ["tts2_clone", "wav", false, "pcm16", "320k"],
+      "title": "保存音频（wav/mp3）"
+    },
+    {
+      "id": 6,
+      "type": "Note",
+      "pos": [940, 440],
+      "size": [360, 300],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "【使用说明】\n1. 节点1：说话人参考音频（决定音色），建议 5~15 秒、人声干净无混响无BGM。\n2. 节点2：情感参考音频（决定语气情绪），可换任何人的音频来借情绪；当前情感向量已接入且优先于本音频，想用音频控情绪请断开情感向量连线。\n3. 节点4 text 填要合成的台词，支持长文本自动分段。\n4. emotion_control_weight=1.0 表示完全采用情感音频的情绪，想更贴近原音色可调低（0.3~0.6）。\n5. 输出保存在 ComfyUI/output/audio/ 下。\n6. seed=-1 每次随机；想要可复现填固定数字。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "使用说明"
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [-420, 1020],
+      "size": [320, 220],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "【情感向量（已接入）】\n当前已连到 IndexTTS2 Advanced 的 emotion_vector 输入，用 8 个滑杆控制情绪（happy/angry/sad/afraid/disgusted/melancholic/surprised/calm），默认 calm=0.5（中性偏平稳）。\n注意：向量与情感音频同时连接时，向量优先生效，情感音频会被忽略。\n想改用情感音频控情绪：直接删掉本节点到 Advanced 的连线即可，其他不用改。\n八项之和必须 ≤ 1.5，否则报错。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "情感向量说明"
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [260, 900],
+      "size": [520, 180],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "【安装前提（节点包：snicolast/ComfyUI-IndexTTS2）】\n1. custom_nodes 里 git clone https://github.com/snicolast/ComfyUI-IndexTTS2\n2. 在该 Python 环境执行: pip install wetext && pip install -r requirements.txt\n3. 模型放 custom_nodes/ComfyUI-IndexTTS2/checkpoints/（IndexTeam/IndexTTS-2，缺失文件会自动从 HF 缓存）\n4. 目前仅支持 Windows，未启用 DeepSpeed\n装好后重启 ComfyUI，本图即可直接运行。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 4, 0, "AUDIO"],
+    [2, 2, 0, 4, 1, "AUDIO"],
+    [3, 4, 0, 5, 0, "AUDIO"],
+    [5, 3, 0, 4, 2, "EMOTION_VECTOR"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

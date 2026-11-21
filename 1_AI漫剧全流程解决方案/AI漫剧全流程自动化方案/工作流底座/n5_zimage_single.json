@@ -1,0 +1,41 @@
+{
+  "_note": "本机已验证的 Z-Image Turbo 单阶段出帧模板（来源：N4-03-咖啡馆场景板-1344x768.json，11 节点真实结构）。本机无 Qwen-Image 2511，第二版三阶段不可执行；N5 降级为每镜一张起始帧，四段重组 prompt 直接灌 CLIPTextEncode。_single_stage=true 时脚本只跑 stage0 并把结果直接落 frame_key（不跑 pass1/pass2，不挂板）。若日后装了 2511，另建三阶段模板并去掉 _single_stage。",
+  "_single_stage": true,
+  "_output_node": "11",
+  "stage0": {
+    "2": {"class_type": "UNETLoader", "inputs": {"unet_name": "z_image_turbo_int8_convrot.safetensors", "weight_dtype": "default"}},
+    "3": {"class_type": "ModelSamplingAuraFlow", "inputs": {"shift": 3}},
+    "4": {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen_3_4b.safetensors", "type": "lumina2", "device": "default"}},
+    "5": {"class_type": "VAELoader", "inputs": {"vae_name": "ae.safetensors"}},
+    "6": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+    "7": {"class_type": "ConditioningZeroOut", "inputs": {"conditioning": ["6", 0]}},
+    "8": {"class_type": "EmptySD3LatentImage", "inputs": {"width": 1344, "height": 768, "batch_size": 1}},
+    "9": {"class_type": "KSampler", "inputs": {"seed": "{{SEED}}", "steps": 8, "cfg": 1, "sampler_name": "res_multistep", "scheduler": "simple", "denoise": 1, "model": ["2", 0], "positive": ["6", 0], "negative": ["7", 0], "latent_image": ["8", 0]}},
+    "10": {"class_type": "VAEDecode", "inputs": {"samples": ["9", 0], "vae": ["5", 0]}},
+    "11": {"class_type": "SaveImage", "inputs": {"filename_prefix": "{{FILENAME}}", "images": ["10", 0]}}
+  },
+  "pass1": {
+    "2": {"class_type": "UNETLoader", "inputs": {"unet_name": "z_image_turbo_int8_convrot.safetensors", "weight_dtype": "default"}},
+    "3": {"class_type": "ModelSamplingAuraFlow", "inputs": {"shift": 3}},
+    "4": {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen_3_4b.safetensors", "type": "lumina2", "device": "default"}},
+    "5": {"class_type": "VAELoader", "inputs": {"vae_name": "ae.safetensors"}},
+    "6": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+    "7": {"class_type": "ConditioningZeroOut", "inputs": {"conditioning": ["6", 0]}},
+    "8": {"class_type": "EmptySD3LatentImage", "inputs": {"width": 1344, "height": 768, "batch_size": 1}},
+    "9": {"class_type": "KSampler", "inputs": {"seed": "{{SEED}}", "steps": 8, "cfg": 1, "sampler_name": "res_multistep", "scheduler": "simple", "denoise": 1, "model": ["2", 0], "positive": ["6", 0], "negative": ["7", 0], "latent_image": ["8", 0]}},
+    "10": {"class_type": "VAEDecode", "inputs": {"samples": ["9", 0], "vae": ["5", 0]}},
+    "11": {"class_type": "SaveImage", "inputs": {"filename_prefix": "{{FILENAME}}", "images": ["10", 0]}}
+  },
+  "pass2": {
+    "2": {"class_type": "UNETLoader", "inputs": {"unet_name": "z_image_turbo_int8_convrot.safetensors", "weight_dtype": "default"}},
+    "3": {"class_type": "ModelSamplingAuraFlow", "inputs": {"shift": 3}},
+    "4": {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen_3_4b.safetensors", "type": "lumina2", "device": "default"}},
+    "5": {"class_type": "VAELoader", "inputs": {"vae_name": "ae.safetensors"}},
+    "6": {"class_type": "CLIPTextEncode", "inputs": {"text": "{{PROMPT}}"}},
+    "7": {"class_type": "ConditioningZeroOut", "inputs": {"conditioning": ["6", 0]}},
+    "8": {"class_type": "EmptySD3LatentImage", "inputs": {"width": 1344, "height": 768, "batch_size": 1}},
+    "9": {"class_type": "KSampler", "inputs": {"seed": "{{SEED}}", "steps": 8, "cfg": 1, "sampler_name": "res_multistep", "scheduler": "simple", "denoise": 1, "model": ["2", 0], "positive": ["6", 0], "negative": ["7", 0], "latent_image": ["8", 0]}},
+    "10": {"class_type": "VAEDecode", "inputs": {"samples": ["9", 0], "vae": ["5", 0]}},
+    "11": {"class_type": "SaveImage", "inputs": {"filename_prefix": "{{FILENAME}}", "images": ["10", 0]}}
+  }
+}

@@ -1,0 +1,110 @@
+<svg viewBox="0 0 680 412" width="100%" role="img" font-family="var(--font-sans)">
+<style>
+:root {
+    --color-text-secondary: #57606a;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+}
+</style>
+
+<title>第二版 H3 漫剧生产线全流程</title>
+<desc>四层架构：文字契约、出图与适配、装配门禁、H3渲染，共 N0 到 N13 十四个节点</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<text x="40" y="36" font-size="12" fill="var(--color-text-secondary)">L1 文字契约层 · 全部复用，不变</text>
+<g>
+<rect x="48" y="46" width="180" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="138" y="65" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N1 小说创作</text>
+<text x="138" y="83" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">novelist 出文字</text>
+</g>
+<g>
+<rect x="248" y="46" width="180" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="338" y="65" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N2 全流程分镜</text>
+<text x="338" y="83" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">drama 8 子阶段</text>
+</g>
+<g>
+<rect x="448" y="46" width="180" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="538" y="65" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N3 资产契约</text>
+<text x="538" y="83" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">C/S/P 编号块</text>
+</g>
+<path d="M228 72L246 72" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M428 72L446 72" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<path d="M340 100L340 142" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<text x="40" y="134" font-size="12" fill="var(--color-text-secondary)">L1.5 出图与适配层 · 本轮定线/新增（橙色）</text>
+<g>
+<rect x="41" y="144" width="136" height="52" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text x="109" y="163" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806">N4 参考板</text>
+<text x="109" y="181" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#BA7517">SHEET·PLATE·PAIR</text>
+</g>
+<g>
+<rect x="195" y="144" width="136" height="52" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text x="263" y="163" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806">N5 每镜帧</text>
+<text x="263" y="181" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#BA7517">2511 两 pass</text>
+</g>
+<g>
+<rect x="349" y="144" width="136" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="417" y="163" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N6 音色</text>
+<text x="417" y="181" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">干净人声 wav</text>
+</g>
+<g>
+<rect x="503" y="144" width="136" height="52" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text x="571" y="163" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806">适配入库</text>
+<text x="571" y="181" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#BA7517">input + CSV</text>
+</g>
+<path d="M177 170L193 170" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M331 170L347 170" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M485 170L501 170" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<path d="M340 198L340 240" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<text x="40" y="232" font-size="12" fill="var(--color-text-secondary)">L2 装配门禁层 · 脚本落地，新增 --dual/--compare</text>
+<g>
+<rect x="48" y="242" width="180" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="138" y="261" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N7 入库填表</text>
+<text x="138" y="279" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">19 字段 CSV</text>
+</g>
+<g>
+<rect x="248" y="242" width="180" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="338" y="261" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N8 体检门禁</text>
+<text x="338" y="279" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">--check-only</text>
+</g>
+<g>
+<rect x="448" y="242" width="180" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="538" y="261" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N9 装配</text>
+<text x="538" y="279" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">--dual 双份 timeline</text>
+</g>
+<path d="M228 268L246 268" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M428 268L446 268" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<path d="M340 296L340 338" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<text x="40" y="330" font-size="12" fill="var(--color-text-secondary)">L4 H3 导演台 · 只当渲染器，节点/连线/采样器一律不改</text>
+<g>
+<rect x="41" y="340" width="136" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="109" y="359" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N10 01 预览</text>
+<text x="109" y="377" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">4step 快出</text>
+</g>
+<g>
+<rect x="195" y="340" width="136" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="263" y="359" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N11 审片</text>
+<text x="263" y="377" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">四类回退</text>
+</g>
+<g>
+<rect x="349" y="340" width="136" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="417" y="359" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N12 02 出片</text>
+<text x="417" y="377" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">25step r2v</text>
+</g>
+<g>
+<rect x="503" y="340" width="136" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="571" y="359" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C">N13 归档</text>
+<text x="571" y="377" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5">可回溯</text>
+</g>
+<path d="M177 366L193 366" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M331 366L347 366" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M485 366L501 366" fill="none" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+</svg>

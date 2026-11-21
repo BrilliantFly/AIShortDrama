@@ -1,0 +1,245 @@
+{
+  "id": "换脸-01-单人",
+  "revision": 0,
+  "last_node_id": 5,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        -980.0,
+        80.0
+      ],
+      "size": [
+        340.0,
+        380.0
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "REF-源脸.png",
+        "image"
+      ],
+      "title": "① 源脸（真人照）"
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [
+        -980.0,
+        520.0
+      ],
+      "size": [
+        340.0,
+        380.0
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "目标图.png",
+        "image"
+      ],
+      "title": "② 目标图（人像 / 三视图）"
+    },
+    {
+      "id": 3,
+      "type": "ReActorFaceSwap",
+      "pos": [
+        -560.0,
+        180.0
+      ],
+      "size": [
+        380.0,
+        640.0
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "input_image",
+          "type": "IMAGE",
+          "link": 2
+        },
+        {
+          "name": "source_image",
+          "type": "IMAGE",
+          "link": 1,
+          "shape": 7
+        },
+        {
+          "name": "face_model",
+          "type": "FACE_MODEL",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "face_boost",
+          "type": "FACE_BOOST",
+          "link": null,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SWAPPED_IMAGE",
+          "type": "IMAGE",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "FACE_MODEL",
+          "type": "FACE_MODEL",
+          "links": null
+        },
+        {
+          "name": "ORIGINAL_IMAGE",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReActorFaceSwap"
+      },
+      "widgets_values": [
+        true,
+        "inswapper_128.onnx",
+        "retinaface_resnet50",
+        "none",
+        0.8,
+        0.5,
+        "no",
+        "no",
+        "0",
+        "0",
+        1
+      ],
+      "title": "换脸 · 单人均可多脸"
+    },
+    {
+      "id": 4,
+      "type": "SaveImage",
+      "pos": [
+        -120.0,
+        300.0
+      ],
+      "size": [
+        420.0,
+        420.0
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "换脸/01-单人"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "MarkdownNote",
+      "pos": [
+        -560.0,
+        -640.0
+      ],
+      "size": [
+        620.0,
+        760.0
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      },
+      "widgets_values": [
+        "# 换脸 01 · 单人（含多脸同源）\n\n## 用途\n把一张源照上的脸，贴到目标图的一张或几张脸上。**人像（单脸）和三视图（三格同一个人）都走这一个。**\n\n## 操作\n1. `① 源脸` 放真人照：正面、清晰、无遮挡、脸在画面里占比尽量大。\n2. `② 目标图` 放要换脸的人像或三视图。\n3. `input_faces_index` 决定换第几张脸（按人脸框面积从小到大排序）：\n   - 人像 → `0`\n   - 三视图三格 → `0,1,2`\n   - 只换中间那格 → `1`\n4. `source_faces_index` 保持 `0`。\n\n## 首次打开要核对的三个下拉\n| 下拉 | 设为 | 说明 |\n|---|---|---|\n| swap_model | `inswapper_128.onnx` | 已在 models/insightface |\n| facedetection | `retinaface_resnet50` | 比 YOLOv5 稳 |\n| face_restore_model | 现在是 `none` | 下好 codeformer 后改成 `codeformer-v0.1.0.pth` |\n\n## 为什么修复不能关\ninswapper 在 128px 上做替换。832×1216 人像的脸约 300–400px，不修复会比周围皮肤软一档，一眼看出是贴的。三视图小脸（150–250px）更明显。\n\n## 跑完做验收\n接「换脸-03-对比验收」，看颧骨外轮廓、眼下阴影、发际线碎发。"
+      ],
+      "title": "使用说明",
+      "color": "#222",
+      "bgcolor": "#000"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      1,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
