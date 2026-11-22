@@ -7,6 +7,9 @@ __pycache__/
 6_剪辑/tools/ffmpeg/
 6_剪辑/tools/drama-edit/scripts/__pycache__/
 
+# 配音流水线本地验收产物（逐句 wav/成片音轨，可重跑生成）
+2_工作流/02-漫剧/03-配音流水线/_run/
+
 # 系统杂项
 Thumbs.db
 desktop.ini
