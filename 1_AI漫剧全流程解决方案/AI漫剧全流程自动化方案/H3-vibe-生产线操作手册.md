@@ -18,6 +18,7 @@
 > | 资料库根 | `D:/AIShortDrama/`（末尾含 U+200C） |
 > | 主干方案（本手册所在） | `D:/AIShortDrama/1_AI漫剧全流程解决方案/AI漫剧全流程自动化方案/` |
 > | 出片底座（N9 默认 `--workflow`） | 上列主干方案下 `工作流底座/H3-通用02-高清主线-参考音色对白-r2v-25step-1344x768.json` |
+| 对白 source 档（N14 配音流水线配套） | `2_工作流/02-漫剧/02-H3漫剧流程/H3-通用04-对白原声-source-25step-1344x768.json`（底座与 GUI 副本已同步） |
 > | 现役工作流库（权威） | `D:/AIShortDrama/2_工作流/02-漫剧/02-H3漫剧流程/` |
 > | 后续出图（现役 7 个工作流） | `D:/AIShortDrama/2_工作流/02-漫剧/01-分镜图片/`（根下平铺、统一命名；原版卡在 `_原版卡备份/`） |
 > | ComfyUI GUI 工作流（同步副本） | `D:/ComfyUI-aki-v3.2/ComfyUI/user/default/workflows/` |
