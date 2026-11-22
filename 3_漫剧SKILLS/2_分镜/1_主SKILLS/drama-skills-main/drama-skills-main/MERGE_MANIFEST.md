@@ -1,0 +1,15 @@
+# MERGE MANIFEST — drama-skills 融合版
+
+- 融合日期：2026-11-22
+- 策略：**本地优先 + git 增量**（用户确认）
+- 骨架：本地基础版 v0.9.2（含 2026-11-21 实验扩写），601 文件
+- 增量：上游 git v0.12.1 独有 49 文件全部补入
+- 同名冲突 504 项：**一律保留本地版**
+- 噪音过滤 16 项（__pycache__ / .pytest_cache / *.pyc / *.bak-*），原始快照中仍保留
+- 融合版文件总数：650（另含本 manifest）
+- VERSION 保持本地 `0.9.2` 不擅自改写；本版实为 `0.9.2-local + upstream-v0.12.1-increment`
+
+## 回退 / 取用（绝对路径）
+- 本地基础版完整快照：`D:/AIShortDrama/3_漫剧SKILLS/2_分镜/1_主SKILLS/_backup_20261121_v0.9.2/drama-skills-main/`
+- git v0.12.1 纯净快照：`D:/AIShortDrama/3_漫剧SKILLS/2_分镜/1_主SKILLS/_git_v0.12.1_纯净快照_20261122/`
+- 全量差异与集成清单：`D:/AIShortDrama/3_漫剧SKILLS/SKILLS融合报告_20261122.md`

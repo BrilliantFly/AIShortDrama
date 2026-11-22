@@ -6,11 +6,16 @@
 检查的是「这一镜交给单轨生成端能不能出声」+「人物互动站位与视角有没有机位语言」，
 不是文学质量。
 
+档位分支（2026-11-22 补全回灌，见经验库 3.0）：本 lint 的 DUO / 一句一镜 / 单说话人
+门禁**只针对 `source` + TTS 单轨档**。H3 `generate` + 双声线参考音色档实测可一镜
+2~3 句 DUO 双人同框，用 `--audio-mode generate` 豁免这三条；默认 `source` 行为不变。
+
 用法
   python storyboard_lint.py 分镜.md
   python storyboard_lint.py 分镜.md --fps 24 --ctx 22
   python storyboard_lint.py 分镜.md --strict      # 缺新字段也算失败（新项目用）
   python storyboard_lint.py 分镜.md --csv 分镜.csv # 同时导出机器可读表
+  python storyboard_lint.py 分镜.md --audio-mode generate  # H3 双声线 DUO 档
 
 退出码：0 全通过（允许 WARN）／1 有 FAIL／2 路径或解析错误
 """
@@ -49,6 +54,8 @@ VO_SPEAKER_RE = re.compile(r"\[(?:VO|OS)\]\s*([\u4e00-\u9fa5]{2,4})\s*[：:]")
 ADVISE_CHARS = 12       # ≥12 字提示拆/单独成镜（WARN，对齐 voicetrack-renderability.md §八）
 MAX_CHARS = 15          # >15 字硬上限（FAIL，保留原门禁不动）
 # A6 修复：文档默认「一句一镜最稳」，2 句是单轨能容的硬上限
+# 档位分支（2026-11-22）：以上限只对 source 单轨档生效；generate 双声线档
+# 由 --audio-mode 在判定处豁免，经验库 3.0 建议 DUO 一镜 2~3 句。
 ADVISE_LINES = 1        # >1 句提示拆分（WARN）
 MAX_LINES = 2           # >2 句硬上限（FAIL，保留原门禁不动）
 
@@ -283,6 +290,9 @@ def main() -> int:
     ap.add_argument("--min-frames", type=int, default=MIN_FRAMES_DEFAULT,
                     help=f"最短生成段帧数门禁（默认 {MIN_FRAMES_DEFAULT}，0 关闭；NG 故事板线可传 0）")
     ap.add_argument("--csv")
+    ap.add_argument("--audio-mode", choices=("source", "generate"), default="source",
+                    help="音轨档位：source=单轨TTS（默认，保留原门禁）；"
+                         "generate=H3双声线参考音色，豁免 DUO/一句一镜/单说话人门禁（经验库3.0）")
     a = ap.parse_args()
 
     if not os.path.exists(a.storyboard):
@@ -365,21 +375,30 @@ def main() -> int:
 
 
         # 2 镜型与台词
+        # 档位分支（2026-11-22）：generate 双声线档下 DUO 一镜 2~3 句已验证（经验库 3.0），
+        # 豁免「DUO 不得带台词 / >2 句硬上限 / >1 句提示 / 同镜多说话人」四条单轨档门禁；
+        # source 档（默认）逐字保持原有行为，其余通用检查（未标镜型、镜型非法、单句字数）不变。
+        gen = a.audio_mode == "generate"
         if n_lines:
             if not kind:
                 (fails if a.strict else warns).append(
                     f"{sid} 有台词但未标 `镜型`（SOLO/OTS），下游无法判是否可渲染")
             elif kind == "DUO":
-                fails.append(f"{sid} 镜型=DUO 却带 {n_lines} 句台词 —— DUO 不得有台词，必须拆镜")
+                if not gen:
+                    fails.append(f"{sid} 镜型=DUO 却带 {n_lines} 句台词 —— DUO 不得有台词，必须拆镜")
             elif kind not in ("SOLO", "OTS"):
                 fails.append(f"{sid} 镜型 `{kind}` 不是 SOLO/OTS/DUO")
             # A6 分级：>1 句提示拆分（WARN），>2 句硬上限（FAIL）
-            if n_lines > MAX_LINES:
-                fails.append(f"{sid} 一镜 {n_lines} 句台词（硬上限 {MAX_LINES}）")
-            elif n_lines > ADVISE_LINES:
-                warns.append(f"{sid} 一镜 {n_lines} 句台词——文档默认「一句一镜最稳」，"
-                             f"两句同镜需确认单轨能分别对口型")
-            if len(uniq) > 1:
+            if gen:
+                if n_lines > 3:
+                    warns.append(f"{sid} generate 档一镜 {n_lines} 句台词——经验库 3.0 建议 DUO 2~3 句")
+            else:
+                if n_lines > MAX_LINES:
+                    fails.append(f"{sid} 一镜 {n_lines} 句台词（硬上限 {MAX_LINES}）")
+                elif n_lines > ADVISE_LINES:
+                    warns.append(f"{sid} 一镜 {n_lines} 句台词——文档默认「一句一镜最稳」，"
+                                 f"两句同镜需确认单轨能分别对口型")
+            if len(uniq) > 1 and not gen:
                 fails.append(f"{sid} 同镜出现 {len(uniq)} 个说话人（{'、'.join(uniq)}）—— 单轨只能一条音色")
             if declared and not quotes:
                 warns.append(f"{sid} 只写「对白{declared}句」没写台词原文，出片后无从比对")
@@ -589,6 +608,8 @@ def main() -> int:
         warns.insert(0, f"{len(seconds_only)} 镜只写秒数未写 `export_frames`："
                         + "、".join(seconds_only[:8]) + ("…" if len(seconds_only) > 8 else ""))
 
+    if a.audio_mode == "generate":
+        print("档位=generate(H3双声线DUO) — 已豁免单轨档 DUO/一句一镜/单说话人门禁（经验库3.0）")
     print(f"镜头数={len(shots)}  fps={a.fps}  ctx={a.ctx}  有台词镜={sum(1 for r in rows if r['台词数'])}"
           f"  打斗镜={sum(1 for r in rows if r['打斗'])}"
           f"  交接缝={sum(1 for p in handoffs if p['end'])}"

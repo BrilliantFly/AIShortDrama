@@ -389,6 +389,9 @@ def build(text: str, visual_text: str, opts: argparse.Namespace) -> Tuple[dict, 
             for cn in cast:
                 if cn in pick(f, "起点", "终点"):
                     names.append(cn)
+        # 档位分支（2026-11-22）：SOLO 只摆一人是单轨/source 档语义；
+        # H3 generate 双声线 DUO 档下对白镜应标 `镜型：DUO` 并保留两人同框
+        # （见 SKILL.md 镜型规则档位分支、经验库 3.0）。本处逻辑不改，仅提示标镜型。
         # SOLO 镜只摆一个人：视觉依据常把对手也列进来，照单全收会摆出两人同框
         if (pick(f, "镜型") or "").upper() == "SOLO" and len(names) > 1:
             mentioned = [cn for cn in names

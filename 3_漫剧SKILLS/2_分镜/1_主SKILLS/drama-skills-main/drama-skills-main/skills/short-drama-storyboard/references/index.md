@@ -65,7 +65,7 @@
 
 ### 声音
 
-- [音轨可渲染性](voicetrack-renderability.md)——一镜一句、多说话人怎么办
+- [音轨可渲染性](voicetrack-renderability.md)——一镜一句、多说话人怎么办（**单轨 `source`/TTS 档**；H3 `generate` 双声线 DUO 档见 [SKILL.md](../SKILL.md) 镜型规则档位分支与经验库 3.0）
 
 ### 计划与审查
 
