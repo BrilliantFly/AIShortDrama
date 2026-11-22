@@ -316,11 +316,14 @@ def inject_dialogue_timing(prompt: str, has_voice: bool) -> str:
 
 
 def build_prompt(row: dict, dialogue_pace: bool = True) -> str:
+    tag = row.get("audio_tag", "none")
     lines = [f"{k}: {row.get(k, '')}" for k in PROMPT_SECTIONS]
-    lines.append(f"Audio: {row.get('audio_tag', 'none')}")
+    lines.append(f"Audio: {tag}")
     prompt = "\n".join(lines)
     voices = [v for c in VOICE_COLUMNS if (v := (row.get(c) or "").strip())]
-    if dialogue_pace and voices:
+    # source 档（配音流水线逐句精控）不注入 generate 档的对话节奏：
+    # 停顿/抢话已在 assemble 阶段处理，且必须保证 Audio: fully_copy 留在段尾供 H3 读取。
+    if dialogue_pace and voices and tag != "fully_copy":
         prompt = inject_dialogue_timing(prompt, has_voice=True)
     return prompt
 
@@ -426,10 +429,11 @@ def preflight(rows: list[dict], input_root: Path | None, fps: float,
         # 音频标签与音色文件配套
         tag = r["audio_tag"]
         voices = [v.strip() for c in VOICE_COLUMNS if (v := (r.get(c) or "").strip())]
-        if tag not in ("reference", "none"):
-            errors.append(f"{sid}: audio_tag 只能是 reference / none，实为 {tag!r}")
-        if tag == "reference" and not voices:
-            errors.append(f"{sid}: audio_tag=reference 但没有 ref_voice，无法锁定音色")
+        if tag not in ("reference", "none", "fully_copy"):
+            errors.append(f"{sid}: audio_tag 只能是 reference / none / fully_copy，实为 {tag!r}")
+        if tag in ("reference", "fully_copy") and not voices:
+            errors.append(f"{sid}: audio_tag={tag} 但没有 ref_voice"
+                          f"（source 档需挂配音流水线切段音轨）")
         if tag == "none" and voices:
             warns.append(f"{sid}: audio_tag=none 却挂了 ref_voice（静默段保留 ref 写 'no speech' 也可，但要清楚选了哪种）")
         if len(voices) > 3:
