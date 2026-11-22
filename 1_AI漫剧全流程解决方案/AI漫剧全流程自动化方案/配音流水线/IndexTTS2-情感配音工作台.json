@@ -1,0 +1,188 @@
+{
+  "id": "indextts2-emotional-voice-workbench",
+  "revision": 0,
+  "last_node_id": 9,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [-420, 160],
+      "size": [320, 140],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/linwan.wav"],
+      "title": "说话人参考音频（身份 · 跨句固定）"
+    },
+    {
+      "id": 2,
+      "type": "LoadAudio",
+      "pos": [-420, 400],
+      "size": [320, 140],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [2], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/linwan.wav"],
+      "title": "情感参考音频（借情绪 · 批量模式不接）"
+    },
+    {
+      "id": 3,
+      "type": "IndexTTS2EmotionVector",
+      "pos": [-420, 660],
+      "size": [320, 270],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "EMOTION_VECTOR", "type": "EMOTION_VECTOR", "links": [5], "slot_index": 0}],
+      "properties": {"Node name for S&R": "IndexTTS2EmotionVector"},
+      "widgets_values": [0.35, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.45],
+      "title": "情感向量（表演 · 逐句可变）"
+    },
+    {
+      "id": 4,
+      "type": "IndexTTS2Advanced",
+      "pos": [260, 160],
+      "size": [520, 640],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {"name": "audio", "type": "AUDIO", "link": 1},
+        {"name": "emotion_audio", "type": "AUDIO", "link": 2},
+        {"name": "emotion_vector", "type": "EMOTION_VECTOR", "link": 5}
+      ],
+      "outputs": [
+        {"name": "AUDIO", "type": "AUDIO", "links": [3], "slot_index": 0},
+        {"name": "STRING", "type": "STRING", "links": null, "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "IndexTTS2Advanced"},
+      "widgets_values": [
+        "……好久不见。",
+        1.0,
+        false,
+        200,
+        120,
+        20261122,
+        "fixed",
+        true,
+        0.8,
+        0.8,
+        30,
+        10.0,
+        0.0,
+        3,
+        1500,
+        false,
+        0.9,
+        1.0,
+        false,
+        1.0
+      ],
+      "title": "IndexTTS2 克隆合成（Advanced）"
+    },
+    {
+      "id": 5,
+      "type": "IndexTTS2SaveAudio",
+      "pos": [940, 160],
+      "size": [360, 190],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 3}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "IndexTTS2SaveAudio"},
+      "widgets_values": ["VL-001_林晚", "wav", false, "pcm16", "320k"],
+      "title": "保存音频（按句命名）"
+    },
+    {
+      "id": 6,
+      "type": "Note",
+      "pos": [940, 440],
+      "size": [380, 340],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【情感配音工作台 · 单句试听调参】\n\n身份 vs 表演：节点1 音色参考跨句固定（身份）；节点3 情绪、节点4 语速/停顿、逐句音量（表演）随台词变化。不要把表演写进身份。\n\n节点4 widgets_values 精确索引（官方 INPUT_TYPES 顺序）：\n 0 text  1 emotion_control_weight  2 use_random_style\n 3 interval_silence_ms  4 max_text_tokens_per_segment  5 seed\n 6 (control_after_generate 占位)  7 do_sample  8 temperature\n 9 top_p  10 top_k  11 repetition_penalty  12 length_penalty\n 13 num_beams  14 max_mel_tokens  15 typical_sampling  16 typical_mass\n 17 speech_speed(0.25~4.0)  18 use_fp16  19 output_gain(0~4.0)\n\n三个表演旋钮：\n · 情绪 → 节点3 八维向量（和 ≤1.5）\n · 语速 → 索引17 speech_speed：急促 1.2 / 正常 1.0 / 缓慢 0.85\n · 声音大小 → 索引19 output_gain，或交给后期 volume(dB)（推荐，改音量不必重跑 TTS）\n · 句内停顿 → 索引3 interval_silence_ms；句间停顿/抢话在后期时间轴做\n\n批量流水线不靠本图：voice_pipeline.py 直接构造 API prompt 逐句提交。本图用于先试出一版满意的情绪/语速，再把数值写回 voice_map.json 与配音本。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "参数口径与身份/表演边界"
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [-420, 1020],
+      "size": [320, 240],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【情感向量 · 8 维】\n顺序：happy / angry / sad / afraid / disgusted / melancholic / surprised / calm\n默认示例＝温柔 [0.35,0,0,0,0,0.1,0,0.45]\n\n向量与情感音频同时连接时向量优先，节点2 会被忽略；想借别人的情绪，删掉本节点到 Advanced 的连线。\n八项之和必须 ≤ 1.5，超出节点直接报错。\n情绪处方表见同目录 voice_map.json 的 emotions（12 种）。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "情感向量说明"
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [260, 900],
+      "size": [520, 190],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【安装前提 · 本机当前未装】\n1. custom_nodes 里 git clone https://github.com/snicolast/ComfyUI-IndexTTS2\n2. ComfyUI Python 环境执行：pip install wetext && pip install -r requirements.txt\n3. 模型放 custom_nodes/ComfyUI-IndexTTS2/checkpoints/（IndexTeam/IndexTTS-2）\n4. 仅支持 Windows，未启用 DeepSpeed\n装好后重启 ComfyUI，本图即可直接运行。\n节点包缺失时，voice_pipeline.py 的 --from-wavs 仍可跑通后期时间轴与质检。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提"
+    },
+    {
+      "id": 9,
+      "type": "Note",
+      "pos": [940, 810],
+      "size": [380, 260],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【批量流水线 · 五步】\n1 parse    剧本.md / 配音本.jsonl → voice_sheet.csv\n2 plan     cue 自然语言 → 情绪8维/语速/音量/停顿/抢话\n3 render   逐句 POST /prompt → wav/<line_id>.wav（固定 seed、断点续跑）\n4 assemble 时间轴混音 → 对白_full.wav + 对白时间线.csv\n5 下游     source 档原声 mux / LatentSync 对口型 / 或当带情绪参考音频喂主线 H3\n\n命令与全部参数口径见同目录 README.md。\n关键约束：台词文本必须与音频逐字一致，否则口型错位（source 档说明卡）。"
+      ],
+      "color": "#353",
+      "bgcolor": "#575",
+      "title": "批量流水线入口"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 4, 0, "AUDIO"],
+    [2, 2, 0, 4, 1, "AUDIO"],
+    [3, 4, 0, 5, 0, "AUDIO"],
+    [5, 3, 0, 4, 2, "EMOTION_VECTOR"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
