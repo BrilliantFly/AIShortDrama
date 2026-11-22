@@ -1,0 +1,9 @@
+﻿line_id,shot,speaker,text,channel,cue,ref_audio,emotion,speed,gain_db,pause_after,overlap
+VL-001,S001,林晚,……好久不见。,sync,先开口 手机的光垂下去 试探 轻声,voices/linwan.wav,,,,,
+VL-002,S002,沈屿,嗯。三年了。,sync,把一杯汽水递过去 指尖碰到她指尖 又都缩了一下 低声,voices/shenyu.wav,,,,,
+VL-003,S002,沈屿,你现在做本行了？插画。,sync,紧接着找话题 接得太快,voices/shenyu.wav,,,,,-0.2
+VL-004,S003,林晚,嗯，勉强算。,sync,接了汽水没开 轻声 躲,voices/linwan.wav,,,,,
+VL-005,S003,林晚,你还记这个。,sync,停半拍 没接话,voices/linwan.wav,,,,0.6,
+VL-006,S004,沈屿,我都记得。,sync,说得太快 自己先笑了,voices/shenyu.wav,,,,,
+VL-007,S005,沈屿,这灯，早坏了。,sync,按了一下钥匙扣 灯没亮 平静,voices/shenyu.wav,,,,,
+VL-008,S005,沈屿,跟大三那年一样，坏了我也给你留着。,sync,压低声音 温柔,voices/shenyu.wav,,,,,

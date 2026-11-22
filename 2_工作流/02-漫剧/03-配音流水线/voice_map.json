@@ -1,0 +1,133 @@
+{
+  "_note": "剧本配音流水线参数词表。身份（音色参考音频）跨句固定，表演（情绪/语速/音量/停顿/抢话）逐句可变。修改本文件即可调整整条流水线的表演口径，无需改代码。",
+  "_source": "IndexTTS2 Advanced INPUT_TYPES（snicolast/ComfyUI-IndexTTS2, nodes/indextts2_node_advanced.py）+ 经验库 4.0/4.1/4.6 + voice-direction.md 身份vs表演界线",
+
+  "emotion_vector_order": ["happy", "angry", "sad", "afraid", "disgusted", "melancholic", "surprised", "calm"],
+  "emotion_vector_sum_max": 1.5,
+  "emotions": {
+    "平静":   [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5],
+    "温柔":   [0.35, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.45],
+    "欣喜":   [0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.1],
+    "调侃":   [0.55, 0.0, 0.0, 0.0, 0.0, 0.0, 0.15, 0.25],
+    "克制":   [0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.55],
+    "紧张":   [0.0, 0.0, 0.0, 0.55, 0.0, 0.15, 0.2, 0.0],
+    "愤怒":   [0.0, 0.95, 0.0, 0.0, 0.2, 0.0, 0.0, 0.0],
+    "悲伤":   [0.0, 0.0, 0.8, 0.0, 0.0, 0.45, 0.0, 0.0],
+    "恐惧":   [0.0, 0.0, 0.15, 0.85, 0.0, 0.0, 0.2, 0.0],
+    "厌恶":   [0.0, 0.2, 0.0, 0.0, 0.85, 0.0, 0.0, 0.0],
+    "忧郁":   [0.0, 0.0, 0.35, 0.0, 0.0, 0.85, 0.0, 0.15],
+    "惊讶":   [0.2, 0.0, 0.0, 0.2, 0.0, 0.0, 0.85, 0.0]
+  },
+  "default_emotion": "平静",
+
+  "emotion_keywords": {
+    "笑": "欣喜", "先笑了": "欣喜", "都笑了": "欣喜", "轻声": "温柔", "温柔": "温柔",
+    "攥": "克制", "缩了一下": "紧张", "顿住": "惊讶", "怕黑": "恐惧", "下意识": "紧张",
+    "没接话": "忧郁", "沉默": "忧郁", "勉强": "克制", "太快": "紧张", "哽咽": "悲伤",
+    "怒": "愤怒", "气": "愤怒", "皱眉": "厌恶", "躲": "克制", "对望": "温柔", "留着": "温柔"
+  },
+  "speed_keywords": {
+    "说得太快": 1.25, "太快": 1.2, "抢话": 1.2, "急": 1.15, "赶": 1.15, "脱口": 1.2,
+    "一字一顿": 0.8, "缓慢": 0.85, "慢": 0.88, "哽咽": 0.9, "顿了顿": 0.9, "沉": 0.9
+  },
+  "volume_keywords": {
+    "耳语": -9.0, "几乎听不见": -9.0, "小声": -6.0, "轻声": -6.0, "低声": -5.0,
+    "压低": -6.0, "压着": -4.0, "闷": -3.0, "喊": 5.0, "提高音量": 4.0, "大声": 4.0, "扬声": 3.0
+  },
+  "pause_keywords": {
+    "停半拍": 0.35, "顿了顿": 0.4, "顿了一下": 0.4, "犹豫": 0.6, "欲言又止": 0.6,
+    "沉默": 0.9, "没接话": 0.9, "没说话": 0.9, "静": 0.8
+  },
+  "overlap_keywords": {
+    "接得太快": -0.2, "抢话": -0.25, "打断": -0.3, "插话": -0.2, "立刻接": -0.2,
+    "同时": -0.5, "齐声": -0.5
+  },
+
+  "interaction": {
+    "_note": "模拟真人互动对白的默认时间轴规则。gap 为上一句结束到下一句开始的秒数；负值＝重叠（抢话）。",
+    "gap_speaker_switch": 0.35,
+    "gap_same_speaker": 0.5,
+    "gap_tail": 1.0,
+    "min_gap": -0.5,
+    "emotion_jitter": 0.08,
+    "_jitter_note": "同一说话人连续两句情绪相同时，给非主导情绪维加微小扰动，避免连读像念稿；0 关闭。"
+  },
+
+  "tts_defaults": {
+    "_note": "IndexTTS2 Advanced 官方默认值。批量渲染时逐句覆盖 text / emotion_vector / speech_speed / output_gain / interval_silence_ms / seed。",
+    "emotion_control_weight": 1.0,
+    "use_random_style": false,
+    "interval_silence_ms": 200,
+    "max_text_tokens_per_segment": 120,
+    "do_sample": true,
+    "temperature": 0.8,
+    "top_p": 0.8,
+    "top_k": 30,
+    "repetition_penalty": 10.0,
+    "length_penalty": 0.0,
+    "num_beams": 3,
+    "max_mel_tokens": 1500,
+    "typical_sampling": false,
+    "typical_mass": 0.9,
+    "speech_speed": 1.0,
+    "use_fp16": false,
+    "output_gain": 1.0,
+    "_division": "output_gain 恒为 1.0；逐句音量由后期 volume(dB) 承担，这样调音量不必重跑 TTS。GUI 工作台里可手动改 output_gain 试听。"
+  },
+
+  "advanced_widget_index": {
+    "_note": "GUI 工作流 widgets_values 的精确索引，来自官方 INPUT_TYPES 声明顺序 + ComfyUI 给 seed 自动追加的 control_after_generate 控件（占 index 6）。仅用于 GUI 工作台说明与可选的 GUI→API 模式；批量渲染直接构造 API prompt，不依赖此表。",
+    "text": 0,
+    "emotion_control_weight": 1,
+    "use_random_style": 2,
+    "interval_silence_ms": 3,
+    "max_text_tokens_per_segment": 4,
+    "seed": 5,
+    "_control_after_generate": 6,
+    "do_sample": 7,
+    "temperature": 8,
+    "top_p": 9,
+    "top_k": 10,
+    "repetition_penalty": 11,
+    "length_penalty": 12,
+    "num_beams": 13,
+    "max_mel_tokens": 14,
+    "typical_sampling": 15,
+    "typical_mass": 16,
+    "speech_speed": 17,
+    "use_fp16": 18,
+    "output_gain": 19
+  },
+
+  "api_nodes": {
+    "speaker_audio": "1",
+    "emotion_audio": "2",
+    "emotion_vector": "3",
+    "advanced": "4",
+    "save_audio": "5",
+    "class_types": {
+      "LoadAudio": "LoadAudio",
+      "IndexTTS2EmotionVector": "IndexTTS2EmotionVector",
+      "IndexTTS2Advanced": "IndexTTS2Advanced",
+      "IndexTTS2SaveAudio": "IndexTTS2SaveAudio"
+    }
+  },
+
+  "save_audio_defaults": {
+    "name": "tts2_<LINE_ID>",
+    "format": "wav",
+    "normalize_peak": false,
+    "wav_pcm": "pcm16",
+    "mp3_bitrate": "320k",
+    "_note": "节点把文件写到 ComfyUI/output/audio/<name>_00001_.wav（自带计数器），render 从 /history 的 outputs 取回实际文件名。"
+  },
+
+  "assembly": {
+    "sample_rate": 32000,
+    "channels": 1,
+    "loudnorm_I": -16.0,
+    "loudnorm_TP": -1.5,
+    "loudnorm_LRA": 11.0,
+    "_note": "整段对白音轨统一到 32kHz 单声道，最后做 EBU R128 响度归一；逐句 gain_db 与 atempo 在混音前施加。"
+  }
+}
