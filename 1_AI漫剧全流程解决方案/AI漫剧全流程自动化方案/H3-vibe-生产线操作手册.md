@@ -586,7 +586,7 @@ python h3_lint/check_prompt_content.py shotlist.csv --prompt-md 分镜/视频提
 # python h3_lint/check_prompt_content.py shotlist.csv --allow-content   # 迁移旧项目时只统计
 ```
 
-四条硬断言（对应经验库 18.4 第 5 条）：`[Shot N]` 的 N 必须等于 `shot_id` 镜号（六列全扫）；`<Picture 2>` 身份描述 >80 字符且非孤立 `on-screen speaker`；`detailed_description` 含具体动作、非 `Fixed camera + 台词` 模板（<40 字符 FAIL）；跨镜 `detailed_description` 不得完全相同。可选 `--prompt-md` 会提示"提示词 md 远丰富于 CSV"的**写对了没用上**风险。**注意**：现役 `shotlist_vibe_template.csv` 的 S004/S006 就带 `[Shot 1]` bug，跑本门禁会 RC=1——这是模板本身待修，不是脚本误报。
+四条硬断言（对应经验库 18.4 第 5 条）：`[Shot N]` 的 N 必须等于 `shot_id` 镜号（六列全扫）；`<Picture 2>` 身份描述 >80 字符且非孤立 `on-screen speaker`；`detailed_description` 含具体动作、非 `Fixed camera + 台词` 模板（<40 字符 FAIL）；跨镜 `detailed_description` 不得完全相同。可选 `--prompt-md` 会提示"提示词 md 远丰富于 CSV"的**写对了没用上**风险。**现役 `shotlist_vibe_template.csv` 已于 2026-11-25 修正镜号 bug**（S004→`[Shot 4]`、S006→`[Shot 6]`，全文仅这两处字符变化，备份 `*.bak-20261125-shotfix`），现跑本门禁 RC=0（余 1 条合法提醒：S006 复用上文身份）。新项目建 CSV 时务必按镜号写 `[Shot N]`，别沿用 old `[Shot 1]` 通用模板。
 
 **有 ERROR 先修 CSV，不进渲染。** WARN 逐条判断；`[资产存在性检查未执行] input 根目录不存在` 说明 N0 的路径还没配好，此时检查被跳过而非通过——出片前建议加 `--strict-assets` 让它升级为 ERROR。
 
