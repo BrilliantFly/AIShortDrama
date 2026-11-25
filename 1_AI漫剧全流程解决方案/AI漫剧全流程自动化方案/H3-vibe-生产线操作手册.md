@@ -107,7 +107,7 @@
 |---|---|---|---|---|---|---|
 | N0 | 项目初始化 | — | 文件系统 | 目录骨架、命名表 | `项目根/` | 路径可写 |
 | N1 | 小说创作 | 创意 | novelist | 大纲／人物／场景／章节 | `novels/<名>/` | 世界观与年代设定齐全 |
-| N2 | 全流程分镜 | 小说 | drama 8 子阶段 | 剧本／视觉设定／图片提示词／分镜／视频提示词 | `剧集/<EP>/` | `storyboard_lint.py` |
+| N2 | 全流程分镜 | 小说 | drama 8 子阶段 **+ 自动：导演运镜（机位诊断）／tudou H3 规则（提示词校验）** | 剧本／视觉设定／图片提示词／分镜／视频提示词 | `剧集/<EP>/` | `storyboard_lint.py` + **tudou lint**（详见 3.6） |
 | N3 | 资产契约整理 | drama 产物 | 人工／脚本 | C/S/P 出图块、画风基底、槽位表 | `剧集/<EP>/导出/` | 锚点逐字一致 |
 | **N4** | **参考板出图** | **N3 出图块** | **本地 ComfyUI（默认，与 N5 同一工作流）**；备选：外部生图工具 / produce | **SHEET／PLATE／PAIR／PROPS** | **`input/<项目>/{chars,scenes,props}/`** | **逐张审脸、审构图** |
 | N5 | 逐镜漫画格 | N2 分镜 + **N4 参考板** | **本地 ComfyUI（默认：2511 两 pass + 基座/2512 出底图）**；备选：即梦 API / Nano Banana Pro | 每镜漫画静帧 | `input/<项目>/frames/` | 起始构图审片 |
@@ -687,6 +687,31 @@ REF-*-PAIR（顺序：4；用途：造型状态）    -> <Picture 4>
 - `comic-drama-workflow.md:160`：「在网页界面里自己出图，被要求先在套件里生成参考图 → 让分镜把这一镜要挂的图写成 `PLAN-...` 槽位……视频提示词照常产出，只是这些镜头不能转生产技能」。→ 对应 4.3 的 B 路径。
 - drama 全盘**无 `vibe` 字样**，交接是以「漫剧形态 / 项目外生图工具 / `PLAN-` 槽位」表述的，不是绑定某个具体工具。
 
+
+### 3.6 三 Skill 分工与自动执行协议 ★
+
+到 N2 时三套 skill **按分工自动依次执行**，不是三选一、也不必创作者逐个点名（详见经验库第 29 章）：
+
+| 顺序 | skill | 动作 | 读写面 | 自动? |
+|---|---|---|---|---|
+| 1 | `short-drama-storyboard`（drama 主干） | 出 `分镜.md` 骨架：镜头职责、连续性、冻结关键帧 | 写 `分镜.md` | 主干 |
+| 2 | `导演运镜与机位构图` | 对 `分镜.md` 逐镜跑四查诊断 + 情绪×六维处方，回写机位诊断段 | 读+写 `分镜.md` 的机位字段 | **自动** |
+| 3 | `short-drama-video-prompts` | 出 `视频提示词.md` | 写 `视频提示词.md` | 主干 |
+| 4 | tudou H3 规则（仅规则+脚本，不装成 Skill） | unit 分段 10–15s、双提示词对位、audio 绑定、上传清单，跑 lint | 读 `视频提示词.md`，出校验报告 | **自动** |
+
+**字段边界（防止互相覆盖）**：导演运镜只改六维与情绪处方，**不动**镜头职责／连续性／冻结关键帧正文／时长；
+tudou 规则只管 H3 提示词合规，**不动**分镜边界与台词。两者都靠 `分镜.md` 与 `视频提示词.md` 交接，不改 drama 源码。
+
+**门禁（四重，全过才交 N3）**：步骤 2 后 `check_n2_skills.py` PASS（防忘：漏做导演运镜诊断会点名缺哪几镜并 RC=1）；步骤 1 后 drama `storyboard_lint.py` 0 ERROR；步骤 4 后 tudou lint 0 ERROR；**新增第 4 重 `check_camera_landing.py` + `check_castset_slot.py` PASS**。前三重查"做了没/合不合规"，第 4 重查"诊断有没有落进提示词、景别是否全身、CAST+SET 是否继承"（经验库 30.9 / 31.3 / 31.5）。
+
+> 必配 Skill：`H3跨层一致性锁`（N2 后 / N7 前，管四层事实源五道锁）、`H3成片质量审片`（N10/N12/交付，六维验片）。两者是知识型，由 Agent 主动调用，不改上游文件；方法见各自 SKILL.md 与经验库 31 章。
+
+**"自动执行"的实现机制（务必区分，否则协议落空）**：
+- 步骤 2 导演运镜是**知识型 Skill，无 CLI、不能被脚本调用**——由执行 N2 的 Agent 在步骤 1 落盘后、步骤 3 之前**主动用 Skill 工具调用**，创作者无需点名；产物是 `分镜.md` 内【导演运镜诊断】段。这是"语义自动"，不是脚本自动。
+- 步骤 4 tudou 是**脚本自动**：`python h3_lint/md_to_h3_lint.py 分镜/视频提示词.md -o out/视频提示词_lint视图.html --lint`，一步出校验视图并跑两个 lint。
+- 两者正交：导演运镜写 `分镜.md`（镜头设计层），tudou 读 `视频提示词.md`（H3 契约层），互不改对方字段——**lint 视图是否变化不能用来评判导演运镜是否有效**（T3 实测 A/B 两线 lint 视图字节一致，正确）。
+- 防呆：导演运镜只**新增**诊断段，禁止改写 drama 原文；验收=剔除诊断段后与回写前逐字一致（见经验库 30.7/30.8）。
+
 ---
 
 ## 4. 分镜表 → timeline_data 映射（速查）
@@ -717,8 +742,21 @@ python frames_from_shotlist_comfy.py --csv shotlist.csv --inputs out/n5_inputs.j
 python frames_from_shotlist_comfy.py --inputs out/n5_inputs.json --server 127.0.0.1:8188 \
   --workflow-template n5_comfy_template.json --input-root "D:/ComfyUI-aki-v3.2/ComfyUI/input" --seed 42
 
-# N2 门禁
+# N2 门禁（四步自动执行后统一过闸：主干→导演运镜自动诊断→主干出提示词→tudou H3 规则自动校验）
+# 1) drama 主干 storyboard 已出分镜.md；导演运镜 skill 自动逐镜诊断并回写机位字段（无独立命令，走 skill 调用）
+# 【防忘硬门禁】检查每镜都有导演运镜诊断段+全场情绪曲线；忘做→RC=1→交不了 N3（经验库 30.9）
+python h3_lint/check_n2_skills.py 分镜/分镜.md --expect-shots 5
+# 【跨层门禁·第4重】诊断是否落进提示词 + 全身景别 + CAST+SET + 四槽镜号（经验库 31.3/31.5）
+python h3_lint/check_camera_landing.py 分镜/分镜.md 分镜/视频提示词.md
+python h3_lint/check_castset_slot.py 分镜/视频提示词.md --expect-shots 5
+# 2) drama 主干 video-prompts 已出视频提示词.md；tudou H3 lint 自动校验
 python <drama>/skills/short-drama-storyboard/scripts/storyboard_lint.py 分镜.md --csv 分镜.csv
+# 注意：drama 的 md 不是 lint 的 html_file 入参，必须先用桥接器转「校验视图」HTML（经验库 30.4）
+# 固定路径：<方案>/h3_lint/  （11 个 lint + md_to_h3_lint.py，从 999_参考 同步，原版未动）
+python h3_lint/md_to_h3_lint.py 分镜/视频提示词.md -o out/视频提示词_lint视图.html --lint
+# 单独复跑：
+# python h3_lint/h3_prompt_lint.py out/视频提示词_lint视图.html
+# python h3_lint/h3_unit_lint.py  out/视频提示词_lint视图.html
 
 # N8 体检（不写文件；出片前可加 --strict-assets）
 python csv_to_timeline.py --check-only --input-root "D:/ComfyUI-aki-v3.2/ComfyUI/input"

@@ -1,0 +1,35 @@
+导演运镜与机位构图 · SKILL v1.2
+================================
+
+一个技能。不是十个。
+
+【怎么装】两步
+1. 把整个「导演运镜与机位构图」文件夹，放进你的 skills 目录：
+   - WorkBuddy：  ~/.workbuddy/skills/
+   - Claude 系：   ~/.claude/skills/
+   Windows 就是 C:/Users/你的用户名/.workbuddy/skills/
+2. 新开一个对话，直接说「这段剧本帮我排镜头」或「帮我改这条提示词」，
+   它会自己触发。想手动喊就叫「用导演运镜与机位构图 SKILL」。
+
+不需要改配置、不需要装依赖、不需要联网。
+
+【里面是什么】
+SKILL.md                        正文：两条主流程 + 十二情绪速查 + 自检清单
+references/01-情绪与镜头的对应     12 种情绪 × 七维处方（核心）
+references/02-剧情功能与镜头方案   beat 拆法 + 八种配比 + 三行剧本示例
+references/03-景别机位与朝向      取词用：每条讲清凭什么有效、何时失效
+references/04-运镜                12 种运动 + 速度词 + 角度搭配
+references/05-构图与画幅          11 个工具 + 竖屏 9:16 专章
+references/06-连续性与分镜        180°/30°/视线/动作 + 转场五类
+references/07-提示词写法          中英公式 + 字数口径 + 四查改稿
+references/08-术语对照与索引      中英对照 + GrokFilm 编号
+references/09-附录-从成片反推机位  拉片用，非主流程
+references/10-一分钟机位口播模板   讲给观众听时用
+
+【它到底能干什么】
+A 剧本 → 镜头表：几镜、每镜怎么拍、为什么、接点
+B 提示词 → 诊断重写：先查病，再只改机位与运动
+
+【出处】
+框架重组自 joost/ai-camera-shots 与 Rylaispirit/cinematic-video-prompt-skill（均 MIT），
+情绪处方、beat 配比、中文公式、竖屏章、口播模板为原创。

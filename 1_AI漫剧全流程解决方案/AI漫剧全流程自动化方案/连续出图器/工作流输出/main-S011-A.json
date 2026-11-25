@@ -1,0 +1,120 @@
+{
+ "2": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "z_image_turbo_int8_convrot.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "3": {
+  "class_type": "ModelSamplingAuraFlow",
+  "inputs": {
+   "shift": 3,
+   "model": [
+    "2",
+    0
+   ]
+  }
+ },
+ "4": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "qwen_3_4b.safetensors",
+   "type": "lumina2",
+   "device": "default"
+  }
+ },
+ "5": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "ae.safetensors"
+  }
+ },
+ "6": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "Night office interior, cinematic film still, shallow depth of field, background completely out of focus bokeh. Enclosed private executive office at NIGHT, no other people anywhere, empty company floor. Extreme close-up PORTRAIT of SUWAN, a 24-year-old East Asian woman, high ponytail with soft bangs, cream knit vest over white shirt, small brown tie, brown pleated skirt, white socks, brown leather loafers, brown crossbody bag: her face fills the upper half of the frame, she holds a returned letter with both hands just below her chin and lifts her eyes, tentative, hopeful and nervous; the blurred background bokeh shows only a dark grey sofa and dark wood shelving in shadow; cool blue ambient light from frame left, warm fill from frame right; framing crops at her shoulders, no desk, no monitors, no other people, no full body, no second person. photorealistic cinematic still, muted warm-cool grade, natural practical lighting, no text, no watermark, no character sheet, no panel layout, no duplicate person, no third person, no extra people, no crouching, no sitting on the desk edge, no distorted hands, no deformed faces.",
+   "clip": [
+    "4",
+    0
+   ]
+  }
+ },
+ "7": {
+  "class_type": "CLIPTextEncode",
+  "inputs": {
+   "text": "text, watermark, logo, subtitles, crouching, squatting, sitting on desk, cartoon, anime, distorted face, extra limbs, duplicate person, third person, extra people, two women, character sheet, three views, collage, split screen",
+   "clip": [
+    "4",
+    0
+   ]
+  }
+ },
+ "7b": {
+  "class_type": "ConditioningZeroOut",
+  "inputs": {
+   "conditioning": [
+    "7",
+    0
+   ]
+  }
+ },
+ "14": {
+  "class_type": "EmptySD3LatentImage",
+  "inputs": {
+   "width": 1344,
+   "height": 768,
+   "batch_size": 1
+  }
+ },
+ "9": {
+  "class_type": "KSampler",
+  "inputs": {
+   "seed": 53011,
+   "steps": 8,
+   "cfg": 1,
+   "sampler_name": "res_multistep",
+   "scheduler": "simple",
+   "denoise": 1.0,
+   "model": [
+    "3",
+    0
+   ],
+   "positive": [
+    "6",
+    0
+   ],
+   "negative": [
+    "7b",
+    0
+   ],
+   "latent_image": [
+    "14",
+    0
+   ]
+  }
+ },
+ "8": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "9",
+    0
+   ],
+   "vae": [
+    "5",
+    0
+   ]
+  }
+ },
+ "11": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "办公室/FRAME-G/SHOT-011",
+   "images": [
+    "8",
+    0
+   ]
+  }
+ }
+}

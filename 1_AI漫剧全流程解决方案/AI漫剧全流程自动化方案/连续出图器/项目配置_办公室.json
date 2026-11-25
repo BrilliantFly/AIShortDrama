@@ -1,0 +1,51 @@
+{
+  "name": "办公室-最后一盏灯",
+  "host": "http://127.0.0.1:8188",
+  "comfy_root_in": "D:/ComfyUI-aki-v3.2/ComfyUI/input",
+  "comfy_root_out": "D:/ComfyUI-aki-v3.2/ComfyUI/output",
+  "csv": "分镜表_办公室.csv",
+  "models": {
+    "unet": "z_image_turbo_int8_convrot.safetensors",
+    "clip": "qwen_3_4b.safetensors",
+    "vae": "ae.safetensors",
+    "edit_unet": "qwen_image_edit_2509_fp8mixed.safetensors",
+    "edit_clip": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+    "edit_vae": "qwen_image_vae.safetensors"
+  },
+  "masters": {
+    "A": "办公室/scenes/MASTER-A.png",
+    "B": "办公室/scenes/MASTER-B.png"
+  },
+  "chars": {
+    "陆沉": {
+      "sheet": "办公室/chars/IMG-LUCHEN-SHEET.png",
+      "face": "办公室/ref_faces/REF-LUCHEN.png",
+      "prompt_desc": "LUCHEN, a 29-year-old East Asian man, medium-length black hair, right-side silver ear-thread, deep navy tailored suit with brown tie, dark navy trousers, brown leather ankle boots"
+    },
+    "苏晚": {
+      "sheet": "办公室/chars/IMG-SUWAN-SHEET.png",
+      "face": "办公室/ref_faces/REF-SUWAN.png",
+      "prompt_desc": "SUWAN, a 24-year-old East Asian woman, high ponytail with soft bangs, cream knit vest over white shirt, small brown tie, brown pleated skirt, white socks, brown leather loafers, brown crossbody bag"
+    }
+  },
+  "head": {
+    "A": "Same night CEO office as Image 1, preserve its geometry, furniture and lighting exactly: large wooden executive desk at the CENTER of frame, floor-to-ceiling windows with blue night city skyline BEHIND the desk, grey fabric sofa along the far LEFT wall, dark wooden door at the RIGHT edge of frame near the camera, black desk lamp lit on the desktop, dark wood floor. ",
+    "B": "Same night CEO office as Image 1, preserve its geometry, furniture and lighting exactly: wooden executive desk in the near foreground, the black executive chair and dark-navy-suit shoulder of the man in the RIGHT foreground softly out of focus with his back to the camera, grey fabric sofa along the LEFT wall, low bookshelf at far left, wooden door with warm corridor light at the BACK RIGHT, dark wood floor. ",
+    "T2I": "Night office interior, cinematic film still, shallow depth of field, background completely out of focus bokeh. "
+  },
+  "tail": " photorealistic cinematic still, muted warm-cool grade, natural practical lighting, no text, no watermark, no character sheet, no panel layout, no duplicate person, no third person, no extra people, no crouching, no sitting on the desk edge, no distorted hands, no deformed faces.",
+  "negative_a": "text, watermark, logo, subtitles, crouching, squatting, sitting on desk, cartoon, anime, distorted face, extra limbs, duplicate person, third person, extra people, two women, character sheet, three views, collage, split screen",
+  "negative_b": "text, watermark, extra people, third person, changed pose, changed clothes, changed hairstyle, red hair, auburn hair, copper hair, reddish brown hair, different face, beautified face, deformed, blurry, oversaturated, character sheet, collage, split screen",
+  "groups": {
+    "main": {
+      "save_prefix": "办公室/FRAME-G",
+      "input_subdir": "办公室/frames_gen",
+      "project_dir": "D:/剧本及分镜/办公室/分镜/连续出图/frames"
+    },
+    "routeB": {
+      "save_prefix": "办公室/FRAME-GB",
+      "input_subdir": "办公室/frames_routeB",
+      "project_dir": "D:/剧本及分镜/办公室/分镜/连续出图/frames_routeB"
+    }
+  }
+}

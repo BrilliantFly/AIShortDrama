@@ -1,0 +1,143 @@
+{
+ "32": {
+  "class_type": "EmptySD3LatentImage",
+  "inputs": {
+   "width": 1344,
+   "height": 768,
+   "batch_size": 1
+  }
+ },
+ "33": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "办公室/ref_faces/REF-SUWAN.png"
+  }
+ },
+ "20": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+   "type": "qwen_image",
+   "device": "default"
+  }
+ },
+ "21": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "qwen_image_vae.safetensors"
+  }
+ },
+ "22": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "qwen_image_edit_2509_fp8mixed.safetensors",
+   "weight_dtype": "default"
+  }
+ },
+ "23": {
+  "class_type": "ModelSamplingAuraFlow",
+  "inputs": {
+   "shift": 3.0,
+   "model": [
+    "22",
+    0
+   ]
+  }
+ },
+ "30": {
+  "class_type": "TextEncodeQwenImageEditPlus",
+  "inputs": {
+   "clip": [
+    "20",
+    0
+   ],
+   "vae": [
+    "21",
+    0
+   ],
+   "text": "Image 1 is the scene master plate: preserve its composition, camera angle, framing, furniture, background and lighting COMPLETELY UNCHANGED. Image 2 is the full-body character sheet of 苏晚: SUWAN, a 24-year-old East Asian woman, high ponytail with soft bangs, cream knit vest over white shirt, small brown tie, brown pleated skirt, white socks, brown leather loafers, brown crossbody bag — place/match this person exactly (clothing, hairstyle, body), do not output the sheet itself. Image 3 is a clear front-facing close-up of the SAME person — this face is the highest priority: match facial features pixel for pixel, do not beautify, do not reshape. Keep image 1 unchanged except the action at the desk: the woman (match her character sheet and face close-up) stands at the guest side of the desk facing the camera, places documents on the desktop, glances at the empty paper cup, then lifts her eyes with a small polite smile. The man remains only as the blurred back-shoulder in the right foreground."
+  },
+  "image1": [
+   "40",
+   0
+  ],
+  "image2": [
+   "32",
+   0
+  ],
+  "image3": [
+   "33",
+   0
+  ]
+ },
+ "31": {
+  "class_type": "TextEncodeQwenImageEdit",
+  "inputs": {
+   "clip": [
+    "20",
+    0
+   ],
+   "vae": [
+    "21",
+    0
+   ],
+   "text": "text, watermark, extra people, third person, changed pose, changed clothes, changed hairstyle, red hair, auburn hair, copper hair, reddish brown hair, different face, beautified face, deformed, blurry, oversaturated, character sheet, collage, split screen"
+  }
+ },
+ "34": {
+  "class_type": "KSampler",
+  "inputs": {
+   "seed": 61002,
+   "steps": 20,
+   "cfg": 3.0,
+   "sampler_name": "euler",
+   "scheduler": "simple",
+   "denoise": 1.0,
+   "model": [
+    "23",
+    0
+   ],
+   "positive": [
+    "30",
+    0
+   ],
+   "negative": [
+    "31",
+    0
+   ],
+   "latent_image": [
+    "32",
+    0
+   ]
+  }
+ },
+ "35": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "34",
+    0
+   ],
+   "vae": [
+    "21",
+    0
+   ]
+  }
+ },
+ "36": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "filename_prefix": "办公室/FRAME-GB/SHOT-002",
+   "images": [
+    "35",
+    0
+   ]
+  }
+ },
+ "40": {
+  "class_type": "LoadImage",
+  "inputs": {
+   "image": "办公室/scenes/MASTER-B.png"
+  }
+ }
+}
