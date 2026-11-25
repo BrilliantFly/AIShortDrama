@@ -1,6 +1,9 @@
 # EP001 剪辑工作区骨架（N17）
 
-> 状态：**骨架占位**，只建立目录约定，尚无真实素材/成片。由 `<资料库根>/6_剪辑/tools/prepare_two_versions.py` 按片段版产物填充。
+> 状态：**分镜/提示词已入位**（5 镜实跑版，已从旧备份扶正；运镜落地与 CAST+SET 双门禁均 RC=0），**真实素材/成片仍待产**。由 `<资料库根>/6_剪辑/tools/prepare_two_versions.py` 按片段版产物填充。
+> 本目录的 `分镜.md` / `视频提示词.md` 是 N2 四重门禁的验收对象：
+> `python <资料库根>/1_AI漫剧全流程解决方案/AI漫剧全流程自动化方案/h3_lint/check_camera_landing.py 分镜.md 视频提示词.md`
+> `python <资料库根>/1_AI漫剧全流程解决方案/AI漫剧全流程自动化方案/h3_lint/check_castset_slot.py 视频提示词.md`
 
 ## 目录树与用途
 
