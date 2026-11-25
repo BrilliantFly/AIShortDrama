@@ -32,6 +32,7 @@ import os
 import sys
 import urllib.request
 from pathlib import Path
+from paths import default_input_root  # 跨电脑可移植
 
 from frames_common import (  # noqa: E402
     BASE, DEFAULT_CSV, DEFAULT_MANIFEST,
@@ -41,7 +42,7 @@ from frames_common import (  # noqa: E402
     validate_rows,
 )
 
-DEFAULT_INPUT_ROOT = Path("D:/ComfyUI-aki-v3.2/ComfyUI/input")
+DEFAULT_INPUT_ROOT = default_input_root()
 DEFAULT_ENDPOINT = "https://ark.cn-beijing.volces.com/api/v3/images/generations"
 DEFAULT_MODEL = "doubao-seedream-4-0-20260415"
 

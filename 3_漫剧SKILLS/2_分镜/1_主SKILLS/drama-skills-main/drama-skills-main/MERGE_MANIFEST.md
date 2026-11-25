@@ -10,6 +10,6 @@
 - VERSION 保持本地 `0.9.2` 不擅自改写；本版实为 `0.9.2-local + upstream-v0.12.1-increment`
 
 ## 回退 / 取用（绝对路径）
-- 本地基础版完整快照：`D:/AIShortDrama/3_漫剧SKILLS/2_分镜/1_主SKILLS/_backup_20261121_v0.9.2/drama-skills-main/`
-- git v0.12.1 纯净快照：`D:/AIShortDrama/3_漫剧SKILLS/2_分镜/1_主SKILLS/_git_v0.12.1_纯净快照_20261122/`
-- 全量差异与集成清单：`D:/AIShortDrama/3_漫剧SKILLS/SKILLS融合报告_20261122.md`
+- 本地基础版完整快照：`<资料库根>/3_漫剧SKILLS/2_分镜/1_主SKILLS/_backup_20261121_v0.9.2/drama-skills-main/`
+- git v0.12.1 纯净快照：`<资料库根>/3_漫剧SKILLS/2_分镜/1_主SKILLS/_git_v0.12.1_纯净快照_20261122/`
+- 全量差异与集成清单：`<资料库根>/3_漫剧SKILLS/SKILLS融合报告_20261122.md`

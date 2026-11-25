@@ -50,6 +50,7 @@ import sys
 import time
 import urllib.request
 from pathlib import Path
+from paths import default_input_root, default_output_root  # 跨电脑可移植
 
 HOST = "http://127.0.0.1:8188"
 WF_MODES = {
@@ -386,11 +387,11 @@ def main() -> None:
     ap.add_argument("--mode", choices=list(WF_MODES), default="hd", help="档位（--segments 模式用）")
     ap.add_argument("--workflow", type=Path, help="H3 底座 JSON（--segments 模式必需）")
     ap.add_argument("--input-root", type=Path,
-                    default=Path("D:/ComfyUI-aki-v3.2/ComfyUI/input"),
+                    default=default_input_root(),
                     help="ComfyUI input 根（--segments 模式破缓存用）")
     ap.add_argument("--out-root", type=Path, required=True, help="成片交付根，成片落 <root>/videos/")
     ap.add_argument("--comfy-output", type=Path,
-                    default=Path("D:/ComfyUI-aki-v3.2/ComfyUI/output"),
+                    default=default_output_root(),
                     help="ComfyUI output 根（快照 diff 找产物）")
     ap.add_argument("--csv", type=Path, default=None, help="出片清单 CSV（回写 status）")
     ap.add_argument("--wait-min", type=int, default=30, help="单镜等待上限分钟")

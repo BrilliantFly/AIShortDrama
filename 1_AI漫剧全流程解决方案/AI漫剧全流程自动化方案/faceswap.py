@@ -35,6 +35,7 @@ import time
 import urllib.parse
 import urllib.request
 from pathlib import Path
+from paths import default_input_root  # 跨电脑可移植
 
 
 def post(host: str, path: str, payload: dict) -> dict:
@@ -204,7 +205,7 @@ def main() -> None:
     ap.add_argument("--mode", choices=["board", "frames"], required=True)
     ap.add_argument("--host", default="http://127.0.0.1:8188")
     ap.add_argument("--timeout", type=int, default=600)
-    ap.add_argument("--input-root", type=Path, default=Path("D:/ComfyUI-aki-v3.2/ComfyUI/input"))
+    ap.add_argument("--input-root", type=Path, default=default_input_root())
     ap.add_argument("--jobs-config", help="board 模式：换脸任务 JSON")
     ap.add_argument("--frames-dir", type=Path, help="frames 模式：帧目录")
     ap.add_argument("--frames-rel", default="", help="frames 模式：帧相对 input 根路径（默认用项目名推导）")

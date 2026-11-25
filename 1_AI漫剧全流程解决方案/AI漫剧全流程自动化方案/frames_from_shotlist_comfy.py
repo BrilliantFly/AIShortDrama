@@ -50,6 +50,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+from paths import default_input_root  # 跨电脑可移植
 
 from frames_common import (  # noqa: E402
     BASE, DEFAULT_CSV, DEFAULT_MANIFEST,
@@ -58,7 +59,7 @@ from frames_common import (  # noqa: E402
     load_shotlist_rows, out, seeds, selected_rows, validate_rows, work_rel,
 )
 
-DEFAULT_INPUT_ROOT = Path("D:/ComfyUI-aki-v3.2/ComfyUI/input")
+DEFAULT_INPUT_ROOT = default_input_root()
 STAGE_KEYS = ("stage0", "pass1", "pass2")
 STAGE_TITLES = {
     "stage0": "Stage 0 · T2I 出底图（不挂板）",

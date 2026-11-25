@@ -5,7 +5,7 @@
 **适用**：连续叙事的漫剧 / 仿真人短剧，多镜头、需要跨镜角色一致、带对白与音色
 
 > **实跑经验回灌（2026-11-21）**：本手册成稿于 11-18（设计态），随后《街对面》EP001 在 ComfyUI/H3 实跑出片
-> 并踩坑返工多轮，结论沉淀在 `D:/AIShortDrama/99_经验库/工作流优化经验库.md`（原 `D:\剧本及分镜\` 为历史路径）。本手册主体（N0–N13 设计链路）保留不动，
+> 并踩坑返工多轮，结论沉淀在 `<资料库根>/7_经验库/工作流优化经验库.md`（原 `D:\剧本及分镜\` 为历史路径）。本手册主体（N0–N13 设计链路）保留不动，
 > 但请按以下回灌点执行，否则会复现已修好的坑：
 > 1. **对话戏别按"一句一镜 SOLO 正反打"拆**（经验库 3.0）：generate + 双声线档下 2~3 句合并 DUO 双人同框更流畅，
 >    16 镜 SOLO 的切换过频/单人漂移/并排都是实测踩坑产物。
@@ -15,15 +15,16 @@
 >
 > | 用途 | 实际路径 |
 > |---|---|
-> | 资料库根 | `D:/AIShortDrama/`（末尾含 U+200C） |
-> | 主干方案（本手册所在） | `D:/AIShortDrama/1_AI漫剧全流程解决方案/AI漫剧全流程自动化方案/` |
+> | 资料库根 | `<资料库根>` = 本仓库 clone 后的根目录（盘符因电脑而异；末尾含 U+200C） |
+> | 主干方案（本手册所在） | `<资料库根>/1_AI漫剧全流程解决方案/AI漫剧全流程自动化方案/` |
 > | 出片底座（N9 默认 `--workflow`） | 上列主干方案下 `工作流底座/H3-通用02-高清主线-参考音色对白-r2v-25step-1344x768.json` |
-| 对白 source 档（N14 配音流水线配套） | `2_工作流/02-漫剧/02-H3漫剧流程/H3-通用04-对白原声-source-25step-1344x768.json`（底座与 GUI 副本已同步） |
-> | 现役工作流库（权威） | `D:/AIShortDrama/2_工作流/02-漫剧/02-H3漫剧流程/` |
-> | 后续出图（现役 7 个工作流） | `D:/AIShortDrama/2_工作流/02-漫剧/01-分镜图片/`（根下平铺、统一命名；原版卡在 `_原版卡备份/`） |
-> | ComfyUI GUI 工作流（同步副本） | `D:/ComfyUI-aki-v3.2/ComfyUI/user/default/workflows/` |
-> | ComfyUI input（实测存在，412 项） | `D:/ComfyUI-aki-v3.2/ComfyUI/input` |
-> | 经验库（活文档） | `D:/AIShortDrama/99_经验库/工作流优化经验库.md` |
+> | 对白 source 档（N14 配音流水线配套） | `2_工作流/02-漫剧/02-H3漫剧流程/H3-通用04-对白原声-source-25step-1344x768.json`（底座与 GUI 副本已同步） |
+> | 现役工作流库（权威） | `<资料库根>/2_工作流/02-漫剧/02-H3漫剧流程/` |
+> | 后续出图（现役 7 个工作流） | `<资料库根>/2_工作流/02-漫剧/01-分镜图片/`（根下平铺、统一命名；原版卡在 `_原版卡备份/`） |
+> | ComfyUI 安装根 | 环境变量 `COMFYUI_ROOT`（各电脑不同）；脚本经 `paths.py` 自动解析，见 `路径约定.md` |
+> | ComfyUI input / output | `$COMFYUI_ROOT/input`、`$COMFYUI_ROOT/output`（可用 `COMFYUI_INPUT`/`COMFYUI_OUTPUT` 或 `--input-root` 覆盖） |
+> | ComfyUI GUI 工作流（同步副本） | `$COMFYUI_ROOT/user/default/workflows/` |
+> | 经验库（活文档） | `<资料库根>/7_经验库/工作流优化经验库.md` |
 >
 > 通用三件套在「现役库 / 主干 `工作流底座/` / GUI / `归档/`」四处 MD5 一致（2026-11-21 核验）。N9 装配命令须带 `--scene-bible <场景圣经文件>`（由 `prepare_project.py` 出草稿后人工定稿），省略则 `commonEnabled` 不生效、场景锁失效；引用表中 `工作流/09-H3导演台-NG版/...` 等为已归档历史目录，按上表现役目录检索。
 > 4. **N13 归档之后还有后期合成环节**——**顺序是先 N14 音轨精修 → 再 N15 转场叠化拼接**（早期手册把两者顺序写反了；`--audio-fix` 要先有精修片段）。脚本已参数化交付在 `后期与质检/`，见手册末尾。
@@ -86,7 +87,7 @@
    另更正：`vibecontent.net` **不是** Instagram 文案站（那是 `vibecontent.site`，不同域名）；`vibecontent.net/workflows/nomi` 是开源 AI 视频工作流目录站。会话日志里的 `host=vibecontent.net` 很可能正是在查这类工作流，**与本链路有关，不是无关记录**。
    → **定线（用户已确认，2026-11-18）**：本链路的 vibe 指「③ 里的一个环节」——**前半段用现成程序出每镜漫画静帧，后半段交给 H3 导演台**。即 vibe = 每镜一张静帧 PNG（`SHOT-<EP>-<镜号>.png`），身份一致性外置给 H3 三张固定参考板；② 的代码渲染程序产出 MP4、与 H3 并列，已明确**排除**（不是上游，不能填 `<Picture 1>`）。落地方案见 `漫画前置-H3混合路线-实现方案.md`，N5 逐镜执行见 `N5-逐镜漫画格操作卡.md`，出图引擎换成本地 ComfyUI 见 `N5-ComfyUI实现卡.md`。0.3 以上三种所指保留为情报背景，不再是待选路线。
 2. **drama 现役版以 `F:\skills\drama-skills-main\drama-skills-main\` 为准**，外层同名目录是壳，另有多个 `_backup_20261118_*` 历史版本，不采信。
-3. **三处路径已核实（2026-11-21 更正）**：`D:/ComfyUI-aki-v3.2/ComfyUI/input` **实测存在且可访问**（412 项），原判「不可访问」有误；`F:\skills\工作流\01-分镜图片\` 与 `D:\ComfyUI资产\` 的历史位置现分别对应 `2_工作流/02-漫剧/01-分镜图片/` 与 `2_工作流/`（权威）。N0 按上表配 `--input-root` 即可，`refs[].imageFile` 不会落空。
+3. **三处路径已核实（2026-11-21 更正）**：本机当时 `D:/ComfyUI-aki-v3.2/ComfyUI/input` **实测存在且可访问**（412 项），原判「不可访问」有误（现改为 `$COMFYUI_ROOT/input` 表达，跨电脑通用）；`F:\skills\工作流\01-分镜图片\` 与 `D:\ComfyUI资产\` 的历史位置现分别对应 `2_工作流/02-漫剧/01-分镜图片/` 与 `2_工作流/`（权威）。N0 按上表配 `--input-root` 即可，`refs[].imageFile` 不会落空。
 
 ### 0.4 术语
 
@@ -160,7 +161,7 @@
 4. 不要用 `09-H3导演台-NG版`：要求 ComfyUI ≥ 0.37，本机记录 0.30.2，打开会大面积红框。
 5. 保留权威原件：现役权威为 `2_工作流/02-漫剧/02-H3漫剧流程/`（改这里），主干 `工作流底座/` 与 GUI `D:/ComfyUI-aki-v3.2/ComfyUI/user/default/workflows/02-H3漫剧流程/` 为字节一致副本；原 README 标注的 `D:\ComfyUI资产\1-工作流\01-通用-H3\` 为历史路径、已失效。**任何改动都另存副本**。
 6. **工作流修改顺序（用户规定，强制 · 2026-11-21）**：规定原文——如果修改工作流，**先修改 `2_工作流\` 下的现役工作流，然后再同步到工作流底座**。即：第一步改 `2_工作流\02-漫剧\` 现役库；第二步同步主干 `工作流底座/`（字节一致，`csv_to_timeline.py` 默认读取处）；涉及 GUI 使用时第三步同步 `D:/ComfyUI-aki-v3.2/ComfyUI/user/default/workflows/` 副本。禁止反向操作（直接改底座或只改底座），禁止只改一处不同步。
-7. **项目卡归属（用户规定，强制 · 2026-11-22）**：规定原文——「项目卡工作流放在5漫剧里面，项目生成的工作流放5漫剧（不包括底座工作流），除非新增、修改工作流，不然一般02工作流一般不变。」项目/剧集装配产出的工作流（项目卡，如 `H3-EP001-出片-*`）放 `D:/AIShortDrama/5_漫剧/<项目名>/工作流/`；`2_工作流/02-漫剧/02-H3漫剧流程/` 只保留通用工作流，非新增/修改不动；底座工作流（`工作流底座/` 下通用卡）不迁，仍是 N9 装配默认基底。
+7. **项目卡归属（用户规定，强制 · 2026-11-22）**：规定原文——「项目卡工作流放在5漫剧里面，项目生成的工作流放5漫剧（不包括底座工作流），除非新增、修改工作流，不然一般02工作流一般不变。」项目/剧集装配产出的工作流（项目卡，如 `H3-EP001-出片-*`）放 `<资料库根>/5_漫剧/<项目名>/工作流/`；`2_工作流/02-漫剧/02-H3漫剧流程/` 只保留通用工作流，非新增/修改不动；底座工作流（`工作流底座/` 下通用卡）不迁，仍是 N9 装配默认基底。
 
 **验收**：`input/` 可写、底座 JSON 能被 `json.load` 解析、目录名不含空格与非 ASCII 路径问题。
 
@@ -455,7 +456,7 @@ python csv_to_timeline.py --check-only
 ```
 python csv_to_timeline.py --csv shotlist.csv --dual ^
   --out out/H3-vibe-<EP>-<组>.json --seed 42 ^
-  --input-root "D:/ComfyUI-aki-v3.2/ComfyUI/input" ^
+  --input-root "%COMFYUI_ROOT%/input" ^
   --scene-bible scene_bible.txt
 ```
 
@@ -471,7 +472,7 @@ python csv_to_timeline.py --compare out\x_preview.json out\x_final.json
 python csv_to_timeline.py --csv shotlist.csv ^
   --workflow "工作流底座/H3-通用02-高清主线-参考音色对白-r2v-25step-1344x768.json" ^
   --out out/H3-vibe-<EP>-<组>.json --seed 42 ^
-  --input-root "D:/ComfyUI-aki-v3.2/ComfyUI/input" --strict-assets ^
+  --input-root "%COMFYUI_ROOT%/input" --strict-assets ^
   --scene-bible scene_bible.txt
 ```
 
@@ -606,7 +607,7 @@ N17 曾以补丁形式追加在 N16 之后，但 `edit_tool.py render` 自身按
 
 **契约（片段版）**：输入 = 逐镜精修 mp4（N14）+ `shotlist.csv` +（可选）drama 五文档；适配器产出 `剧集/<EP>/制作成果/videos/MOTION-<EP>-<镜号>.mp4` + `剪辑单.md` 草稿 + `视频提示词.md` 骨架（供来源 ID 核对）+ `片段清单.csv`；输出 = `剪辑单.md`（人工定稿，含「## 混音记录」）+ 成片 mp4 + `验收报告.md/.json`。执行顺序 N14 → 片段版 → `check` → `render` → `mix_background.py`（外部混音/字幕/响度）→ `delivery_qc.py`（10 项终验）→ 交付；成片版的 N15/N16 与之并行，质检可前置抽检。
 
-**已装工具**（`D:\AIShortDrama\...\6_剪辑\`，双击 `activate.bat` 设置 PATH）：
+**已装工具**（`<资料库根>/.../6_剪辑/`，双击 `activate.bat` 设置 PATH）：
 
 - `tools/ffmpeg/ffmpeg.exe`、`ffprobe.exe`（9.1 essentials，含 libass / librubberband / x264）——已实测可运行。
 - `tools/drama-edit/`：`edit_tool.py` 的 `check` / `render` / `verify` 只读副本（不改第三方原版）。`render` 支持按 `环境声` 行循环铺底、`音效`/`配音` 行混入、烧字幕与画面文字、`loudnorm` 统一响度；`verify` 报时长、切点亮度、疑似坏帧。
@@ -740,7 +741,7 @@ python frames_from_shotlist_comfy.py --emit-inputs-template out/n5_inputs.json
 python frames_from_shotlist_comfy.py --csv shotlist.csv --inputs out/n5_inputs.json --dry-run
 # 实跑（组件可用时）：产物直落 input/<项目>/frames/ 并回填 frame_key
 python frames_from_shotlist_comfy.py --inputs out/n5_inputs.json --server 127.0.0.1:8188 \
-  --workflow-template n5_comfy_template.json --input-root "D:/ComfyUI-aki-v3.2/ComfyUI/input" --seed 42
+  --workflow-template n5_comfy_template.json --input-root "$COMFYUI_ROOT/input" --seed 42
 
 # N2 门禁（四步自动执行后统一过闸：主干→导演运镜自动诊断→主干出提示词→tudou H3 规则自动校验）
 # 1) drama 主干 storyboard 已出分镜.md；导演运镜 skill 自动逐镜诊断并回写机位字段（无独立命令，走 skill 调用）
@@ -752,19 +753,19 @@ python h3_lint/check_castset_slot.py 分镜/视频提示词.md --expect-shots 5
 # 2) drama 主干 video-prompts 已出视频提示词.md；tudou H3 lint 自动校验
 python <drama>/skills/short-drama-storyboard/scripts/storyboard_lint.py 分镜.md --csv 分镜.csv
 # 注意：drama 的 md 不是 lint 的 html_file 入参，必须先用桥接器转「校验视图」HTML（经验库 30.4）
-# 固定路径：<方案>/h3_lint/  （11 个 lint + md_to_h3_lint.py，从 999_参考 同步，原版未动）
+# 固定路径：<方案>/h3_lint/  （11 个 lint + md_to_h3_lint.py，从 99_参考/SKILLS/tudou-shotlist-builder 同步，原版未动）
 python h3_lint/md_to_h3_lint.py 分镜/视频提示词.md -o out/视频提示词_lint视图.html --lint
 # 单独复跑：
 # python h3_lint/h3_prompt_lint.py out/视频提示词_lint视图.html
 # python h3_lint/h3_unit_lint.py  out/视频提示词_lint视图.html
 
 # N8 体检（不写文件；出片前可加 --strict-assets）
-python csv_to_timeline.py --check-only --input-root "D:/ComfyUI-aki-v3.2/ComfyUI/input"
+python csv_to_timeline.py --check-only --input-root "$COMFYUI_ROOT/input"
 
 # N9 装配（推荐 --dual：01 预览 + 02 出片双份，自动校验 segments 一致）
 python csv_to_timeline.py --csv shotlist.csv --dual \
   --out out/H3-vibe-EP001-G01.json --seed 42 \
-  --input-root "D:/ComfyUI-aki-v3.2/ComfyUI/input" \
+  --input-root "$COMFYUI_ROOT/input" \
   --scene-bible scene_bible.txt
 
 # N11 前独立复验两份副本
@@ -808,7 +809,7 @@ ComfyUI 内：拖 `*_preview.json` → 核对 `input/` 素材 → 整组一次�
 
 ⚠️ **剩余真实缺口（非脚本能力，需人工/环境）**：
 - **本机无 Qwen-Image 2511/2512**：三阶段两 pass 不可跑，默认降级 Z-Image 单阶段；要两 pass 需装模型并按 skeleton 搭节点。
-- **资产路径需核对**：`input/` 根、项目资产（板/帧/音色）须真实存在，装配默认 `--input-root D:/ComfyUI-aki-v3.2/ComfyUI/input`，按实际改。
+- **资产路径需核对**：`input/` 根、项目资产（板/帧/音色）须真实存在，装配默认 `--input-root $COMFYUI_ROOT/input`，按实际改。
 - **场景圣经/身份块/冻结关键帧需人工定稿**：`prepare_project.py` 只出草稿；场景锁内容（位置级道具锁定，经验库 3.6）须项目定稿后用 `--scene-bible` 注入。
 - **换脸需 ReActor 环境**：ComfyUI 装 ReActor + inswapper_128 + codeformer，源脸裁切坐标按真实分辨率定（经验库 5.1）。
 - **drama→CSV 的 PLAN 映射需人工声明**：`--plan-map` 给出 PLAN-X 到资产路径的对应；continuity_group 仍需按 shot-handoff 划分。

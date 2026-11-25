@@ -5,7 +5,7 @@
 原版 `▶▷Krea2-单采极清生图流+SeedVR2-int8图像放大.json` 未做任何改动。
 
 ## 文件
-- 源：`D:\AIShortDrama\2_工作流\03-其他\测试-Krea2高质量底板-1344x768.json`
+- 源：`<资料库根>/2_工作流/03-其他/测试-Krea2高质量底板-1344x768.json`
 - GUI 副本：`D:\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\03-其他-Krea2测试\`
 
 ## 相对原卡的改动（5 处）

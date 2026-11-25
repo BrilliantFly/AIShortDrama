@@ -11,6 +11,6 @@
 
 ## 回退 / 取用（绝对路径）
 - 工作台加载版：`C:/Users/Administrator/.workbuddy/skills/chinese-novelist/`（未改动）
-- D 盘本地备份版：`D:/AIShortDrama/3_漫剧SKILLS/1_剧本/1_主SKILLS/chinese-novelist-skill-master.backup-v1-20261121/`
-- git v2.3.2 纯净快照：`D:/AIShortDrama/3_漫剧SKILLS/1_剧本/1_主SKILLS/_git_v2.3.2_纯净快照_20261122/`
-- 全量差异与集成清单：`D:/AIShortDrama/3_漫剧SKILLS/SKILLS融合报告_20261122.md`
+- D 盘本地备份版：`<资料库根>/3_漫剧SKILLS/1_剧本/1_主SKILLS/chinese-novelist-skill-master.backup-v1-20261121/`
+- git v2.3.2 纯净快照：`<资料库根>/3_漫剧SKILLS/1_剧本/1_主SKILLS/_git_v2.3.2_纯净快照_20261122/`
+- 全量差异与集成清单：`<资料库根>/3_漫剧SKILLS/SKILLS融合报告_20261122.md`

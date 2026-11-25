@@ -76,6 +76,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from paths import default_input_root  # 跨电脑可移植：env COMFYUI_ROOT > 探测 > 回退
 
 # ---------------------------------------------------------------- 常量配置
 
@@ -86,7 +87,7 @@ DEFAULT_CSV = BASE / "shotlist_vibe_template.csv"
 # 「由 H3-通用02-高清主线 填充生成，勿当模板复用」——它们是出片实例，不是模板。
 # 两者拓扑与采样参数完全一致，脚本整体替换 segments，用通用02 作底座更规范。
 DEFAULT_WORKFLOW = BASE / "工作流底座" / "H3-通用02-高清主线-参考音色对白-r2v-25step-1344x768.json"
-DEFAULT_INPUT_ROOT = Path("D:/ComfyUI-aki-v3.2/ComfyUI/input")
+DEFAULT_INPUT_ROOT = default_input_root()
 
 # --dual 的 01 预览底座。与 02 的 output.continuityEnabled 同为 True（实测），
 # 但尺寸 960x544 / 4step 不同；双份装配只允许这些「渲染档」字段不同。

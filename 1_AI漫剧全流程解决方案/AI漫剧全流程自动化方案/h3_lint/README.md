@@ -14,7 +14,7 @@
 - `h3_prompt_lint.py` / `h3_unit_lint.py` — 两个主校验器
 - `h3_regression_tests.py` — lint 自检（回归测试）
 - 其余 8 个 — upload order / boundary contact sheet / storyboard preview / manifest 等辅助校验
-- 以上从 `999_参考\tudou-shotlist-builder\scripts\` 同步，**原版未改动**
+- 以上从 `99_参考\SKILLS\tudou-shotlist-builder\scripts\` 同步，**原版未改动**（源路径 2026-11-25 由 `99_参考` 改名重组为 `99_参考`）
 - `check_camera_landing.py` — 新增·运镜落地门禁：诊断缓推 vs 提示词 no push、半身景别、道具尺度（经验库 31）
 - `check_castset_slot.py` — 新增·四层事实源门禁：CAST+SET 继承、四槽顺序、全身景别、`[Shot N]` 镜号
 - `check_delivery_media.py` — 新增·成片交付门禁：段数/分辨率/码率/尾段误交（ffprobe 可选）
@@ -49,6 +49,6 @@ python h3_lint/h3_regression_tests.py
 - T2 桥接后 `h3_unit_lint.py`：**PASS**（5 units，字数 0/4/22/20/0 全部匹配）
 
 ## 维护约定
-- 上游 `999_参考\tudou-shotlist-builder\scripts\` 更新时，同步到本目录并复核桥接器
+- 上游 `99_参考\SKILLS\tudou-shotlist-builder\scripts\` 更新时，同步到本目录并复核桥接器
 - 三 skill 分工协议（经验库 29 章）的 N2 第 4 步调用的就是本目录工具
 - 真实内容问题（如台词字数超 40 硬限、density warning）由 lint 报出，不得通过改桥接器掩盖
