@@ -59,7 +59,11 @@
 > ② [N5 两 pass 槽位机制](diagrams/02-N5两pass槽位机制.svg)（详见《N5-ComfyUI实现卡》2.2 节）
 > ③ [脚本级两级流水线](diagrams/03-脚本级两级流水线.svg)（详见《漫画前置-H3混合路线-实现方案》第 5 章末）
 
-### 0.2 路线定线依据（为什么是 r2v）
+### 0.2 路线定线依据（r2v / fl2v 双路线 · 设计态 + 实跑修正）
+
+> **先看结论（2026-11-25 实跑修正）**：下面这段"为什么只能是 r2v"是 **11-18 设计态**的推理，保留作证据链回溯；但 11-23~24 的真实出片（经验库 27.7 / 28.10~28.19）**源码级证伪了 r2v 的身份能力**——r2v 把参考图转成 `ref_image_0~3` 的 Qwen3-VL 语义条件、逐帧重画，换拼贴板/干净肖像/inswapper/FaceRefine 四条路都守不住脸；**fl2v 首帧像素锁才是身份正解**。现行定线已改为双路线，务必按下方「实跑修正」执行，不要只照读设计态推理。
+
+**设计态定线（2026-11-18，历史证据链）**：
 
 - `fl2va` 只提供音频 `lock`（原音直贴、台词不可改），不提供 `ref` 借音色；`09-H3导演台-NG版/_上游文档/docs/NG-shot-audio.md:46` 写死 `In FL2VA only lock is offered`。
 - drama 官方 `skills/short-drama-video-prompts/references/minimax-h3.md:68-73` 的模式表：
@@ -72,6 +76,25 @@
   | **起始帧 + 人物／地点／道具图同时存在** | **`reference`（full-reference）** | **六段** |
 
   本链路正好落在第四行。`:81-84` 补充说明：「H3 的首/尾帧输入与参考输入**互斥**……整组统一走 full-reference，起始帧也以 `reference_image` 送入」。所以**不是「选了 r2v」，是「链路结构决定了只能是 r2v」**；而 `<Audio N>` 音色参考只存在于六段式里，这又反过来解释了为什么 `fl2va` 走不通。
+
+**实跑修正 · 双路线定线（2026-11-25，以经验库为准）**：
+
+上段"互斥"在设计态成立，但实跑证实**互斥的代价是身份失控**。H3 源码 `executor_core.py:_build_minimax_inputs()` 显示：r2v 把 `refs` 转 `ref_image_0~3` 当**语义条件**（`tensor[:1]`），模型按"霸总/校服"这类概念重画，不锚像素；fl2v 则把 `segments[i].genImage.imageFile` 当**首帧像素锚**。S003 单镜实测（124 帧 / 5.17s）：fl2v 首帧与静帧像素级一致、全程身份硬朗男性、眨眼张口自然（经验库 28.11/28.17/28.18）。因此定线改为：
+
+| 路线 | 机制 | 适用 | 不适用 | 依据 |
+|---|---|---|---|---|
+| **r2v**（reference，full-reference 六段式） | 参考图 = 语义条件，逐帧重画 | 台词未定稿、只验构图/动作/运镜的 N10 快出；无强身份约束的空镜/动作镜 | 需要锁脸的正片镜、长段、双人同框 | 手册 N10/N12 原设计；经验库 27.6/27.7 证伪其身份能力 |
+| **fl2v**（首帧像素锁，可带尾帧软锚） | 首帧像素锚定，身份从静帧继承 | **身份硬锁的正片镜**（主推）；单人/双人镜按真实首帧配 `EXACTLY-N` | 需要 `<Audio N>` 借音色的段——fl2v 下 source 强制降级 generate，须 ffmpeg mux 回配音 | 经验库 28.11/28.14/28.21F |
+| **source**（通用04 fully_copy） | 切段音轨逐字驱动口型 | 台词定稿、要逐句情绪/语速、口型贴真声 | 与 fl2v 同镜时须走 mux 桥接 | 手册 N12 三路底座表 |
+
+**fl2v 三条硬约束（照做，否则返工）**：
+1. **首帧字段写相对 input 全路径**：`segments[i].genImage.imageFile` 必须是 `办公室/frames/SHOT-002.png` 这种相对 `input/` 的全路径；只写文件名会报 `Generation segment image could not be loaded`（`load_reference_tensor` 不认 subfolder）。
+2. **尾帧是软约束、且必须"人物仍在、构图不同"**：尾帧取 `refs[1]`（从成片 t≈2.0s 抽），与 `genImage` 无关；`torch.equal(tail,head)` 时会被弹回首帧；它只把约束延到 t≈6s，**治本靠拆段**。
+3. **refs 只留首帧 + 强负面词**：单人镜 refs 里放双人板 = 必出复制人；fl2v 复制人三诱因是 refs 带身份板／r2v 语义指令残留／负面词弱。`EXACTLY-N` 的 N **必须按 `input/<项目>/frames/SHOT-NNN.png` 真实首帧核对**，不能按剧本文本猜（经验库 28.15/28.22）。
+
+**贯穿铁律 · 拆段**：单段 ≤144 帧（约 6 秒）；实测 ≤124 帧稳、≥209 帧必漂。超长按 `5+17n` 拆两段，B 段首帧从 A 段成片按时间点抽（人物仍在、构图已推进），接缝无跳变、身份更稳，长段漂移 100% 可消除（经验库 28.16/28.18/28.19）。门禁脚本 `h3_lint/check_segment_length.py`（见 N8）。
+
+**fl2v 口型**：fl2v 分支 `ref_audios` 恒 None，嘴型由自生成音轨驱动，与 mux 的配音天然两套——正脸台词镜须再走 LatentSync 后处理（见 N14A）；换语速 = 配音时长变 = 口型产物全部作废，文件名必须带版本后缀。
 
 ### 0.3 证据边界（必须先读）
 
@@ -157,7 +180,7 @@
    - `H3-EP001-出片-参考音色-S004-...` 的正确用途是**格式参考范例**：对照它的六段式 prompt、4 槽位顺序、段尾 `Audio: reference`，不要拿它当底座改。
    - **两代槽位约定**：通用02 便签写「Picture 1 身份板 → Picture 2 场景板」，EP001 实战是「Picture 1 每镜帧／2 角色板／3 场景板／4 服装站位板」。脚本整体替换 segments，不受便签文字影响，一律以 EP001 实战约定填 CSV。
    - 通用01／03 分别是试错与精修档，不作底座。
-3. **确认 ComfyUI 的 `input/` 真实路径**，填进 `--input-root`。本机三处候选均不存在，需先建好或改配置。
+3. **确认 ComfyUI 的 `input/` 真实路径**，填进 `--input-root`。跨电脑时统一设环境变量 `COMFYUI_ROOT`（见根目录 `路径约定.md`），或运行 `python paths.py` 看自动探测结果；11-18 设计态曾记"三处候选均不存在"，11-21 已更正为"input 实际存在且可访问"（见 0.3 第 3 条），此处按更正后的结论执行。
 4. 不要用 `09-H3导演台-NG版`：要求 ComfyUI ≥ 0.37，本机记录 0.30.2，打开会大面积红框。
 5. 保留权威原件：现役权威为 `2_工作流/02-漫剧/02-H3漫剧流程/`（改这里），主干 `工作流底座/` 与 GUI `D:/ComfyUI-aki-v3.2/ComfyUI/user/default/workflows/02-H3漫剧流程/` 为字节一致副本；原 README 标注的 `D:\ComfyUI资产\1-工作流\01-通用-H3\` 为历史路径、已失效。**任何改动都另存副本**。
 6. **工作流修改顺序（用户规定，强制 · 2026-11-21）**：规定原文——如果修改工作流，**先修改 `2_工作流\` 下的现役工作流，然后再同步到工作流底座**。即：第一步改 `2_工作流\02-漫剧\` 现役库；第二步同步主干 `工作流底座/`（字节一致，`csv_to_timeline.py` 默认读取处）；涉及 GUI 使用时第三步同步 `D:/ComfyUI-aki-v3.2/ComfyUI/user/default/workflows/` 副本。禁止反向操作（直接改底座或只改底座），禁止只改一处不同步。
@@ -221,7 +244,7 @@ REF-<slot>（顺序：<n>）· <项目相对路径>《<中文名称>》（用途
 **门禁**：
 
 ```
-python <drama>/skills/short-drama-storyboard/scripts/storyboard_lint.py 分镜.md --csv 分镜.csv
+python <资料库根>/3_漫剧SKILLS/2_分镜/1_主SKILLS/drama-skills-main/drama-skills-main/skills/short-drama-storyboard/scripts/storyboard_lint.py 分镜.md --csv 分镜.csv
 ```
 
 检查「这一镜交给单轨生成端能不能出声」+ 人物互动站位与视角有无机位语言，以及 `export_frames` 网格、参考图来源、音色/验收基线、打斗三要素、场级节奏。配套 `references/shot-handoff.md` 规定镜间交接：**后一镜的起始帧，必须是前一镜真实结束的那一帧**，同一文件名在前镜 `结束帧` 与后镜 `起始帧` 里路径逐字相同。
@@ -418,7 +441,7 @@ drama 文字设定 → N4 参考板（少量、全片固定、管身份与空间
 |---|---|---|
 | `shot_id` | `分镜.md` 的 `SHOT-...` | `segments[].id`（脚本按序号重编 `seg_00N`） |
 | `continuity_group` | 按 `shot-handoff.md` 的连续段人工分组 | 同一组一份工作流、一次提交 |
-| `length_frames` | `分镜.csv` 的 `export_frames` | `length` / `frameCount`（H3 token 网格 **17n 或 5+17n**，常用 102/124/136；124 = 5+17×7 不是 17 的整数倍） |
+| `length_frames` | `分镜.csv` 的 `export_frames` | `length` / `frameCount`（H3 token 网格 **17n 或 5+17n**，常用 102/124/136；124 = 5+17×7 不是 17 的整数倍）。**安全上限 144 帧（约 6s）**——实测 ≤124 帧身份稳、≥209 帧必漂；超长必须拆两段（见 N8 门禁与 0.2 拆段铁律），不要靠 22 帧接力硬撑长段 |
 | `frame_key` | N5 的每镜格 | `refs[0]` / `<Picture 1>` |
 | `ref_role_sheet` | N4 角色板 | `refs[1]` / `<Picture 2>` |
 | `ref_scene_plate` | N4 场景板 | `refs[2]` / `<Picture 3>` |
@@ -439,6 +462,15 @@ python csv_to_timeline.py --check-only
 ```
 
 自动检查：字段齐全／**路径契约三段式（ERROR）**／`duration_sec` 一致性（ERROR）／`qc_status` 非通过（WARN）／帧数网格（17n 或 5+17n）／段长 vs 台词朗读时长／prompt 完全一致（整图缓存）／角色板全片是否唯一／漫画格与负向禁项冲突／`input/` 资产缺失／音频标签与音色文件配套。
+
+**新增 · 拆段门禁（2026-11-25，P0）**——`csv_to_timeline.py --check-only` 只查帧网格合法，不查"段长是否越过漂移安全线"，两者互补：
+
+```
+python h3_lint/check_segment_length.py shotlist.csv        # 超 144 帧即 RC=1，附拆段建议
+# python h3_lint/check_segment_length.py shotlist.csv --allow-long   # 迁移旧项目时只统计
+```
+
+检查：单段 >144 帧（≥209 帧标"必漂"）→ FAIL 并给出 A/B 拆段帧数与 B 段抽帧时间点；帧网格 17n/5+17n；`duration_sec` 与帧长一致；同组段长差异 >40 帧提醒。**超长段不拆不进 N9**——经验库 28.16/28.19 实测拆段后长段漂移 100% 消除、身份更稳。
 
 **有 ERROR 先修 CSV，不进渲染。** WARN 逐条判断；`[资产存在性检查未执行] input 根目录不存在` 说明 N0 的路径还没配好，此时检查被跳过而非通过——出片前建议加 `--strict-assets` 让它升级为 ERROR。
 
@@ -558,6 +590,37 @@ H3 内部韵律控制权已到顶（经验库 4.0 / 4.5），但**后期可直�
 - **边界**：只能压句间隔，压不掉发声段内的字级碎片。详见经验库 4.7 节。
 
 **source 镜补充（2026-11-22）**：`audio_tag=fully_copy` 的镜头，句间停顿与抢话重叠已在配音流水线 `assemble` 阶段按 `对白时间线.csv` 调好，**跳过本节 `audio_tighten.py`**（重复压缩会破坏节奏）；非 source 镜照旧。
+
+---
+
+### N14A · 配音拟人化与口型对齐（实跑新增 · 2026-11-25 回灌）
+
+> 来源：经验库 28.17B / 28.20~28.30 的 7 轮真实配音迭代。N14 只压句间静默，力度有限；"念台词、有气无力、口型不同步"这些**决定成片质感**的问题在这一节解决。 applicable 场景：需要拟人化配音的台词镜（尤其 `fully_copy` source 镜与正脸口型镜）。
+
+**一、配音"有气无力"的三个真因（按决定性排序）**
+
+| 真因 | 现象 | 正解 | 依据 |
+|---|---|---|---|
+| **情绪表 key 粒度错配** | 整句合成配分句情绪表 → 7 镜 fallback 纯 calm（男声关键情绪戏全丢） | 情绪表 key 粒度**必须与合成分句粒度一致**；整句合成就配整句 key，或按句读软匹配继承；杜绝 fallback 纯 calm | 28.26 |
+| **emotion_audio 锚点含平淡段** | 长锚点（如 15.82s）里大量平淡段被高权重放大，把情绪拉平 | **锚点去留按角色音频特性定，不是全局参数**：男声去掉锚点、纯情绪向量+满权重；女声锚点平淡段少，保留反而稳 | 28.27 |
+| **语调起伏被 TTS 压平** | 峰值 RMS/动态与参考接近，但 F0σ 差 30%~2 倍 | 后期用 WORLD 声码器把 F0 曲线绕均值放大 k 倍（时长/音色/停顿不变）；**男声 k=1.6~2.4，女声原版已达标、不要增强** | 28.28~28.30 |
+
+**二、关键参数（实测有效档）**
+
+- 语速：`speech_speed` **语义反转——值越大越慢**。0.72（整句不切）改善自然度；男声最终档 speed 0.62 + weight 1.0 + 向量×1.35，实测 3.7~4.75 字/秒；正常 3.5~4.5 字/秒。
+- 停顿：按句号/问号/破折号切块（**逗号不切**，保块内连贯），块间静音破折号 350ms / 问号 300ms / 句号 260ms / 其他 180ms——解决"一句跟一句像念台词"。
+- 语调增强：`f0_new = mean + k*(f0-mean)`；k 越大均值会上漂（男声 138→162Hz），且声码器味加重；合成后响度掉到 -19 LUFS，需 `ffmpeg loudnorm=I=-14:TP=-1.5:LRA=11` 拉回。
+- **声学靶子纯度检查（方法论铁律）**：用影视/短视频片段当声学靶子必须先查纯度——F0 分布是否双峰、分秒轨迹是否平滑、有声率是否 >70%；配乐/多人会彻底污染 F0σ。抗噪替代指标用**段内 P90−P10 摆幅**（1s 窗口）+ 段间中位 F0 标准差。28.28 的"差 3~4 倍"结论即被配乐污染，28.30 已修正。
+
+**三、口型对齐（fl2v 正脸台词镜必做）**
+
+- fl2v 分支 `ref_audios` 恒 None，嘴型由自生成音轨驱动，与 mux 的配音天然两套——**机制层参数无解，只能 LatentSync 后处理**。
+- 输入转 **25fps**（H3 原生 24fps，节点版 24/25 错配）；音频 16kHz mono、apad 补到视频全长。
+- **遮罩黑白别写反**：黑(0)=重绘、白(255)=保留；自定义窄遮罩会在对齐空间错位，用原版 `mask.png`（下半脸大椭圆）。
+- mux 用 `-map 0:v:0 -map 1:a:0` 防双音轨；`-shortest` 裁尾部静音。只对**正脸台词镜**做，背影/侧背镜靠拆段保人物在画内。
+- **版本后缀铁律**：换语速 = 配音时长变 = 全部口型产物作废；输出文件名必须带版本后缀（如 `_v10D`），否则脚本"已存在则跳过"会误用旧口型。
+
+**四、门禁**：正脸台词镜交付前核对——① 情绪表 key 粒度 = 合成粒度（无 fallback 纯 calm）② 语调段内摆幅命中参考区间（男声 P90−P10 49~72Hz、女声 53~65Hz）③ 口型文件名带当前配音版本后缀 ④ 响度 -14~16 LUFS、单一音轨。详见经验库 4.0 / 28.24~28.30。
 
 ### N15 · 转场叠化拼接（实跑新增 · 达成"切换不硬"的关键）
 
@@ -751,13 +814,23 @@ python h3_lint/check_n2_skills.py 分镜/分镜.md --expect-shots 5
 python h3_lint/check_camera_landing.py 分镜/分镜.md 分镜/视频提示词.md
 python h3_lint/check_castset_slot.py 分镜/视频提示词.md --expect-shots 5
 # 2) drama 主干 video-prompts 已出视频提示词.md；tudou H3 lint 自动校验
-python <drama>/skills/short-drama-storyboard/scripts/storyboard_lint.py 分镜.md --csv 分镜.csv
+python <资料库根>/3_漫剧SKILLS/2_分镜/1_主SKILLS/drama-skills-main/drama-skills-main/skills/short-drama-storyboard/scripts/storyboard_lint.py 分镜.md --csv 分镜.csv
 # 注意：drama 的 md 不是 lint 的 html_file 入参，必须先用桥接器转「校验视图」HTML（经验库 30.4）
-# 固定路径：<方案>/h3_lint/  （11 个 lint + md_to_h3_lint.py，从 99_参考/SKILLS/tudou-shotlist-builder 同步，原版未动）
+# 固定路径：本方案目录下的 h3_lint/（12 个 lint + 门禁脚本 + md_to_h3_lint.py，第三方原版从 99_参考/SKILLS/tudou-shotlist-builder 同步，未改动）
 python h3_lint/md_to_h3_lint.py 分镜/视频提示词.md -o out/视频提示词_lint视图.html --lint
 # 单独复跑：
 # python h3_lint/h3_prompt_lint.py out/视频提示词_lint视图.html
 # python h3_lint/h3_unit_lint.py  out/视频提示词_lint视图.html
+
+# ── 断链门禁链（经验库 31.5，四重查"做了没"，这几条查"有没有用上/拆没拆/交对没"）──
+# ① 拆段门禁：单段 >144 帧须拆（N8 前跑；--allow-long 只统计不阻断）
+python h3_lint/check_segment_length.py shotlist.csv
+# ② 运镜落地：诊断写缓推、提示词写 no push 之类跨层冲突 → RC=1
+python h3_lint/check_camera_landing.py 分镜/分镜.md 分镜/视频提示词.md
+# ③ CAST+SET / 四槽 / 全身景别 / 镜号
+python h3_lint/check_castset_slot.py 分镜/视频提示词.md --expect-shots 5
+# ④ 交付门禁：段数/规格/尾段误交（N17 交付前跑，ffprobe 可选）
+python h3_lint/check_delivery_media.py out/seg_*.mp4 --archive out/整片.mp4 --expect 5 --width 1344 --height 768
 
 # N8 体检（不写文件；出片前可加 --strict-assets）
 python csv_to_timeline.py --check-only --input-root "$COMFYUI_ROOT/input"
