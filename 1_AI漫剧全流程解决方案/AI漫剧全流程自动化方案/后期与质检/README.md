@@ -1,7 +1,7 @@
 # 后期层与质检门禁（2026-11-21 从 EP001 实跑脚本参数化）
 
 全部脚本把实跑版的硬编码路径（`D:\剧本及分镜\街对面\...`）改为 CLI 参数，算法保留实跑定版。
-**必须用 ComfyUI 的 python 跑**（`D:\ComfyUI-aki-v3.2\python\python.exe`），它装有下列依赖。
+**必须用 ComfyUI 的 python 跑**（`$COMFYUI_PY`，见 `路径约定.md`），它装有下列依赖。
 
 ## 依赖
 
@@ -19,10 +19,10 @@ Pillow      # contact_sheet 拼图
 这里以经验库为准：**先音轨精修 → 再叠化拼接**。
 
 ```bash
-PY="D:/ComfyUI-aki-v3.2/python/python.exe"
-V="D:/剧本及分镜/街对面/导出/videos"       # 成片源目录
-L="D:/剧本及分镜/街对面/导出/N7-出片清单.csv"
-OUT="D:/剧本及分镜/街对面/导出"
+PY="$COMFYUI_PY"
+V="<项目根>/导出/videos"       # 成片源目录
+L="<项目根>/导出/N7-出片清单.csv"
+OUT="<项目根>/导出"
 
 # 1) 质检（出片后门禁）：RMS/F0 自动，ASR/联系表人工
 $PY qc_gate.py --videos "$V" --list "$L" --script 台词文本.json \

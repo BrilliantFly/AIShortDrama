@@ -11,8 +11,8 @@ SKILLS 融合：本地基础版为骨架 + git 最新版增量，D 盘主目录�
 import os, sys, shutil, hashlib, re, json, time
 from pathlib import Path
 
-ROOT = r'D:\AIShortDrama\3_漫剧SKILLS'
-UB = r'C:\Users\Administrator\.workbuddy\skills'
+ROOT = Path(__file__).resolve().parent
+UB = Path.home() / '.workbuddy' / 'skills'
 
 # ---- 三源路径 ----
 D_LOCAL = os.path.join(ROOT, r'2_分镜\1_主SKILLS\_backup_20261121_v0.9.2\drama-skills-main')

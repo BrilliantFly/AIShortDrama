@@ -15,18 +15,30 @@
   用 --src 指过去再输出即可（等价于“原样规范化”，用于重跑出板）。
 
 用法：
-  PY="D:/ComfyUI-aki-v3.2/python/python.exe"
-  $PY prep_refs.py band --src "D:/ComfyUI-aki-v3.2/ComfyUI/input/底板-脚全.png" \
-      --crop 0,180,1024,1100 --out "D:/ComfyUI-aki-v3.2/ComfyUI/input/ref_band_flat.png"
-  $PY prep_refs.py face --src "D:/ComfyUI-aki-v3.2/ComfyUI/input/微信图片_xxx.jpg" \
-      --crop 300,120,900,720 --out "D:/ComfyUI-aki-v3.2/ComfyUI/input/ref_face_hd.png"
-  $PY prep_refs.py inspect --dir "D:/ComfyUI-aki-v3.2/ComfyUI/input"
+  PY="$COMFYUI_PY"
+  $PY prep_refs.py band --src "$COMFYUI_ROOT/input/底板-脚全.png" \
+      --crop 0,180,1024,1100 --out "$COMFYUI_ROOT/input/ref_band_flat.png"
+  $PY prep_refs.py face --src "$COMFYUI_ROOT/input/微信图片_xxx.jpg" \
+      --crop 300,120,900,720 --out "$COMFYUI_ROOT/input/ref_face_hd.png"
+  $PY prep_refs.py inspect --dir "$COMFYUI_ROOT/input"
 """
 from __future__ import annotations
 import argparse
+import os
 from pathlib import Path
 
 from PIL import Image, ImageEnhance, ImageOps
+
+
+def default_input_root() -> Path:
+    """ComfyUI input 根：环境变量 COMFYUI_INPUT / COMFYUI_ROOT，跨机可移植。"""
+    env_in = os.environ.get('COMFYUI_INPUT')
+    if env_in and Path(env_in).is_dir():
+        return Path(env_in)
+    env_root = os.environ.get('COMFYUI_ROOT')
+    if env_root and (Path(env_root) / 'input').is_dir():
+        return Path(env_root) / 'input'
+    return Path('input')  # 未配置时用当前目录下的 input，避免硬编码盘符
 
 
 def parse_crop(s: str | None):
@@ -65,7 +77,7 @@ def main():
     common(sub.add_parser('face', help='人脸参考 → ref_face_hd.png（默认 640×846）'))
 
     ip = sub.add_parser('inspect', help='列出 input 目录下已有参考图规格')
-    ip.add_argument('--dir', default='D:/ComfyUI-aki-v3.2/ComfyUI/input')
+    ip.add_argument('--dir', default=default_input_root())
 
     a = ap.parse_args()
     if a.mode == 'inspect':

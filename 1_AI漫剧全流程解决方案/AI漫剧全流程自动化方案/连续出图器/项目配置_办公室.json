@@ -1,8 +1,8 @@
 {
   "name": "办公室-最后一盏灯",
   "host": "http://127.0.0.1:8188",
-  "comfy_root_in": "D:/ComfyUI-aki-v3.2/ComfyUI/input",
-  "comfy_root_out": "D:/ComfyUI-aki-v3.2/ComfyUI/output",
+  "comfy_root_in": "$COMFYUI_ROOT/input",
+  "comfy_root_out": "$COMFYUI_ROOT/output",
   "csv": "分镜表_办公室.csv",
   "models": {
     "unet": "z_image_turbo_int8_convrot.safetensors",
@@ -40,12 +40,12 @@
     "main": {
       "save_prefix": "办公室/FRAME-G",
       "input_subdir": "办公室/frames_gen",
-      "project_dir": "D:/剧本及分镜/办公室/分镜/连续出图/frames"
+      "project_dir": "<项目根>/分镜/连续出图/frames"
     },
     "routeB": {
       "save_prefix": "办公室/FRAME-GB",
       "input_subdir": "办公室/frames_routeB",
-      "project_dir": "D:/剧本及分镜/办公室/分镜/连续出图/frames_routeB"
+      "project_dir": "<项目根>/分镜/连续出图/frames_routeB"
     }
   }
 }

@@ -1,3 +1,4 @@
+from pathlib import Path
 # -*- coding: utf-8 -*-
 """把 D 盘融合版同步到工作台实际加载位（~/.workbuddy/skills），使其生效。
 - 先完整备份工作台现有目录（可回退）
@@ -7,10 +8,10 @@
 """
 import os, shutil, hashlib
 
-ROOT = r'D:\AIShortDrama\3_漫剧SKILLS'
+ROOT = Path(__file__).resolve().parent
 FUS_D = os.path.join(ROOT, r'2_分镜\1_主SKILLS\drama-skills-main\drama-skills-main')
 FUS_N = os.path.join(ROOT, r'1_剧本\1_主SKILLS\chinese-novelist-skill-master')
-UB = r'C:\Users\Administrator\.workbuddy\skills'
+UB = Path.home() / '.workbuddy' / 'skills'
 BACKUP = os.path.join(ROOT, '_工作台同步前备份_20261122')
 TODAY = '2026-11-22'
 

@@ -12,12 +12,13 @@ from __future__ import annotations
 
 import argparse
 import csv
+import os
 from pathlib import Path
 
 import av
 from PIL import Image, ImageDraw, ImageFont
 
-FONT = "C:/Windows/Fonts/msyh.ttc"
+FONT = os.environ.get("CONTACT_FONT", "msyh.ttc")  # 跨机：默认字体名，或环境变量指定绝对路径
 
 
 def mid_frame(path: Path) -> Image.Image:

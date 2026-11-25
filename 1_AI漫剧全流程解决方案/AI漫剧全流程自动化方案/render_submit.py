@@ -14,7 +14,7 @@ render_submit.py — N7 出片提交与断点续跑层（实跑 n7_submit.py 参
 * --workflow TPL --segments JSON（兼容实跑 n7_submit 路线）：
   工作流底座 + N7-segments.json，用 build_api 现场构造单段 timeline。
 
-关键实跑回灌（均来自 D:\\剧本及分镜\\工作流优化经验库.md，已验证）
+关键实跑回灌（均来自 <资料库根>/7_经验库/工作流优化经验库.md，已验证）
 ------------------------------------------------------------------
 * 断点续跑：DELIV 下 {shot}-{mode}*.mp4 >200KB 判完成，自动跳过（1.3）。
 * 产物成对：SaveVideo 写 output/，导演台另写 output/minimax_seg_export/<ts>/seg_*.mp4；
@@ -26,18 +26,18 @@ render_submit.py — N7 出片提交与断点续跑层（实跑 n7_submit.py 参
 ----
   # 主线：消费 --per-shot 产物，逐镜出片
   python render_submit.py --shots-dir out/shots --shots 004,008 \\
-      --csv shotlist.csv --out-root D:/剧本及分镜/街对面/导出
+      --csv shotlist.csv --out-root <项目根>/导出
 
   # 全量 + 断点续跑（已完成的自动跳过）
   python render_submit.py --shots-dir out/shots --all --csv shotlist.csv \\
-      --out-root D:/剧本及分镜/街对面/导出
+      --out-root <项目根>/导出
 
   # dry-run：只打印第一镜将 POST 的 JSON，不提交
   python render_submit.py --shots-dir out/shots --shots 004 --dry
 
   # 兼容实跑路线
   python render_submit.py --workflow H3-通用02....json --segments N7-segments.json \\
-      --shots 004 --mode hd --out-root D:/剧本及分镜/街对面/导出
+      --shots 004 --mode hd --out-root <项目根>/导出
 """
 from __future__ import annotations
 

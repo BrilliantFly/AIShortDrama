@@ -143,6 +143,13 @@
 | N11 | 审片回退 | 预览 | 人工 | 修改指令 | — | 四类问题分流 |
 | N12 | 02 出片 / 03 精修 | 锁定后的副本 | ComfyUI 通用02／03 | 正式 mp4 | `output/minimax_seg_export/<时间戳>/` | 逐段验收 |
 | N13 | 归档 | 成片 + 全部中间产物 | 文件系统 | 可复现项目包 | `项目根/archive/` | 可回溯到镜号 |
+| N14 | 音轨精修 | 分镜段 mp4 | `audio_tighten.py` | 压缩句间静默的音轨 | `input/<项目>/voices/` | RMS 句间隔 ≥0.75s 压到 0.55s；source 镜跳过 |
+| N14A | 配音拟人化与口型对齐 | N14 音轨 + 分镜 | IndexTTS2 + LatentSync + WORLD | 拟人化人声 + 对齐口型 | `input/<项目>/voices/` | 情绪 key 粒度 = 合成粒度；口型文件名带配音版本后缀 |
+| N15 | 转场叠化拼接 | N14A 音轨 + 分段 | `concat_xfade.py --audio-fix` | 单一全片（叠化 + 跨淡） | `项目根/05-成片/` | 段间 0.35s xfade；无硬切 |
+| N16 | 出片后质检门禁 | 全片 | `qc_gate.py` | RMS/F0 报告 + ASR/联系表 TODO | `生产线/out/` | 自动项过 + TODO 人工确认才算通过 |
+| N17 | 剪辑与交付层 | N13 归档 + N16 全片 | `6_剪辑` + `check_delivery_media.py` | 两版成片 + 剪辑单 + 交付包 | `项目根/05-成片/` | 段数/规格/尾段误交门禁，正片取 `seg_*.mp4` |
+
+> N14–N17 为实跑新增节点，2026-11-25 补入本总览表（此前只在第 2 节逐项详述）。完整编排顺序见 2.x「质量链统一编排」。
 
 ---
 
@@ -225,6 +232,49 @@ drama 是 **11 个 skill 组成的套件 + creator-first 五份 Markdown**，不
 | 6 | `short-drama-produce` | `制作成果/images/` | `preview → 显式确认 → run`；`source` + `source_entry`（`IMG-*`/`MOTION-*`/`SHOT-*`）、`reference_bindings` |
 | 7 | `short-drama-edit` | `剪辑单.md`、`制作成果/成片/` | 转场、音色登记、`[VO]` 字幕 |
 | 8 | `short-drama-review` | `审查/<EP>-审查.md` | 用可见 ID 指向问题 |
+
+---
+
+#### 2.x 质量链统一编排（可扩展清单 · 2026-11-25）
+
+> **这是"走 N2 什么时候调哪些 Skill / 门禁"的唯一权威清单。** 目标是**按步骤执行、不遗漏、可扩展**：
+> 加一个 Skill 或门禁 = 往表里加一行 + 往 `run_quality_chain.py` 的 `GATES` 加一条（脚本门禁才需要加）。
+> 创作者只需一句「用 drama 拆 EP0xx 分镜」，Agent 按本表顺序走完，不需人逐节点点名。
+
+**关键定位约束（不要把所有 Skill 都堆到 N2）**：
+- `导演运镜与机位构图`、`H3跨层一致性锁` 是**文本层**，在 N2 内/后调用（此时无视频）。
+- `H3成片质量审片` 是**媒体层**，必须等有 mp4（N10 预览 / N12 出片 / 交付）才调用——放在 N2 会「无片可审」，其 SKILL.md 明确「没有媒体时不用」。
+- 三个 Skill 都是知识型（无 CLI），由 Agent 用 Skill 工具调用；**脚本门禁**由 `run_quality_chain.py` 一键串跑。两者正交，缺一不可。
+
+| 序 | 节点 | 调用对象 | 类型 | 输入 → 输出 | 何时触发 / 失败处理 |
+|---|---|---|---|---|---|
+| 1 | N2 内 | `short-drama-storyboard` | Skill | 剧本+视觉设定 → `分镜.md` | 拆镜第一步；出骨架后再做诊断 |
+| 2 | N2 内 | `导演运镜与机位构图` | Skill | 读 `分镜.md` → 回写【诊断段】+情绪曲线 | 步骤 1 落盘后、步骤 3 前；只改机位，不改职责/关键帧/时长 |
+| 3 | N2 内 | `short-drama-video-prompts` | Skill | `分镜.md` → `视频提示词.md` | 诊断回写完成后；六段式 H3 方言 |
+| 4 | N2 交闸 | `run_quality_chain.py --stage n2` | 脚本 | 上两步产物 → PASS/FAIL | 交 N3 前必跑；FAIL 逐条回写到提示词层 |
+| 5 | N7 前 | `H3跨层一致性锁` | Skill | 提示词+CSV → 五道锁判定 | 装配前查四层单一事实源；回写只改提示词字段 |
+| 6 | N8 前 | `run_quality_chain.py --stage csv` | 脚本 | `shotlist.csv` → PASS/FAIL | 装配体检；拦 `[Shot N]` 镜号错/模板/超长段 |
+| 7 | N10 预览 | `H3成片质量审片`（4step 档） | Skill | 预览 mp4 → 审片报告 | 快出预览后；只判构图/动作/画风，不判服装漂移 |
+| 8 | N12 出片 | `H3成片质量审片`（25step 档） | Skill | 正式 mp4 → 审片报告 | 出片后；六维全判，FAIL 给返工路由 |
+| 9 | N17 交付 | `run_quality_chain.py --stage delivery` + `H3成片质量审片`（交付档） | 脚本+Skill | `seg_*.mp4` → 交付判定 | 交付前；拦尾段误交，正片必须取分段版 |
+
+**怎么扩展**：
+- 加**脚本门禁**：在 `h3_lint/run_quality_chain.py` 顶部 `GATES` 列表加一条 `dict(stage=..., key=..., label=..., needed=[...], build=lambda c: [...])`，`--list` 自动显示。
+- 加**知识型 Skill**：在本表插入一行，标明节点/类型/输入输出/触发条件；不要写进 `GATES`（Skill 无 CLI）。
+- 加**新节点**：先在本文第 1 节总览表加行，再在本表加对应编排项，两处同步。
+
+**总调度入口（防遗漏的关键 · 2026-11-25）**：知识型 Skill **`H3质量链编排`**（`~/.workbuddy/skills/H3质量链编排/`）是「按步骤执行、不遗漏、可扩展」的统一入口。创作者只需说「走 N2」「按质量链走」「拆 EP0xx 分镜」，Agent 依本表逐节点点名调用，逐项打勾。它**只调度不判定**，专业规则看各 Skill 的 SKILL.md。
+
+防遗漏三层，缺一不可：
+1. **L1 定序** = 本表（知道该调什么、什么顺序）；
+2. **L2 调度** = `H3质量链编排`（喊一句逐节点点名，不靠人记）；
+3. **L3 兜底** = `run_quality_chain.py` + `check_review_report.py`（产物痕迹，漏做 RC=1）。
+
+**关键**：「加一步写在纸上」不等于不遗漏——Skill 无 CLI，"当时有没有真调"靠的是 `Skill(...)` 调用记录。门禁只查产物痕迹在不在，查不了是不是 Skill 写的；门禁全绿 ≠ Skill 链路跑过。
+
+**验收顺序**（先证据后门禁，见 `N2三Skill调用命令_20261125.md` 第 6 节）：会话 `Skill(...)` 调用记录（唯一硬证据）→ `run_quality_chain.py` 全 PASS → 剔除诊断段后正文逐字一致（防越权 diff）。
+
+---
 
 **逐镜硬约束**（`short-drama-storyboard/SKILL.md`）：
 - 每镜写清唯一职责、来源、时长、景别/机位、运镜、起点、唯一主要动作、终点和声音（`:53`）。
@@ -926,6 +976,19 @@ python frames_from_shotlist_comfy.py --csv shotlist.csv --inputs out/n5_inputs.j
 python frames_from_shotlist_comfy.py --inputs out/n5_inputs.json --server 127.0.0.1:8188 \
   --workflow-template n5_comfy_template.json --input-root "$COMFYUI_ROOT/input" --seed 42
 
+# ── 质量链编排器（推荐：一条命令跑整阶段门禁，数据驱动可扩展，跨机无盘符）──
+python h3_lint/run_quality_chain.py --list   # 先看有哪些门禁项
+# N2 交闸（先确认 3 个 Skill 已按 2.x 编排表调用过）
+python h3_lint/run_quality_chain.py --stage n2 --project-root <剧集目录> \
+  --expect-shots 5 \
+  --drama-root <资料库根>/3_漫剧SKILLS/2_分镜/1_主SKILLS/drama-skills-main/drama-skills-main/skills/short-drama-storyboard/scripts
+# CSV 体检（N8 前）
+python h3_lint/run_quality_chain.py --stage csv --project-root <项目根> --csv shotlist.csv --input-root "$COMFYUI_ROOT/input"
+# 交付门禁（N17 前）
+python h3_lint/run_quality_chain.py --stage delivery --seg 'out/seg_*.mp4' --archive out/整片.mp4 \
+  --expect 5 --width 1344 --height 768 --review-dir 生产线/out --review-expect preview,final
+# 以上 --review-dir 会加跑 check_review_report.py（审片报告痕迹，防漏审片）
+# 以下为单条门禁的等价写法（编排器内部就是调这些，排障时可单独复跑）：
 # N2 门禁（四步自动执行后统一过闸：主干→导演运镜自动诊断→主干出提示词→tudou H3 规则自动校验）
 # 1) drama 主干 storyboard 已出分镜.md；导演运镜 skill 自动逐镜诊断并回写机位字段（无独立命令，走 skill 调用）
 # 【防忘硬门禁】检查每镜都有导演运镜诊断段+全场情绪曲线；忘做→RC=1→交不了 N3（经验库 30.9）

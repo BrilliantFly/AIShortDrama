@@ -14,6 +14,9 @@ __pycache__/
 999_参考/T8-PenguinCanvas-Setup-*.exe
 999_参考/模型/*.safetensors
 
+# 脚本改写前自动生成的备份快照（临时产物，不入库）
+*.bak-*
+
 # 系统杂项
 Thumbs.db
 desktop.ini

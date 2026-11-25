@@ -1,0 +1,2 @@
+999_参考/T8-PenguinCanvas-Setup-*.exe filter=lfs diff=lfs merge=lfs -text
+999_参考/模型/*.safetensors filter=lfs diff=lfs merge=lfs -text

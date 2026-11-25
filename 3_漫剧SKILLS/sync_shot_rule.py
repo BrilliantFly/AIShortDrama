@@ -1,12 +1,13 @@
+from pathlib import Path
 # -*- coding: utf-8 -*-
 """把 6 个档位分支改动文件同步到工作台 short-drama-storyboard（先备份、后逐字节校验）"""
 import os
 import shutil
 import hashlib
 
-R = r'D:\AIShortDrama\3_漫剧SKILLS'
+R = Path(__file__).resolve().parent
 SRC = os.path.join(R, r'2_分镜\1_主SKILLS\drama-skills-main\drama-skills-main\skills\short-drama-storyboard')
-DST = r'C:\Users\Administrator\.workbuddy\skills\short-drama-storyboard'
+DST = Path.home() / '.workbuddy' / 'skills' / 'short-drama-storyboard'
 BACKUP = os.path.join(R, r'_工作台档位同步前备份_20261122')
 
 FILES = [

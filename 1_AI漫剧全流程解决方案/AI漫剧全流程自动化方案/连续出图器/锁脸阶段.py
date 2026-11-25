@@ -25,7 +25,7 @@ CFG_PATH = '项目配置_办公室.json'
 IN_SUB = '办公室/frames_gen'
 OUT_PREFIX = '办公室/LOCKED-G'
 LOCKED_IN = '办公室/frames_locked'
-PROJECT_DIR = r'D:\剧本及分镜\办公室\分镜\连续出图\frames_locked'
+PROJECT_DIR = os.environ.get('PROJECT_DIR', '')  # 跨机：由环境变量指定项目根，勿硬编码盘符
 
 POS_TMPL = (
     "Image 1 is the original film still that must be preserved exactly. Image 2 is the target person's full-body "
@@ -101,6 +101,8 @@ def wait_file(comfy_out, prefix, timeout=600):
 
 
 def main():
+    if not PROJECT_DIR:
+        raise SystemExit('请先设置环境变量 PROJECT_DIR 指向本项目的连续出图目录（勿在脚本里写死盘符，见 路径约定.md）')
     args = sys.argv[1:]
     p = args[args.index('--config') + 1] if '--config' in args else CFG_PATH
     cfg = importlib.import_module('连续出图器').load_config(p if os.path.isabs(p) else os.path.join(HERE, p))

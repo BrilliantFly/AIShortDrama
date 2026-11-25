@@ -27,7 +27,7 @@ csv_to_timeline.py
 5. 脚本只做机械翻译 + 体检，不隐式改写画风词。
    画风冲突以 WARN 形式报出，由人在 CSV 里改（避免"改了不知道改了啥"）。
 
-实跑回灌（2026-11-21，来源 D:\\剧本及分镜\\工作流优化经验库.md，均已验证）
+实跑回灌（2026-11-21，来源 <资料库根>/7_经验库/工作流优化经验库.md，均已验证）
 ---------------------------------------------------------------------------
 * refs 引用：本项目导演台是 **0 基**（<Picture 1>=index 0），且 imageFile 只写
   文件名、目录进 subfolder。旧版本脚本用 1 基 + 整路径塞 imageFile，实机会
@@ -51,7 +51,7 @@ csv_to_timeline.py
 
   # 常规装配（默认 0 基引用 + 自动场景锁建议）
   python csv_to_timeline.py --csv shotlist.csv --out out/H3-vibe-G01.json \
-      --scene-bible scene_bible.txt --input-root "D:/ComfyUI-aki-v3.2/ComfyUI/input"
+      --scene-bible scene_bible.txt --input-root "$COMFYUI_ROOT/input"
 
   # 每镜独立出片（实跑 A 方案：每镜一份单段 workflow，供 render_submit 逐镜提交 + xfade 拼接）
   python csv_to_timeline.py --csv shotlist.csv --out out/shots/G.json --per-shot \

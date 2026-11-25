@@ -41,7 +41,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 FFMPEG_DIR = HERE / "ffmpeg"
 DRAMA_EDIT = HERE / "drama-edit" / "scripts" / "edit_tool.py"
-COMFY_PY = "D:/ComfyUI-aki-v3.2/python/python.exe"
+COMFY_PY = os.environ.get("COMFYUI_PY", "python")  # 跨机：环境变量指定 ComfyUI 的 python
 
 VIDEO_RE = re.compile(r"SHOT-(\d{3,})-hd(?:-(\d+))?\.mp4$", re.IGNORECASE)
 FIXED_RE = re.compile(r"SHOT-(\d{3,})-hd-音轨精修\.mp4$", re.IGNORECASE)

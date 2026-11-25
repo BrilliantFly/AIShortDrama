@@ -1,3 +1,4 @@
+from pathlib import Path
 # -*- coding: utf-8 -*-
 """2026-11-22 补全回灌：分镜 skill 里残留「一句一镜」单轨档口径的文件加档位分支注记。
 
@@ -11,7 +12,7 @@ import shutil
 import py_compile
 import hashlib
 
-R = r'D:\AIShortDrama\3_漫剧SKILLS'
+R = Path(__file__).resolve().parent
 BASE = os.path.join(R, r'2_分镜\1_主SKILLS\drama-skills-main\drama-skills-main\skills\short-drama-storyboard')
 BACKUP = os.path.join(R, r'_分镜档位调整前备份_20261122')
 

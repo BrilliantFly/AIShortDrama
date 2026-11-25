@@ -43,10 +43,10 @@
 ## 3. 安装前提（本机当前**未装**节点包）
 
 ```
-cd D:\ComfyUI-aki-v3.2\ComfyUI\custom_nodes
+cd "$COMFYUI_ROOT/custom_nodes"
 git clone https://github.com/snicolast/ComfyUI-IndexTTS2
-D:\ComfyUI-aki-v3.2\python\python.exe -m pip install wetext
-D:\ComfyUI-aki-v3.2\python\python.exe -m pip install -r ComfyUI-IndexTTS2\requirements.txt
+"$COMFYUI_PY" -m pip install wetext
+"$COMFYUI_PY" -m pip install -r ComfyUI-IndexTTS2/requirements.txt
 ```
 
 模型 `IndexTeam/IndexTTS-2` 放 `custom_nodes/ComfyUI-IndexTTS2/checkpoints/`。仅 Windows、未启用 DeepSpeed。装完重启 ComfyUI。
@@ -60,11 +60,11 @@ D:\ComfyUI-aki-v3.2\python\python.exe -m pip install -r ComfyUI-IndexTTS2\requir
 在 `配音流水线/` 目录下，用带 `imageio_ffmpeg` 的 ComfyUI Python 跑：
 
 ```bash
-PY="D:/ComfyUI-aki-v3.2/python/python.exe"
+PY="$COMFYUI_PY"   # 见 路径约定.md，COMFYUI_PY 指向 ComfyUI 的 python.exe
 
 # 1 剧本 → 配音本（也支持 drama skill 的 voice-record-sheet.jsonl）
 $PY voice_pipeline.py parse \
-  --script "D:/剧本及分镜/同学会暗恋/小说/剧本.md" \
+  --script "<项目根>/小说/剧本.md" \
   --characters "林晚,沈屿" \
   --voice-refs "林晚=voices/linwan.wav;沈屿=voices/shenyu.wav" \
   --out _run/voice_sheet.csv
@@ -82,7 +82,7 @@ $PY voice_pipeline.py assemble --plan _run/voice_plan.json --wav-dir _run/wav \
   --out-dir _run/成片
 
 # 或一条龙
-$PY voice_pipeline.py run --script "D:/剧本及分镜/同学会暗恋/小说/剧本.md" \
+$PY voice_pipeline.py run --script "<项目根>/小说/剧本.md" \
   --characters "林晚,沈屿" --voice-refs "林晚=voices/linwan.wav;沈屿=voices/shenyu.wav" \
   --out-dir _run
 ```
