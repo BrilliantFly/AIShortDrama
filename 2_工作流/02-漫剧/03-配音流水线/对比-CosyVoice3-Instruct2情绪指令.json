@@ -1,0 +1,119 @@
+{
+  "id": "compare-cosyvoice3-instruct2",
+  "revision": 0,
+  "last_node_id": 6,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [-480, 140],
+      "size": [320, 130],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/linwan.wav"],
+      "title": "说话人参考音频（身份 · 5~15s 干声最佳）"
+    },
+    {
+      "id": 2,
+      "type": "TS_CosyVoice3_ModelLoader",
+      "pos": [-480, 400],
+      "size": [320, 150],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "model", "type": "COSYVOICE_MODEL", "links": [2], "slot_index": 0}],
+      "properties": {"Node name for S&R": "TS_CosyVoice3_ModelLoader"},
+      "widgets_values": ["Fun-CosyVoice3-0.5B"],
+      "title": "模型加载（CosyVoice 2/3 才支持 instruct2）"
+    },
+    {
+      "id": 3,
+      "type": "TS_CosyVoice3_Instruct2",
+      "pos": [-60, 140],
+      "size": [460, 480],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "COSYVOICE_MODEL", "link": 2},
+        {"name": "reference_audio", "type": "AUDIO", "link": 1}
+      ],
+      "outputs": [{"name": "audio", "type": "AUDIO", "links": [3], "slot_index": 0}],
+      "properties": {"Node name for S&R": "TS_CosyVoice3_Instruct2"},
+      "widgets_values": [
+        "……好久不见。",
+        "自然松弛地轻声开口，带一点试探，句尾不要上扬；有真实呼吸停顿，不要播音腔。",
+        1.0,
+        42,
+        true,
+        "Your instruction"
+      ],
+      "title": "Instruct2（instruct_text 自然语言情绪 + emotion_preset）"
+    },
+    {
+      "id": 4,
+      "type": "SaveAudio",
+      "pos": [500, 140],
+      "size": [340, 130],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 3}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["compare/cosyvoice3_instruct2_VL001", "wav", "48kHz"],
+      "title": "保存：基准句对比样本"
+    },
+    {
+      "id": 5,
+      "type": "Note",
+      "pos": [500, 360],
+      "size": [440, 450],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【CosyVoice3 Instruct2 · 对比重点：自然语言情绪指令（不用 8 维向量）】\n\n走 CosyVoice 的 inference_instruct2：音色从参考音频克隆，情绪/语速/语气由 instruct_text 单独引导。正好绕开 IndexTTS2 八维向量「调强度救不了贴错情绪」的问题。\n\n节点3 widgets_values 顺序（AlexYez/comfyui-ts-cosyvoice · TS_CosyVoice3_Instruct2，INPUT_TYPES）：\n 0 text  1 instruct_text  2 speed  3 seed\n 4 text_normalize  5 emotion_preset\n 端口输入：model（COSYVOICE_MODEL）、reference_audio（AUDIO）。\n 输出：audio（AUDIO）。\n\n关键口径：\n · instruct_text 只在 emotion_preset 选「Your instruction」时才被读取；选了预设则忽略自由文本。\n · emotion_preset 内置 12 种交付预设（warm/friendly、calm/soft、energetic、dramatic、intimate、authoritative、playful 等）。\n · reference_audio 会自动裁到 30s、转 mono 24kHz；5~15s 单人干净干声最佳，别带音乐/混响。\n · speed 0.5~2，正常保持 1.0，别在 TTS 里叠语速。\n · seed=42 可复现；想要每次不同设 -1，但固定 seed 反复跑会有机械感。\n · text_normalize 默认开；喂 CMU 音素或特殊标签时才关。\n\n注意：官方 CosyVoice-300M 不支持 inference_instruct2，模型必须选 CosyVoice2/3。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "参数口径与情绪指令用法"
+    },
+    {
+      "id": 6,
+      "type": "Note",
+      "pos": [-480, 640],
+      "size": [340, 260],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【安装前提 · 模型需人工下载】\n1. cd \"$COMFYUI_ROOT/custom_nodes\"\n   git clone https://github.com/AlexYez/comfyui-ts-cosyvoice.git\n2. pip install -r requirements.txt\n   ONNX Runtime 必须装：NVIDIA 用 onnxruntime-gpu，其余用 onnxruntime。\n   先确保 CUDA torch 已就位再装本包依赖。\n3. 模型约 1.5GB，首次跑 Model Loader 自动下到 ComfyUI/models/cosyvoice/；\n   或人工下载 Fun-CosyVoice3-0.5B 放到该目录。\n4. 重启 ComfyUI，节点在 TS CosyVoice3/Synthesis 菜单。\n\n备选包：filliptm/ComfyUI_FL-CosyVoice3（节点名 FL_CosyVoice3_*，含 Dialog 多人对话），参数大体对应但前缀不同，导入时按实际安装的包替换节点名。\n\n节点包、模型均由你手动安装/下载；本图不改动任何第三方文件。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 3, 1, "AUDIO"],
+    [2, 2, 0, 3, 0, "COSYVOICE_MODEL"],
+    [3, 3, 0, 4, 0, "AUDIO"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

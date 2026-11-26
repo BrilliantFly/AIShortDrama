@@ -1,0 +1,94 @@
+{
+  "id": "compare-voxcpm2-continuous",
+  "revision": 0,
+  "last_node_id": 4,
+  "last_link_id": 1,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "VoxCPM TTS",
+      "pos": [-420, 140],
+      "size": [480, 620],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {"name": "voice_config", "type": "VOICE_CLONING_CONFIG", "link": null},
+        {"name": "advanced_params", "type": "ADVANCED_PARAMS", "link": null}
+      ],
+      "outputs": [{"name": "Generated Audio", "type": "AUDIO", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "VoxCPM TTS"},
+      "widgets_values": [
+        "VoxCPM2",
+        "None",
+        "……好久不见。",
+        "自然松弛的年轻女声，轻微试探，轻声，句尾不要上扬，有真实呼吸停顿，不要播音腔",
+        2.0,
+        10,
+        false,
+        42,
+        false,
+        "cuda",
+        "auto"
+      ],
+      "title": "VoxCPM2 · Tokenizer-Free 连续生成"
+    },
+    {
+      "id": 2,
+      "type": "SaveAudio",
+      "pos": [160, 140],
+      "size": [340, 130],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 1}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["compare/voxcpm2_voicedesign_VL001", "wav", "48kHz"],
+      "title": "保存：声音设计对比样本"
+    },
+    {
+      "id": 3,
+      "type": "Note",
+      "pos": [160, 360],
+      "size": [480, 500],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【VoxCPM2 · 对比重点：直击「AI 味」根因的架构级方案】\n\n传统 TTS 把语音切成离散 token 再还原，语气起伏/呼吸/连读等连续细节不可逆丢失——这正是「机械感」的根因。VoxCPM2 是 Tokenizer-Free，在连续空间直接生成语音表征（MiniCPM-4 主干 + AudioVAE V2，16kHz→48kHz 超分），第三方实测中文 CER 0.97%、相似度 79.5%，长段落漏词更少。Apache 2.0。\n\n节点1 VoxCPM TTS widgets_values 顺序（Inputs 表）：\n 0 model_name  1 lora_name  2 text  3 voice_design  4 cfg\n 5 steps  6 normalize_text  7 seed  8 force_offload  9 device  10 dtype\n 端口输入（可选）：voice_config、advanced_params。输出 Generated Audio(AUDIO)。\n\n四种模式（由接线决定）：\n · 纯 text：零样本 TTS；\n · text + voice_design：自然语言声音设计（本图）；\n · 接 voice_config（VoxCPM Voice Cloning 节点产出的 reference_audio）：参考音频克隆；\n · reference + prompt 音频：ultimate cloning（identity 与 prosody 分开）。\n 注意：一旦接了参考/prompt 音频，voice_design 会被忽略。\n\n调参提示：\n · device 默认是 cpu！有 N 卡务必改成 cuda，否则极慢。\n · cfg 默认 2.0，越高越贴描述/参考但过高反而更不自然。\n · normalize_text 开启需先 pip install inflect wetext，否则报错。\n · VoxCPM1.5 长句末尾会金属化，用 VoxCPM2 或拆短句。\n · seed -1 为随机；要可复现填固定值。\n · 本图评「架构带来的自然度上限」，音色与参考音频不同，只评语气/连贯度。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "参数口径与四种模式"
+    },
+    {
+      "id": 4,
+      "type": "Note",
+      "pos": [-420, 820],
+      "size": [360, 260],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【安装前提 · 模型需人工下载】\n1. ComfyUI Manager 搜 ComfyUI-VoxCPM 安装；或\n   git clone https://github.com/wildminder/ComfyUI-VoxCPM.git 到 custom_nodes。\n2. pip install -r requirements.txt；需要文本规整再装 inflect wetext。\n3. 首次运行自动下载模型到 ComfyUI/models/tts/VoxCPM/：\n   VoxCPM2（2B，48kHz，30+ 语言，支持声音设计/克隆）。\n4. 重启 ComfyUI，节点在 audio/tts 菜单。\n\n显存：2B 模型，消费级 4090 上 RTF 可低至 0.17；8bit MLX 版在 16G Mac 约 2.9GB。\n许可 Apache 2.0，商用前仍须自担声音克隆合规风险。\n节点包、模型均由你手动安装/下载；本图不改动任何第三方文件。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 0, "AUDIO"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

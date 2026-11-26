@@ -1,0 +1,132 @@
+{
+  "id": "compare-vibevoice-duo-dialogue",
+  "revision": 0,
+  "last_node_id": 6,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [-480, 120],
+      "size": [320, 130],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/linwan.wav"],
+      "title": "Speaker 1 参考音频（林晚）"
+    },
+    {
+      "id": 2,
+      "type": "LoadAudio",
+      "pos": [-480, 340],
+      "size": [320, 130],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [2], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/shenyu.wav"],
+      "title": "Speaker 2 参考音频（沈屿）"
+    },
+    {
+      "id": 3,
+      "type": "VibeVoice TTS",
+      "pos": [-60, 120],
+      "size": [560, 720],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {"name": "speaker_1_voice", "type": "AUDIO", "link": 1},
+        {"name": "speaker_2_voice", "type": "AUDIO", "link": 2},
+        {"name": "speaker_3_voice", "type": "AUDIO", "link": null},
+        {"name": "speaker_4_voice", "type": "AUDIO", "link": null},
+        {"name": "external_model", "type": "VIBEVOICE_MODEL", "link": null}
+      ],
+      "outputs": [{"name": "audio", "type": "AUDIO", "links": [3], "slot_index": 0}],
+      "properties": {"Node name for S&R": "VibeVoice TTS"},
+      "widgets_values": [
+        "VibeVoice-1.5B",
+        "[1] ……好久不见。\n[2] 嗯。三年了。\n[1] 你现在做本行了？插画。\n[2] 嗯，勉强算。",
+        "None",
+        false,
+        "sdpa",
+        1.3,
+        10,
+        0,
+        true,
+        0.95,
+        0.95,
+        0,
+        42,
+        "auto",
+        "auto",
+        false
+      ],
+      "title": "VibeVoice TTS（一次出整段对话）"
+    },
+    {
+      "id": 4,
+      "type": "SaveAudio",
+      "pos": [600, 120],
+      "size": [340, 130],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 3}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["compare/vibevoice_duo_VL001-004", "wav", "48kHz"],
+      "title": "保存：整段对白（对比 turn-taking）"
+    },
+    {
+      "id": 5,
+      "type": "Note",
+      "pos": [600, 340],
+      "size": [420, 420],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【VibeVoice 双人对白 · 对比重点：turn-taking】\n\n微软 VibeVoice 专做多说话人长对话，最多 4 人。本图用两人验证「换人接话是否自然、有没有等长停顿、会不会念稿」。整段一次出，不要拆句——这正是它与 IndexTTS2 逐句流水线最大的结构差异。\n\n节点3 widgets_values 顺序（wildminder/ComfyUI-VibeVoice 版 INPUT_TYPES）：\n 0 model_name  1 text  2 voice_preset  3 quantize_llm_4bit\n 4 attention_mode  5 cfg_scale  6 inference_steps  7 max_new_tokens\n 8 do_sample  9 temperature  10 top_p  11 top_k\n 12 seed  13 device  14 dtype  15 force_offload\n (seed 后若出现 control_after_generate 占位，按界面实际顺序为准)\n\n端口输入：speaker_1_voice~speaker_4_voice（AUDIO）、external_model（VIBEVOICE_MODEL）。\n\n调参提示：\n · cfg_scale 1.3 是「像参考音」的强度；过高会僵硬，过低会漂。1.5~1.8 仅用于 realtime 模型。\n · text 里 [1]/[2] 或 Speaker 1: 两种标记都认；不写标记全部归 speaker 1。\n · 留空某 speaker 的参考音频不会让它消失，会从已提供的声音派生。\n · inference_steps 10 默认值，只影响质量/耗时，不影响语音长度。\n · 至少接一个 speaker_*_voice，本节点不支持完全无参考的 zero-shot。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "参数口径与对比重点"
+    },
+    {
+      "id": 6,
+      "type": "Note",
+      "pos": [-480, 560],
+      "size": [320, 230],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【安装前提 · 模型需人工下载】\n1. cd \"$COMFYUI_ROOT/custom_nodes\"\n   git clone https://github.com/wildminder/ComfyUI-VibeVoice.git\n2. 依包内 requirements.txt 装依赖；4bit 另装 bitsandbytes；sage 另装 sageattention。\n3. 模型放 ComfyUI/models/tts/VibeVoice/：\n   VibeVoice-1.5B（约 3~5.4GB，日常首选）；\n   VibeVoice-Large（17~19GB，长文本更强）。\n4. 重启 ComfyUI，节点在 audio/tts 菜单。\n\n节点包、模型均由你手动安装/下载；本图不改动任何第三方文件。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 3, 0, "AUDIO"],
+    [2, 2, 0, 3, 1, "AUDIO"],
+    [3, 3, 0, 4, 0, "AUDIO"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

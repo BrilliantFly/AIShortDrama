@@ -1,0 +1,124 @@
+{
+  "id": "compare-higgs-v3-emotion",
+  "revision": 0,
+  "last_node_id": 6,
+  "last_link_id": 4,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [-500, 140],
+      "size": [320, 130],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [2], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/linwan.wav"],
+      "title": "说话人参考音频（身份 · 干净干声）"
+    },
+    {
+      "id": 2,
+      "type": "Higgs v3 Load Model",
+      "pos": [-500, 400],
+      "size": [340, 210],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "higgs_model", "type": "HIGGSV3TTS_MODEL", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "Higgs v3 Load Model"},
+      "widgets_values": ["Higgs Audio v3 TTS 4B - bosonai (auto-download)", "auto", "auto", "auto", true],
+      "title": "Higgs v3 模型加载"
+    },
+    {
+      "id": 3,
+      "type": "Higgs v3 Voice Clone",
+      "pos": [-60, 140],
+      "size": [500, 560],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {"name": "higgs_model", "type": "HIGGSV3TTS_MODEL", "link": 1},
+        {"name": "reference_audio", "type": "AUDIO", "link": 2}
+      ],
+      "outputs": [{"name": "audio", "type": "AUDIO", "links": [4], "slot_index": 0}],
+      "properties": {"Node name for S&R": "Higgs v3 Voice Clone"},
+      "widgets_values": [
+        "……好久不见。<|prosody:pause|>好久不见。",
+        "",
+        2048,
+        1.0,
+        0.95,
+        50,
+        12345,
+        true,
+        45,
+        false,
+        0.15
+      ],
+      "title": "Voice Clone（内联情感/韵律/音效标签）"
+    },
+    {
+      "id": 4,
+      "type": "SaveAudio",
+      "pos": [520, 140],
+      "size": [340, 130],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 4}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["compare/higgsv3_VL001", "wav", "48kHz"],
+      "title": "保存：基准句对比样本"
+    },
+    {
+      "id": 5,
+      "type": "Note",
+      "pos": [520, 340],
+      "size": [460, 470],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【Higgs Audio v3 · 对比重点：情感表达最强（第三方 MOS 4.7）+ 内联音效】\n\nBoson AI 的 Higgs v3 4B，100 语言对话式 TTS，内联标签直接控情感/风格/韵律/音效。第三方横评中文情感表达排第一。本项目非商用研究用途，语音克隆需授权——商用前必须确认。\n\n节点3 Higgs v3 Voice Clone widgets_values 顺序：\n 0 text  1 reference_text  2 max_new_tokens  3 temperature\n 4 top_p  5 top_k  6 seed  7 longform_chunking\n 8 words_per_chunk  9 tag_chunk  10 pause_between_chunks\n 端口：higgs_model、reference_audio。\n\n内联标签语法（写在 text 里）：\n · 情感 <|emotion:sadness|> <|emotion:affection|> <|emotion:longing|> 等 21 种\n · 风格 <|style:whispering|> <|style:shouting|>\n · 韵律 <|prosody:speed_slow|> <|prosody:pause|> <|prosody:long_pause|> <|prosody:pitch_low|>\n · 音效 <|sfx:sigh|> <|sfx:laughter|> <|sfx:cough|>（后面紧跟书面字，如「<|sfx:sigh|>唉」）\n\n关键坑（官方 README）：\n · 强情感标签放开头会压过克隆音色导致漂移；先让第一个词建立音色再放标签，如「好久<|emotion:sadness|>不见」，标签后紧跟词不要空格。\n · reference_text 强烈建议提供（可配 Higgs v3 Whisper Transcribe 节点自动生成），正确转写显著提升克隆质量。\n · 音频 codec ~75 token/秒，2048 token 约 25~30s；长文本务必开 longform_chunking。\n · 验证语速控制用固定 seed 12345 / temperature 0.8 / top_p 1.0 / top_k 50 / max_new_tokens 1024 / 关分块。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "参数口径与内联标签"
+    },
+    {
+      "id": 6,
+      "type": "Note",
+      "pos": [-500, 680],
+      "size": [340, 290],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【安装前提 · 模型需人工下载】\n1. cd \"$COMFYUI_ROOT/custom_nodes\"\n   git clone https://github.com/Saganaki22/Higgs_v3-TTS-ComfyUI.git\n   cd Higgs_v3-TTS-ComfyUI && python install.py\n2. 需 Transformers 5.3.0~5.5.0（推荐 5.5.0）。\n3. 大模型放 ComfyUI/models/higgsv3tts/higgs-audio-v3-tts-4b/model.safetensors（约 9.31GB）。\n4. 重启 ComfyUI。\n\n显存：CUDA bf16 约 11GB VRAM + 余量；AIMDO DynamicVRAM 可降实时压力。\n许可：Higgs Audio v3 仅供研究/非商用，语音克隆未经许可勿用。\n另有多说话人节点 Higgs v3 Multi-Speaker（[Speaker_1]: 标签 + 各自参考音频，2~6 人），本图聚焦单句情感对比。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提与许可"
+    }
+  ],
+  "links": [
+    [1, 2, 0, 3, 0, "HIGGSV3TTS_MODEL"],
+    [2, 1, 0, 3, 1, "AUDIO"],
+    [4, 3, 0, 4, 0, "AUDIO"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

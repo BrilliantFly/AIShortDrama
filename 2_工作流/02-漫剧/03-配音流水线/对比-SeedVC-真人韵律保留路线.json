@@ -1,0 +1,128 @@
+{
+  "id": "compare-seedvc-prosody-preserve",
+  "revision": 0,
+  "last_node_id": 7,
+  "last_link_id": 4,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [-520, 120],
+      "size": [320, 130],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/source_performance.wav"],
+      "title": "源表演音频（真人朗读，保留全部韵律）"
+    },
+    {
+      "id": 2,
+      "type": "LoadAudio",
+      "pos": [-520, 340],
+      "size": [320, 130],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [2], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/linwan.wav"],
+      "title": "目标音色参考（10~20s 干净干声）"
+    },
+    {
+      "id": 3,
+      "type": "SeedVCModelLoader",
+      "pos": [-520, 580],
+      "size": [320, 180],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "model", "type": "SEEDVC_MODEL", "links": [3], "slot_index": 0}],
+      "properties": {"Node name for S&R": "SeedVCModelLoader"},
+      "widgets_values": ["auto", "auto", true],
+      "title": "Seed-VC 44.1k 模型加载"
+    },
+    {
+      "id": 4,
+      "type": "SeedVCVoiceConversion",
+      "pos": [-80, 140],
+      "size": [460, 560],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {"name": "source_audio", "type": "AUDIO", "link": 1},
+        {"name": "target_voice", "type": "AUDIO", "link": 2},
+        {"name": "model", "type": "SEEDVC_MODEL", "link": 3}
+      ],
+      "outputs": [{"name": "audio", "type": "AUDIO", "links": [4], "slot_index": 0}],
+      "properties": {"Node name for S&R": "SeedVCVoiceConversion"},
+      "widgets_values": [1.0, 30, 0.7, 20.0, false, 0, 1.0, 0, 0.0, true, -1.0],
+      "title": "音色转换（韵律/断句/F0 全部来自源表演）"
+    },
+    {
+      "id": 5,
+      "type": "SaveAudio",
+      "pos": [440, 140],
+      "size": [340, 130],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 4}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["compare/seedvc_prosody_VL001", "wav", "48kHz"],
+      "title": "保存：真人韵律 + 目标音色样本"
+    },
+    {
+      "id": 6,
+      "type": "Note",
+      "pos": [440, 340],
+      "size": [480, 500],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【Seed-VC · 最根本的一条路：不生成韵律，只换音色】\n\n前面所有 TTS 方案都是「文本→音色+韵律一起生成」，不自然往往出在韵律。Seed-VC 反过来：让真人（或任意表演者）先按剧情把台词演出来，韵律/呼吸/断句/情绪全是真的，模型只把音色换成目标角色。理论上这是绕开 TTS 韵律不自然最彻底的路径。\n\n节点4 SeedVCVoiceConversion widgets_values 顺序：\n 0 timbre_strength(1.0=完全用目标音色)\n 1 diffusion_steps(30 高质量)\n 2 cfg_rate(0.7)\n 3 reference_seconds(20.0)\n 4 auto_f0_adjust(false=保留源 F0)\n 5 pitch_shift(0)\n 6 length_adjust(1.0 保持原时长)\n 7 seed(0)\n 8 output_gain_db(0.0)\n 9 peak_protection(true)\n 10 peak_ceiling_db(-1.0)\n 端口：source_audio、target_voice、model。\n 节点3 SeedVCModelLoader：device / precision / download_missing(首次 true)。\n\n对比要点：\n · 源音频必须是干净人声（无人声分离伴奏），否则会把伴奏一起转换。\n · 目标参考 10~20s 干净、单一说话人、无音乐无混响无长停顿。\n · auto_f0_adjust=false 才保留源表演的音高起伏；打开会抹平真人韵律。\n · 录音前先录 10s 纯环境音做噪声指纹；开始前留 3s 绝对静音当零基准（社区实测可消除「沙沙声」）。\n · 若需要立体声空间感，可在后面接 SeedVCRestoreOriginalStereo 节点还原立体声宽度。\n\n源表演(source_performance.wav)需人工准备——这是本路线唯一的额外成本。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "参数口径与路线说明"
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [-520, 860],
+      "size": [360, 280],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【安装前提 · 模型需人工下载】\n1. ComfyUI Manager 搜 Seed-VC / ComfyUI-Timbre-Transfer 安装对应节点包；\n   本图节点类名参考 SeedVCModelLoader / SeedVCVoiceConversion / SeedVCRestoreOriginalStereo，\n   实际以你安装的包为准（不同包前缀可能不同）。\n2. 首次执行 download_missing=true 自动下载约 2.5GB：\n   Seed-VC 44.1k Checkpoint、Whisper Small、BigVGAN 44.1k、RMVPE、CAMPPlus。\n3. 默认保存位置 ComfyUI/models/seed_vc/。\n4. 下载完成后可把 download_missing 设 false 离线跑。\n\n输出 44.1kHz 单声道人声；本图 SaveAudio 统一到 48kHz 便于横评。\n节点包、模型、源表演音频均由你手动准备；本图不改动任何第三方文件。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 4, 0, "AUDIO"],
+    [2, 2, 0, 4, 1, "AUDIO"],
+    [3, 3, 0, 4, 2, "SEEDVC_MODEL"],
+    [4, 4, 0, 5, 0, "AUDIO"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

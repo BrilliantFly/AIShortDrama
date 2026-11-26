@@ -1,0 +1,175 @@
+{
+  "id": "compare-qwen3tts-voice-clone",
+  "revision": 0,
+  "last_node_id": 9,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [-460, 140],
+      "size": [320, 130],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/linwan.wav"],
+      "title": "说话人参考音频（身份 · 5~15s 干声）"
+    },
+    {
+      "id": 2,
+      "type": "Qwen3TTSModelLoader",
+      "pos": [-460, 400],
+      "size": [320, 150],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "MODEL", "type": "QWEN3TTS_MODEL", "links": [2], "slot_index": 0}],
+      "properties": {"Node name for S&R": "Qwen3TTSModelLoader"},
+      "widgets_values": ["Qwen3-TTS-12Hz-1.7B-Base", "auto", "fp16"],
+      "title": "模型加载（声音克隆用 Base 模型）"
+    },
+    {
+      "id": 3,
+      "type": "Qwen3TTSVoiceClone",
+      "pos": [-40, 140],
+      "size": [440, 420],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "QWEN3TTS_MODEL", "link": 2},
+        {"name": "reference_audio", "type": "AUDIO", "link": 1}
+      ],
+      "outputs": [
+        {"name": "AUDIO", "type": "AUDIO", "links": [3], "slot_index": 0},
+        {"name": "PRESET", "type": "QWEN3TTS_PRESET", "links": null, "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "Qwen3TTSVoiceClone"},
+      "widgets_values": [
+        "……好久不见。",
+        "",
+        "auto",
+        true,
+        2048,
+        42,
+        "fixed"
+      ],
+      "title": "声音克隆 synthesis（基准句）"
+    },
+    {
+      "id": 4,
+      "type": "SaveAudio",
+      "pos": [500, 140],
+      "size": [340, 130],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 3}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["compare/qwen3tts_VL001", "wav", "48kHz"],
+      "title": "保存：基准句对比样本"
+    },
+    {
+      "id": 5,
+      "type": "Qwen3TTSModelLoader",
+      "pos": [-40, 640],
+      "size": [320, 150],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "MODEL", "type": "QWEN3TTS_MODEL", "links": [4], "slot_index": 0}],
+      "properties": {"Node name for S&R": "Qwen3TTSModelLoader"},
+      "widgets_values": ["Qwen3-TTS-12Hz-1.7B-CustomVoice", "auto", "fp16"],
+      "title": "模型加载（自然语言情绪指令用 CustomVoice）"
+    },
+    {
+      "id": 6,
+      "type": "Qwen3TTSCustomVoice",
+      "pos": [340, 640],
+      "size": [440, 430],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [{"name": "model", "type": "QWEN3TTS_MODEL", "link": 4}],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [5], "slot_index": 0}],
+      "properties": {"Node name for S&R": "Qwen3TTSCustomVoice"},
+      "widgets_values": [
+        "……好久不见。",
+        "Vivian",
+        "auto",
+        "用自然松弛的语气，轻微试探，句尾不要上扬，像熟人久别后先轻声开口；有真实呼吸停顿，不要播音腔。",
+        true,
+        2048,
+        42
+      ],
+      "title": "自然语言情绪指令（对照 A/B：音色不同，只评语气）"
+    },
+    {
+      "id": 7,
+      "type": "SaveAudio",
+      "pos": [900, 640],
+      "size": [340, 130],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 5}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["compare/qwen3tts_instruct_VL001", "wav", "48kHz"],
+      "title": "保存：自然语言指令对比样本"
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [900, 140],
+      "size": [440, 470],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【Qwen3-TTS · 两条对照路线，不要混着评】\n\n上排（节点1→2→3→4）＝声音克隆：音色来自参考音频，用于评「音色像不像 + 自然度」。\n下排（节点5→6→7）＝自然语言情绪指令：音色来自预设说话人，只评「语气/情绪是否自然」，不要评音色相似度（两者音色本就不同）。这样拆分是为了回答：自然语言指令能不能替代 IndexTTS2 的 8 维向量。\n\n节点3 Qwen3TTSVoiceClone widgets_values 顺序：\n 0 text  1 reference_text  2 language  3 auto_unload_model\n 4 max_new_tokens  5 seed  6 control_after_generate\n 端口：model(QWEN3TTS_MODEL)、reference_audio(AUDIO)；输出 AUDIO + 角色预设。\n 模型要求：带 Base 的权重（Qwen3-TTS-12Hz-1.7B-Base）。\n\n节点6 Qwen3TTSCustomVoice widgets_values 顺序：\n 0 text  1 speaker(预设)  2 language  3 instruct/提示词\n 4 auto_unload  5 max_new_tokens  6 seed\n 模型要求：带 CustomVoice 的权重。\n\n预设说话人：Vivian 明亮锋芒女声 / Serena 温柔女声 / Uncle_Fu 低沉男声 / Dylan 北京男声 / Eric 成都男声 等。\n想评声音设计可把节点6换成 Qwen3TTSVoiceDesign（需 VoiceDesign 权重），提示词写「自然松弛的女声，真实呼吸停顿，不要播音腔」。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "参数口径与两条路线说明"
+    },
+    {
+      "id": 9,
+      "type": "Note",
+      "pos": [-460, 900],
+      "size": [340, 250],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【安装前提 · 模型需人工下载】\n1. cd \"$COMFYUI_ROOT/custom_nodes\"\n   git clone https://github.com/HAIGC/Comfyui-HAIGC-QwenTTS.git\n2. 依包内 requirements.txt 装依赖（torch/transformers/librosa/soundfile/accelerate）。\n3. 模型放 ComfyUI/models/qwen-tts/，文件夹名与模型后缀一致：\n   Qwen3-TTS-12Hz-1.7B-Base（克隆）\n   Qwen3-TTS-12Hz-1.7B-CustomVoice（自然语言指令）\n   Qwen3-TTS-12Hz-1.7B-VoiceDesign（声音设计）\n   Qwen3-TTS-Tokenizer-12Hz（分词器）\n4. 重启 ComfyUI。本包不自动下载模型。\n\n显存约 6~8GB（1.7B）；0.6B 轻量版显存更低但表现力弱。\n节点包、模型均由你手动安装/下载；本图不改动任何第三方文件。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 3, 1, "AUDIO"],
+    [2, 2, 0, 3, 0, "QWEN3TTS_MODEL"],
+    [3, 3, 0, 4, 0, "AUDIO"],
+    [4, 5, 0, 6, 0, "QWEN3TTS_MODEL"],
+    [5, 6, 0, 7, 0, "AUDIO"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

@@ -1,0 +1,110 @@
+{
+  "id": "compare-fishspeech-s2-inline-emotion",
+  "revision": 0,
+  "last_node_id": 5,
+  "last_link_id": 2,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadAudio",
+      "pos": [-480, 140],
+      "size": [320, 130],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "AUDIO", "type": "AUDIO", "links": [1], "slot_index": 0}],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["voices/linwan.wav"],
+      "title": "说话人参考音频（身份 · 10~30s 最佳）"
+    },
+    {
+      "id": 2,
+      "type": "FishS2VoiceCloneTTS",
+      "pos": [-60, 140],
+      "size": [480, 620],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [{"name": "reference_audio", "type": "AUDIO", "link": 1}],
+      "outputs": [{"name": "audio", "type": "AUDIO", "links": [2], "slot_index": 0}],
+      "properties": {"Node name for S&R": "FishS2VoiceCloneTTS"},
+      "widgets_values": [
+        "s2-pro-fp8",
+        "……好久不见。[short pause] 好久不见。",
+        "zh",
+        "auto",
+        "bfloat16",
+        "auto",
+        0,
+        200,
+        0.7,
+        0.7,
+        1.2,
+        42,
+        true,
+        false,
+        ""
+      ],
+      "title": "Fish S2 声音克隆（[tag] 内联情绪）"
+    },
+    {
+      "id": 3,
+      "type": "SaveAudio",
+      "pos": [520, 140],
+      "size": [340, 130],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [{"name": "audio", "type": "AUDIO", "link": 2}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["compare/fishs2_VL001", "wav", "48kHz"],
+      "title": "保存：基准句对比样本"
+    },
+    {
+      "id": 4,
+      "type": "Note",
+      "pos": [520, 360],
+      "size": [440, 470],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【Fish Speech S2 · 对比重点：自然语言 [tag] 情绪 + 高保真克隆】\n\nS2-Pro 是 2026 初开源的第三代 TTS，1000 万小时/83 语言训练，1500+ 情感标签，10~30s 零样本克隆。与 IndexTTS2 的 8 维向量不同，它用内联自由文本标签控制语气，不必调数值。\n\n节点2 widgets_values 顺序（ComfyUI-FishAudioS2 · FishS2VoiceCloneTTS）：\n 0 model_path  1 text  2 language  3 device  4 precision\n 5 attention  6 max_new_tokens  7 chunk_length  8 temperature\n 9 top_p  10 repetition_penalty  11 seed  12 keep_model_loaded\n 13 compile_model  14 reference_text(可选)\n reference_audio 为端口输入（节点1）。\n\n[tag] 语法是自由文本，不是固定枚举。示例：\n · 情绪 [sad] [angry] [excited] [surprised]\n · 音量 [whisper] [low voice] [shouting]\n · 节奏 [pause] [short pause] [inhale] [sigh]\n · 发声 [laugh] [chuckle] [clearing throat]\n · 自由描述 [speaking slowly and clearly] [sarcastic tone]\n 建议先只放 1~2 个标签；标点（，。）对语气影响很大，别省。\n\n调参提示：\n · repetition_penalty 默认 1.2，别照搬 IndexTTS2 的 10.0。\n · 若新版 transformers 下 Whisper 自动转写失效，手动填 reference_text。\n · 参考音频剪掉首尾静音、避背景噪声，否则音色会漂。"
+      ],
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "参数口径与 [tag] 用法"
+    },
+    {
+      "id": 5,
+      "type": "Note",
+      "pos": [-480, 440],
+      "size": [340, 260],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {"text": ""},
+      "widgets_values": [
+        "【安装前提 · 模型需人工下载】\n1. cd \"$COMFYUI_ROOT/custom_nodes\"\n   git clone https://github.com/Saganaki22/ComfyUI-FishAudioS2.git\n2. 依包内 requirements.txt 装依赖；4bit/NF4 另装 bitsandbytes。\n   若装 fish-speech 报错，按包内说明替换 src 并改 inference.py 的 eval 命名。\n3. 模型放 ComfyUI/models/fishaudioS2/：\n   s2-pro（约 24GB 显存，最佳质量）/ s2-pro-fp8（约 12~20GB）/ BNB NF4（约 16GB）。\n   本图默认 s2-pro-fp8，显存不足再降 NF4。\n4. 重启 ComfyUI。\n\n许可：Fish Audio Research License（非商用研究友好）；商用前必须确认授权。节点包与模型均由你手动安装/下载。"
+      ],
+      "color": "#335",
+      "bgcolor": "#558",
+      "title": "安装前提与许可"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 0, "AUDIO"],
+    [2, 2, 0, 3, 0, "AUDIO"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
